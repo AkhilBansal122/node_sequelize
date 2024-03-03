@@ -1,0 +1,13 @@
+# Node.js
+node_modules/
+
+# Dependency directories
+lib/
+bin/
+
+# Logs and databases
+*.log
+*.sqlite
+
+# Environment files
+
