@@ -1,18 +1,15 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { LOGO_URL, ADMIN_LOGIN_URL } from "../../common";
+
 // import { ToastContainer } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
-
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
+    
 const Login = () => {
 
-
     const [state, setState] = useState({
-        email: '',
-        password: '',
+        email: 'akhl@mailinator.com',
+        password: '123456789',
         isLoggedIn: false,
     });
 
@@ -28,37 +25,32 @@ const Login = () => {
             password: event.target.value,
         });
     };
+
+
+    const handleLogin = async (event) => {
+        event.preventDefault();
     
-    const handleLogin = async ()=>{
-        try{
-
-        console.log("email ",state.email);
-        const response = await axios.post(ADMIN_LOGIN_URL, {
-            email: state.email,
-            password: state.password,
-        });
-        console.log('Login successful', response.data);
-
-        toast.success('Login successful!', {
-            position: 'top-right',
-            autoClose: 2000, // Close the toast after 2 seconds
-            hideProgressBar: false,
-        });
-        
-    }catch(error){
-           // Handle login failure, display error message, etc.
-           console.error('Login failed', error.response.data);
-           // Show error toast message
+        try {
+            const response = await axios.post(ADMIN_LOGIN_URL, {
+                email: state.email,
+                password: state.password
+            });
     
-           toast.error('Login failed. Please try again.', {
-               position: 'top-right',
-               autoClose: 2000,
-               hideProgressBar: false,
-           });
-    }
-
-    }
-
+            var result = response.data;
+            console.log(result.status);
+    
+            if (result.status) {
+                var token = result.token;
+                window.location.href = "/home";
+              
+            } else {
+              
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    
 
 
 
@@ -81,14 +73,14 @@ const Login = () => {
                                                 <div className="col-12">
                                                     <input className="form-control" name="email"
                                                         onChange={handleEmailChange}
-                                                        
-                                                        value={state.email} type="email"  placeholder="Email" />
+
+                                                        value={state.email} type="email" placeholder="Email" />
                                                 </div>
                                             </div>
                                             <div className="form-group row">
                                                 <div className="col-12">
                                                     <input className="form-control" name="password"
-                                                    
+
                                                         onChange={handlePasswordChange}
                                                         value={state.password} type="password" required placeholder="Password" />
                                                 </div>
