@@ -53,22 +53,22 @@ const login = async (req, res) => {
       },
     });
     if (!user) {
-      res.status(401).json({ message: 'Invalid credentials' });
+      res.status(401).json({ status:false,message: 'Invalid credentials' });
     }
     else {
       const isPasswordValid = await bcrypt.compare(password, user.password);
 
       if (!isPasswordValid) {
-        return res.status(401).json({ error: 'Invalid credentials password' });
+        return res.status(401).json({ status:false, error: 'Invalid credentials password' });
       }
       const token = jwt.sign({ userId: user.id, email: user.email }, secreate, {
         expiresIn: '1h',
       });
-      res.status(200).json({ token: token, expiresIn: 3600, data: user });
+      res.status(200).json({status:true, token: token, expiresIn: 3600, data: user });
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Internal server error', error: error });
+    res.status(500).json({status:false, message: 'Internal server error', error: error });
   }
 }
 
@@ -139,22 +139,26 @@ const forgotPassword = async (req, res) => {
 
     const user = await UserModal.findOne({
       where: { email },
-      attributes: ['id', 'email', 'resetToken'],
+      attributes: ['id', 'email', 'resetToken','otpEmail','otpVerify'],
     });
 
     if (user !== null) {
       // Replace with the actual user's email
-      var resetToken = Helper.generateResetToken();
-      const resetLink = `${process.env.BASE_URL}/api/users/reset-password/${resetToken}`; // Replace with your actual reset password link
+   //   var resetToken = Helper.generateResetToken();
+
+      const randomOTP = Helper.generateOTP();
+
+     // const resetLink = `${process.env.BASE_URL}/api/users/reset-password/${resetToken}`; // Replace with your actual reset password link
       const data = {
         subject: "Forgot password",
-        html: `<p>Click the following link to reset your password: <a href="${resetLink}">${resetLink}</a></p>`,
+      //  html: `<p>Click the following link to reset your password: <a href="${resetLink}">${resetLink}</a></p>`,
+        html: `<h3>OTP IS :${randomOTP}</h3>`
       };
 
       // Update only the resetToken attribute using save method
-      user.resetToken = resetToken;
-      const expirationTimestamp = Date.now() + 300000; // 5 minit in milliseconds
-     user.resetTokenExpiration= new Date(expirationTimestamp),
+      user.otpEmail = randomOTP;
+     // const expirationTimestamp = Date.now() + 300000; // 5 minit in milliseconds
+   //  user.resetTokenExpiration= new Date(expirationTimestamp),
       await user.save();
 
       const mailResponse = Helper.sendResetEmail(user.email, 'reset-password', data);
@@ -162,7 +166,7 @@ const forgotPassword = async (req, res) => {
         res.status(200).json({
           status: true,
 
-          message: "Please check your email for the forgot password reset link",
+          message: "Please check your email for the forgot password OTP",
         });
       } else {
         res.status(401).json({

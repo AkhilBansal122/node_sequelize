@@ -48,6 +48,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+     otpEmail: {
+        allowNull:true,
+        type: DataTypes.INTEGER(6),
+      },
+      otpVerify: {
+        type: DataTypes.BOOLEAN,
+        defaultValue:false
+      },
     resetTokenExpiration: {
       type: DataTypes.DATE,
       defaultValue: null,

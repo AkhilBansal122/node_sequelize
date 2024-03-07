@@ -40,6 +40,14 @@ module.exports = {
       resetTokenExpiration: {
         type: Sequelize.DATE,
       },
+      otpEmail: {
+        allowNull:true,
+        type: Sequelize.INTEGER(6),
+      },
+      otpVerify: {
+        type: Sequelize.BOOLEAN,
+        defaultValue:false
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
