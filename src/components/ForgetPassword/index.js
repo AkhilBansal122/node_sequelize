@@ -28,10 +28,9 @@ const ForgotPassword = () => {
             });
 
             var result = response.data;
-            console.log(result.status);
-
-            if (result.status) {
-                window.location.href = "/verify-otp";
+            if(result.status== true){
+                localStorage.setItem('user_id',result.data.user_id);
+                window.location.href="/verify-otp";
             } else {
 
             }

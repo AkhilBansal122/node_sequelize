@@ -4,19 +4,13 @@ import { LOGO_URL, ADMIN_ResetPassword_URL } from "../../common";
 
 const ResetPassword = () => {
     const [state, setState] = useState({
-        email: '',
         password: '',
         confirmPassword: '',
         isResetSuccessful: false,
         error: null,
     });
 
-    const handleEmailChange = (event) => {
-        setState({
-            ...state,
-            email: event.target.value,
-        });
-    };
+    
 
     const handlePasswordChange = (event) => {
         setState({
@@ -35,17 +29,26 @@ const ResetPassword = () => {
     const handleResetPassword = async (event) => {
         event.preventDefault();
 
+        // Password validation
+        if (state.password !== state.confirmPassword) {
+            setState({
+                ...state,
+                error: 'Password and confirm password do not match.',
+            });
+            return;
+        }
+
         try {
-            // Add validation for password matching here if needed
             const response = await axios.post(ADMIN_ResetPassword_URL, {
-                email: state.email,
-                password: state.password,
+                user_id :localStorage.getItem("user_id"),
+                newPassword: state.password,
             });
 
             var result = response.data;
-            console.log(result.status);
 
             if (result.status) {
+                localStorage.clear();
+                window.location.href = "/";
                 setState({
                     ...state,
                     isResetSuccessful: true,
@@ -57,7 +60,6 @@ const ResetPassword = () => {
                 });
             }
         } catch (error) {
-            console.log(error);
             setState({
                 ...state,
                 error: 'An error occurred while resetting the password.',
@@ -83,18 +85,7 @@ const ResetPassword = () => {
                                                 <p className="text-success">Password reset successful!</p>
                                             ) : (
                                                 <form className="form-horizontal m-t-20" action="#" method="POST">
-                                                    <div className="form-group row">
-                                                        <div className="col-12">
-                                                            <input
-                                                                className="form-control"
-                                                                name="email"
-                                                                onChange={handleEmailChange}
-                                                                value={state.email}
-                                                                type="email"
-                                                                placeholder="Email"
-                                                            />
-                                                        </div>
-                                                    </div>
+                                                    
                                                     <div className="form-group row">
                                                         <div className="col-12">
                                                             <input
