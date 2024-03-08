@@ -14,7 +14,6 @@ const { logout, authenticateToken } = require("../middleware/authenticateToken")
 const nodemailer = require('nodemailer');
 const Helper = require("../helper");
 
-
 const register = async (req, res) => {
   try {
     const { firstName, lastName, role, username, email, password } = await userValidation.registrationSchema.validateAsync(req.body);
@@ -165,7 +164,7 @@ const forgotPassword = async (req, res) => {
       if (mailResponse) {
         res.status(200).json({
           status: true,
-
+          data:{user_id:user.id},
           message: "Please check your email for the forgot password OTP",
         });
       } else {
@@ -195,51 +194,23 @@ var logouts = async (req, res) => {
   logout(req, res);
 }
 
+
 const resetPassword = async (req, res) => {
-    const { token } = req.params;
-    try{
-        const user = await UserModal.findOne({
-      where: {
-        resetToken:token,
-      },
-    });
-
-  // Check if the user exists and if the reset token expiration time is set
-    if (!user || !user.resetTokenExpiration) {
-      return res.status(400).json({ success: false, error: 'Invalid reset token.' });
-    }
-
-    // Convert the stored timestamp to the same format as current time
-    const storedExpiration = new Date(user.resetTokenExpiration).toISOString();
-    const currentTimestamp = new Date().toISOString();
-
-    // Compare the current time with the reset token expiration time
-    if (storedExpiration > currentTimestamp) {
-        return res.status(400).json({ success: false, error: 'Reset token has expired.' });
-    }
-    return res.status(200).json({ success: true, message: 'Reset password form shown.' });
-      } catch (error) {
-    return res.status(500).json({ success: false, error: 'Internal Server Error' });
-  }
-}
-
-const resetPasswordUpdate = async (req, res) => {
   
   try {
-    const { resetToken, newPassword } = await userValidation.resetPasswordSchema.validateAsync(req.body);
+    const { user_id, newPassword } = await userValidation.resetPasswordSchema.validateAsync(req.body);
 
     // Validate reset token
     const user = await UserModal.findOne({
       where: {
-        resetToken,
-        
+        id:user_id,
       },
     });
 
     if (!user) {
       return res.status(401).json({
         status: false,
-        message: 'Invalid or expired reset token.',
+        message: 'Invalid or expired otp.',
       });
     }
 
@@ -257,19 +228,33 @@ const resetPasswordUpdate = async (req, res) => {
         where: { id: user.id },
       }
     );
-
-    res.status(200).json({
-      status: true,
-      message: 'Password reset successfully.',
-    });
+   return Helper.success(res,[],'Password reset successfully.');
   } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      status: false,
-      error:error,
-      message: 'Internal server error.',
-    });
+   return Helper.fail(res,{error:error},'error');
   }
+}
+
+const verifyOtp = async (req,res)=>{
+  const {user_id,otp} = req.body;
+   await UserModal.findOne({
+      where:{
+        id:user_id
+      }
+    }).then((result)=>{
+      if(result.otpEmail!=otp){
+       return Helper.fail(res,[],"Invalid otp Please again forgot password");
+      }
+      else if(result.otpEmail == otp){
+        result.otpEmail= null;
+        result.otpVerify = true;
+         result.save();
+    return  Helper.success(res,[],"Otp verify successfully"); 
+      }
+    }).catch((err)=>{
+      let data = {err:err};
+     return Helper.fail(res,data,"Something wan't wrong");
+    });
+  
 }
 module.exports = {
   register,
@@ -279,5 +264,5 @@ module.exports = {
   changePassword,
   logouts, forgotPassword,
   resetPassword,
-  resetPasswordUpdate
+  verifyOtp
 }

@@ -12,8 +12,8 @@ router.post('/update-profile',[authenticateToken,userController.updateProfile]);
 router.post('/change-password',[authenticateToken,userController.changePassword]);
 router.post('/logout',[authenticateToken],userController.logouts);
 router.post('/forgot-password',userController.forgotPassword);
+router.post('/verify-otp',userController.verifyOtp);
 
-router.get('/reset-password/:token', userController.resetPassword);
-//router.post('/reset-password-update', userController.resetPasswordUpdate);
-router.post('/reset-password-update',userController.resetPasswordUpdate);
+router.post('/reset-password', userController.resetPassword);
+
 module.exports =router;

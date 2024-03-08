@@ -26,7 +26,7 @@ const forgotPasswordSchema = Joi.object({
   email: Joi.string().email().required()
 });
 const resetPasswordSchema = Joi.object({
-  resetToken: Joi.string().required(),
+  user_id: Joi.number().required(),
   newPassword: Joi.string().required()
 });
 module.exports={

@@ -56,11 +56,28 @@ const hashPasswordConvert = async (password) => {
   return otp.toString();
 }
 
+function  success (res,data,message){
+   return  res.json({
+        status:true,
+        data:data,
+        message:message
+    });
+}
+
+function fail(res,data,message){
+   return  res.json({
+        status:false,
+        data:data,
+        message:message
+    });
+}
 
 
 module.exports = {
     generateResetToken,
     sendResetEmail,
     hashPasswordConvert,
-    generateOTP
+    generateOTP,
+    fail,
+    success
 }
