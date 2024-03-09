@@ -29,25 +29,26 @@ const Login = () => {
 
     const handleLogin = async (event) => {
         event.preventDefault();
-    
+      //  console.log("Sdda",state);    
         try {
             const response = await axios.post(ADMIN_LOGIN_URL, {
                 email: state.email,
                 password: state.password
             });
-    
+
             var result = response.data;
-            console.log(result.status);
-    
+            console.log(result);
+           
             if (result.status) {
-                var token = result.token;
-                window.location.href = "/home";
-              
+                var token = result.data.token;
+                localStorage.setItem("token",token);
+                window.location.href = "/dashboard";
             } else {
-              
+              alert(result.message);
             }
         } catch (error) {
-            console.log(error);
+        
+        //    console.log(error);
         }
     };
     
