@@ -3,8 +3,10 @@ import React from 'react';
 
 import { ADMIN_LOGOUT, LOGO_URL } from '../../common';
 import axios  from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const TopBar = () => {
+  const navigate  = useNavigate();
 
   const Logout = async (event) => {
     event.preventDefault();
@@ -26,12 +28,12 @@ const TopBar = () => {
         var result = response.data;
         if (result.status == true) {
           localStorage.clear();
-          window.location.href = "/";
+          navigate("/");
         }
       }
 
     } catch (error) {
-      window.location.href = "/";
+      navigate("/");
     
     }
   }

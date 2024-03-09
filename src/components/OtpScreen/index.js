@@ -1,11 +1,14 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { LOGO_URL, ADMIN_VERIFY_OTP } from "../../common";
+import { useNavigate } from 'react-router-dom';
 
 // import { ToastContainer } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
 
 const OTPScreen = () => {
+    const navigate  = useNavigate();
+
 
     const [otp, setOtp] = useState(['', '', '', '', '', '']);
     const inputRefs = useRef([]);
@@ -36,7 +39,7 @@ const OTPScreen = () => {
              //   console.log(result.status);
 
                 if (result.status) {
-                    window.location.href = "/admin/reset-password";
+                    navigate("/admin/reset-password");
 
                 } else {
                     alert(result.message);

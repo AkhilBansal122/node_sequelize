@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { LOGO_URL, ADMIN_ForgotPassword_URL } from "../../common";
-
+import { useNavigate } from 'react-router-dom';
 // import { ToastContainer } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
 
 const ForgotPassword = () => {
+    const history = useNavigate();
 
     const [state, setState] = useState({
         email: 'akhl@mailinator.com',
@@ -30,7 +31,7 @@ const ForgotPassword = () => {
             var result = response.data;
             if(result.status== true){
                 localStorage.setItem('user_id',result.data.user_id);
-                window.location.href="/admin/verify-otp";
+                history("/admin/verify-otp");
             } else {
 
             }

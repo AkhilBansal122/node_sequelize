@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { LOGO_URL, ADMIN_ResetPassword_URL } from "../../common";
-
+import { useNavigate } from 'react-router-dom';
 const ResetPassword = () => {
+    const navigate  = useNavigate();
     const [state, setState] = useState({
         password: '',
         confirmPassword: '',
@@ -48,7 +49,7 @@ const ResetPassword = () => {
 
             if (result.status) {
                 localStorage.clear();
-                window.location.href = "/";
+                navigate("/");
                 setState({
                     ...state,
                     isResetSuccessful: true,

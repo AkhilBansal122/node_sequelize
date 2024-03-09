@@ -2,10 +2,13 @@ import React from "react"
 import axios from 'axios';
 
 import { ADMIN_LOGOUT,LOGO_URL } from "../../common";
+import { useNavigate,Link  } from 'react-router-dom';
 
 const Home = () => {
 
+  const navigate  = useNavigate();
   const Logout = async (event) => {
+
     event.preventDefault();
     // Your logout logic here
     const checked = localStorage.getItem('token');
@@ -24,13 +27,13 @@ const Home = () => {
 
         var result = response.data;
         if (result.status == true) {
+          navigate("/");
           localStorage.clear();
-          window.location.href = "/";
         }
       }
 
     } catch (error) {
-      window.location.href = "/";
+      navigate("/");
     
     }
   }
@@ -44,7 +47,7 @@ const Home = () => {
         </button>
         <div className="left-side-logo d-block d-lg-none">
           <div className="text-center">
-            <a href="index.html" className="logo"><img src="/assets/images/logo-dark.png" height={20} alt="logo" /></a>
+            <Link to="index.html" className="logo"><img src="/assets/images/logo-dark.png" height={20} alt="logo" /></Link>
           </div>
         </div>
         <div className="sidebar-inner slimscrollleft">
@@ -52,119 +55,119 @@ const Home = () => {
             <ul>
               <li className="menu-title">Main</li>
               <li>
-                <a href="index.html" className="waves-effect">
+                <Link to="index.html" className="waves-effect">
                   <i className="dripicons-meter" />
                   <span> Dashboard <span className="badge badge-success badge-pill float-right">3</span></span>
-                </a>
+                </Link>
               </li>
               <li className="has_sub">
-                <a href="javascript:void(0);" className="waves-effect"><i className="dripicons-briefcase" /> <span> Elements </span> <span className="menu-arrow float-right"><i className="mdi mdi-chevron-right" /></span></a>
+                <Link href="/" className="waves-effect"><i className="dripicons-briefcase" /> <span> Elements </span> <span className="menu-arrow float-right"><i className="mdi mdi-chevron-right" /></span></Link>
                 <ul className="list-unstyled">
-                  <li><a href="ui-alerts.html">Alerts</a></li>
-                  <li><a href="ui-buttons.html">Buttons</a></li>
-                  <li><a href="ui-badge.html">Badge</a></li>
-                  <li><a href="ui-cards.html">Cards</a></li>
-                  <li><a href="ui-dropdowns.html">Dropdowns</a></li>
-                  <li><a href="ui-tabs-accordions.html">Tabs &amp; Accordions</a></li>
-                  <li><a href="ui-modals.html">Modals</a></li>
-                  <li><a href="ui-images.html">Images</a></li>
-                  <li><a href="ui-progressbars.html">Progress Bars</a></li>
-                  <li><a href="ui-navs.html">Navs</a></li>
-                  <li><a href="ui-pagination.html">Pagination</a></li>
-                  <li><a href="ui-popover-tooltips.html">Popover &amp; Tooltips</a></li>
-                  <li><a href="ui-carousel.html">Carousel</a></li>
-                  <li><a href="ui-video.html">Video</a></li>
-                  <li><a href="ui-typography.html">Typography</a></li>
-                  <li><a href="ui-grid.html">Grid</a></li>
+                  <li><Link to="ui-alerts.html">Alerts</Link></li>
+                  <li><Link to="ui-buttons.html">Buttons</Link></li>
+                  <li><Link to="ui-badge.html">Badge</Link></li>
+                  <li><Link to="ui-cards.html">Cards</Link></li>
+                  <li><Link to="ui-dropdowns.html">Dropdowns</Link></li>
+                  <li><Link to="ui-tabs-accordions.html">Tabs &amp; Accordions</Link></li>
+                  <li><Link to="ui-modals.html">Modals</Link></li>
+                  <li><Link to="ui-images.html">Images</Link></li>
+                  <li><Link to="ui-progressbars.html">Progress Bars</Link></li>
+                  <li><Link to="ui-navs.html">Navs</Link></li>
+                  <li><Link to="ui-pagination.html">Pagination</Link></li>
+                  <li><Link to="ui-popover-tooltips.html">Popover &amp; Tooltips</Link></li>
+                  <li><Link to="ui-carousel.html">Carousel</Link></li>
+                  <li><Link to="ui-video.html">Video</Link></li>
+                  <li><Link to="ui-typography.html">Typography</Link></li>
+                  <li><Link to="ui-grid.html">Grid</Link></li>
                 </ul>
               </li>
               <li className="has_sub">
-                <a href="javascript:void(0);" className="waves-effect"><i className="dripicons-broadcast" /> <span> Advanced UI </span> <span className="menu-arrow float-right"><i className="mdi mdi-chevron-right" /></span></a>
+                <Link to="/" className="waves-effect"><i className="dripicons-broadcast" /> <span> Advanced UI </span> <span className="menu-arrow float-right"><i className="mdi mdi-chevron-right" /></span></Link>
                 <ul className="list-unstyled">
-                  <li><a href="advanced-alertify.html">Alertify</a></li>
-                  <li><a href="advanced-rating.html">Rating</a></li>
-                  <li><a href="advanced-nestable.html">Nestable</a></li>
-                  <li><a href="advanced-rangeslider.html">Range Slider</a></li>
-                  <li><a href="advanced-sweet-alert.html">Sweet-Alert</a></li>
-                  <li><a href="advanced-lightbox.html">Lightbox</a></li>
+                  <li><Link to="advanced-alertify.html">Alertify</Link></li>
+                  <li><Link to="advanced-rating.html">Rating</Link></li>
+                  <li><Link to="advanced-nestable.html">Nestable</Link></li>
+                  <li><Link to="advanced-rangeslider.html">Range Slider</Link></li>
+                  <li><Link to="advanced-sweet-alert.html">Sweet-Alert</Link></li>
+                  <li><Link to="advanced-lightbox.html">Lightbox</Link></li>
                 </ul>
               </li>
               <li className="has_sub">
-                <a href="javascript:void(0);" className="waves-effect"><i className="dripicons-document" /><span> Forms </span> <span className="badge badge-warning badge-pill float-right">8</span></a>
+                <Link to="/" className="waves-effect"><i className="dripicons-document" /><span> Forms </span> <span className="badge badge-warning badge-pill float-right">8</span></Link>
                 <ul className="list-unstyled">
-                  <li><a href="form-elements.html">Form Elements</a></li>
-                  <li><a href="form-validation.html">Form Validation</a></li>
-                  <li><a href="form-advanced.html">Form Advanced</a></li>
-                  <li><a href="form-editors.html">Form Editors</a></li>
-                  <li><a href="form-uploads.html">Form File Upload</a></li>
-                  <li><a href="form-mask.html">Form Mask</a></li>
-                  <li><a href="form-summernote.html">Summernote</a></li>
-                  <li><a href="form-xeditable.html">Form Xeditable</a></li>
+                  <li><Link to="form-elements.html">Form Elements</Link></li>
+                  <li><Link to="form-validation.html">Form Validation</Link></li>
+                  <li><Link to="form-advanced.html">Form Advanced</Link></li>
+                  <li><Link to="form-editors.html">Form Editors</Link></li>
+                  <li><Link to="form-uploads.html">Form File Upload</Link></li>
+                  <li><Link to="form-mask.html">Form Mask</Link></li>
+                  <li><Link to="form-summernote.html">Summernote</Link></li>
+                  <li><Link to="form-xeditable.html">Form Xeditable</Link></li>
                 </ul>
               </li>
               <li className="has_sub">
-                <a href="javascript:void(0);" className="waves-effect"><i className="dripicons-graph-pie" /><span> Charts </span> <span className="menu-arrow float-right"><i className="mdi mdi-chevron-right" /></span></a>
+                <Link to="/" className="waves-effect"><i className="dripicons-graph-pie" /><span> Charts </span> <span className="menu-arrow float-right"><i className="mdi mdi-chevron-right" /></span></Link>
                 <ul className="list-unstyled">
-                  <li><a href="charts-morris.html">Morris Chart</a></li>
-                  <li><a href="charts-chartist.html">Chartist Chart</a></li>
-                  <li><a href="charts-chartjs.html">Chartjs Chart</a></li>
-                  <li><a href="charts-flot.html">Flot Chart</a></li>
-                  <li><a href="charts-c3.html">C3 Chart</a></li>
-                  <li><a href="charts-other.html">Jquery Knob Chart</a></li>
+                  <li><Link to="charts-morris.html">Morris Chart</Link></li>
+                  <li><Link to="charts-chartist.html">Chartist Chart</Link></li>
+                  <li><Link to="charts-chartjs.html">Chartjs Chart</Link></li>
+                  <li><Link to="charts-flot.html">Flot Chart</Link></li>
+                  <li><Link to="charts-c3.html">C3 Chart</Link></li>
+                  <li><Link to="charts-other.html">Jquery Knob Chart</Link></li>
                 </ul>
               </li>
               <li className="has_sub">
-                <a href="javascript:void(0);" className="waves-effect"><i className="dripicons-list" /><span> Tables </span> <span className="menu-arrow float-right"><i className="mdi mdi-chevron-right" /></span></a>
+                <Link to="/" className="waves-effect"><i className="dripicons-list" /><span> Tables </span> <span className="menu-arrow float-right"><i className="mdi mdi-chevron-right" /></span></Link>
                 <ul className="list-unstyled">
-                  <li><a href="tables-basic.html">Basic Tables</a></li>
-                  <li><a href="tables-datatable.html">Data Table</a></li>
-                  <li><a href="tables-responsive.html">Responsive Table</a></li>
-                  <li><a href="tables-editable.html">Editable Table</a></li>
+                  <li><Link to="tables-basic.html">Basic Tables</Link></li>
+                  <li><Link to="tables-datatable.html">Data Table</Link></li>
+                  <li><Link to="tables-responsive.html">Responsive Table</Link></li>
+                  <li><Link to="tables-editable.html">Editable Table</Link></li>
                 </ul>
               </li>
               <li className="menu-title">Extra</li>
               <li className="has_sub">
-                <a href="javascript:void(0);" className="waves-effect"><i className="dripicons-location" /><span> Maps </span> <span className="badge badge-danger badge-pill float-right">2</span></a>
+                <Link to="/" className="waves-effect"><i className="dripicons-location" /><span> Maps </span> <span className="badge badge-danger badge-pill float-right">2</span></Link>
                 <ul className="list-unstyled">
-                  <li><a href="maps-google.html"> Google Map</a></li>
-                  <li><a href="maps-vector.html"> Vector Map</a></li>
+                  <li><Link to="maps-google.html"> Google Map</Link></li>
+                  <li><Link to="maps-vector.html"> Vector Map</Link></li>
                 </ul>
               </li>
               <li className="has_sub">
-                <a href="javascript:void(0);" className="waves-effect"><i className="dripicons-brightness-max" /> <span> Icons </span> <span className="menu-arrow float-right"><i className="mdi mdi-chevron-right" /></span></a>
+                <Link to="/" className="waves-effect"><i className="dripicons-brightness-max" /> <span> Icons </span> <span className="menu-arrow float-right"><i className="mdi mdi-chevron-right" /></span></Link>
                 <ul className="list-unstyled">
-                  <li><a href="icons-material.html">Material Design</a></li>
-                  <li><a href="icons-ion.html">Ion Icons</a></li>
-                  <li><a href="icons-fontawesome.html">Font Awesome</a></li>
-                  <li><a href="icons-themify.html">Themify Icons</a></li>
-                  <li><a href="icons-dripicons.html">Dripicons</a></li>
-                  <li><a href="icons-typicons.html">Typicons Icons</a></li>
+                  <li><Link to="icons-material.html">Material Design</Link></li>
+                  <li><Link to="icons-ion.html">Ion Icons</Link></li>
+                  <li><Link to="icons-fontawesome.html">Font Awesome</Link></li>
+                  <li><Link to="icons-themify.html">Themify Icons</Link></li>
+                  <li><Link to="icons-dripicons.html">Dripicons</Link></li>
+                  <li><Link to="icons-typicons.html">Typicons Icons</Link></li>
                 </ul>
               </li>
               <li>
-                <a href="calendar.html" className="waves-effect"><i className="dripicons-calendar" /><span> Calendar </span></a>
+                <Link to="calendar.html" className="waves-effect"><i className="dripicons-calendar" /><span> Calendar </span></Link>
               </li>
               <li className="has_sub">
-                <a href="javascript:void(0);" className="waves-effect"><i className="dripicons-copy" /><span> Pages </span> <span className="menu-arrow float-right"><i className="mdi mdi-chevron-right" /></span></a>
+                <Link to="/" className="waves-effect"><i className="dripicons-copy" /><span> Pages </span> <span className="menu-arrow float-right"><i className="mdi mdi-chevron-right" /></span></Link>
                 <ul className="list-unstyled">
-                  <li><a href="pages-blank.html">Blank Page</a></li>
-                  <li><a href="pages-login.html">Login</a></li>
-                  <li><a href="pages-register.html">Register</a></li>
-                  <li><a href="pages-recoverpw.html">Recover Password</a></li>
-                  <li><a href="pages-lock-screen.html">Lock Screen</a></li>
-                  <li><a href="pages-404.html">Error 404</a></li>
-                  <li><a href="pages-500.html">Error 500</a></li>
+                  <li><Link to="pages-blank.html">Blank Page</Link></li>
+                  <li><Link to="pages-login.html">Login</Link></li>
+                  <li><Link to="pages-register.html">Register</Link></li>
+                  <li><Link to="pages-recoverpw.html">Recover Password</Link></li>
+                  <li><Link to="pages-lock-screen.html">Lock Screen</Link></li>
+                  <li><Link to="pages-404.html">Error 404</Link></li>
+                  <li><Link to="pages-500.html">Error 500</Link></li>
                 </ul>
               </li>
               <li className="has_sub">
-                <a href="javascript:void(0);" className="waves-effect"><i className="dripicons-jewel" /><span> Extras </span> <span className="menu-arrow float-right"><i className="mdi mdi-chevron-right" /></span></a>
+                <Link to="/" className="waves-effect"><i className="dripicons-jewel" /><span> Extras </span> <span className="menu-arrow float-right"><i className="mdi mdi-chevron-right" /></span></Link>
                 <ul className="list-unstyled">
-                  <li><a href="extras-pricing.html">Pricing</a></li>
-                  <li><a href="extras-invoice.html">Invoice</a></li>
-                  <li><a href="extras-timeline.html">Timeline</a></li>
-                  <li><a href="extras-faqs.html">FAQs</a></li>
-                  <li><a href="extras-maintenance.html">Maintenance</a></li>
-                  <li><a href="extras-comingsoon.html">Coming Soon</a></li>
+                  <li><Link to="extras-pricing.html">Pricing</Link></li>
+                  <li><Link to="extras-invoice.html">Invoice</Link></li>
+                  <li><Link to="extras-timeline.html">Timeline</Link></li>
+                  <li><Link to="extras-faqs.html">FAQs</Link></li>
+                  <li><Link to="extras-maintenance.html">Maintenance</Link></li>
+                  <li><Link to="extras-comingsoon.html">Coming Soon</Link></li>
                 </ul>
               </li>
             </ul>
@@ -181,7 +184,7 @@ const Home = () => {
           <div className="topbar">
             <div className="topbar-left	d-none d-lg-block">
               <div className="text-center">
-                <a href="index.html" className="logo"><img src={LOGO_URL} height={20} alt="logo" /></a>
+                <Link to="index.html" className="logo"><img src={LOGO_URL} height={20} alt="logo" /></Link>
               </div>
             </div>
             <nav className="navbar-custom">
@@ -195,10 +198,10 @@ const Home = () => {
                   </form>
                 </li>
                 <li className="list-inline-item dropdown notification-list">
-                  <a className="nav-link dropdown-toggle arrow-none waves-effect" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                  <Link className="nav-link dropdown-toggle arrow-none waves-effect" data-toggle="dropdown" to="#" role="button" aria-haspopup="false" aria-expanded="false">
                     <i className="mdi mdi-email-outline noti-icon" />
                     <span className="badge badge-danger badge-pill noti-icon-badge">5</span>
-                  </a>
+                  </Link>
                   <div className="dropdown-menu dropdown-menu-right dropdown-menu-animated dropdown-menu-lg">
                     {/* item*/}
                     <div className="dropdown-item noti-title">
@@ -207,35 +210,35 @@ const Home = () => {
                     </div>
                     <div className="slimscroll" style={{ maxHeight: 230 }}>
                       {/* item*/}
-                      <a href="javascript:void(0);" className="dropdown-item notify-item">
-                        <div className="notify-icon"><img src="assets/images/users/user-2.jpg" alt="user-img" className="img-fluid rounded-circle" /> </div>
+                      <Link to="/" className="dropdown-item notify-item">
+                        <div className="notify-icon"><img src="/assets/images/users/user-2.jpg" alt="user-img" className="img-fluid rounded-circle" /> </div>
                         <p className="notify-details"><b>Charles M. Jones</b><span className="text-muted">Dummy text of the printing and typesetting industry.</span></p>
-                      </a>
+                      </Link>
                       {/* item*/}
-                      <a href="javascript:void(0);" className="dropdown-item notify-item">
-                        <div className="notify-icon"><img src="assets/images/users/user-3.jpg" alt="user-img" className="img-fluid rounded-circle" /> </div>
+                      <Link to="/" className="dropdown-item notify-item">
+                        <div className="notify-icon"><img src="/assets/images/users/user-3.jpg" alt="user-img" className="img-fluid rounded-circle" /> </div>
                         <p className="notify-details"><b>Thomas J. Mimms</b><span className="text-muted">You have 87 unread messages</span></p>
-                      </a>
+                      </Link>
                       {/* item*/}
-                      <a href="javascript:void(0);" className="dropdown-item notify-item">
-                        <div className="notify-icon"><img src="assets/images/users/user-4.jpg" alt="user-img" className="img-fluid rounded-circle" /> </div>
+                      <Link to="/" className="dropdown-item notify-item">
+                        <div className="notify-icon"><img src="/assets/images/users/user-4.jpg" alt="user-img" className="img-fluid rounded-circle" /> </div>
                         <p className="notify-details">Luis M. Konrad<span className="text-muted">It is a long established fact that a reader will</span></p>
-                      </a>
+                      </Link>
                       {/* item*/}
-                      <a href="javascript:void(0);" className="dropdown-item notify-item">
-                        <div className="notify-icon"><img src="assets/images/users/user-5.jpg" alt="user-img" className="img-fluid rounded-circle" /> </div>
+                      <Link to="/" className="dropdown-item notify-item">
+                        <div className="notify-icon"><img src="/assets/images/users/user-5.jpg" alt="user-img" className="img-fluid rounded-circle" /> </div>
                         <p className="notify-details"><b>Kendall E. Walker</b><span className="text-muted">Dummy text of the printing and typesetting industry.</span></p>
-                      </a>
+                      </Link>
                       {/* item*/}
-                      <a href="javascript:void(0);" className="dropdown-item notify-item">
-                        <div className="notify-icon"><img src="assets/images/users/user-6.jpg" alt="user-img" className="img-fluid rounded-circle" /> </div>
+                      <Link to="/" className="dropdown-item notify-item">
+                        <div className="notify-icon"><img src="/assets/images/users/user-6.jpg" alt="user-img" className="img-fluid rounded-circle" /> </div>
                         <p className="notify-details"><b>David M. Ryan</b><span className="text-muted">You have 87 unread messages</span></p>
-                      </a>
+                      </Link>
                     </div>
                     {/* All*/}
-                    <a href="javascript:void(0);" className="dropdown-item notify-all">
+                    <Link to="/" className="dropdown-item notify-all">
                       View All
-                    </a>
+                    </Link>
                   </div>
                 </li>
                 <li className="list-inline-item dropdown notification-list">
@@ -251,35 +254,35 @@ const Home = () => {
                     </div>
                     <div className="slimscroll" style={{ maxHeight: 230 }}>
                       {/* item*/}
-                      <a href="javascript:void(0);" className="dropdown-item notify-item">
+                      <Link to="/" className="dropdown-item notify-item">
                         <div className="notify-icon bg-primary"><i className="mdi mdi-cart-outline" /></div>
                         <p className="notify-details">Your order is placed<span className="text-muted">Dummy text of the printing and typesetting industry.</span></p>
-                      </a>
+                      </Link>
                       {/* item*/}
-                      <a href="javascript:void(0);" className="dropdown-item notify-item">
+                      <Link to="/" className="dropdown-item notify-item">
                         <div className="notify-icon bg-success"><i className="mdi mdi-message" /></div>
                         <p className="notify-details">New Message received<span className="text-muted">You have 87 unread messages</span></p>
-                      </a>
+                      </Link>
                       {/* item*/}
-                      <a href="javascript:void(0);" className="dropdown-item notify-item">
+                      <Link to="/" className="dropdown-item notify-item">
                         <div className="notify-icon bg-warning"><i className="mdi mdi-martini" /></div>
                         <p className="notify-details">Your item is shipped<span className="text-muted">It is a long established fact that a reader will</span></p>
-                      </a>
+                      </Link>
                       {/* item*/}
-                      <a href="javascript:void(0);" className="dropdown-item notify-item">
+                      <Link to="/" className="dropdown-item notify-item">
                         <div className="notify-icon bg-danger"><i className="mdi mdi-message" /></div>
                         <p className="notify-details">New Message received<span className="text-muted">You have 87 unread messages</span></p>
-                      </a>
+                      </Link>
                       {/* item*/}
-                      <a href="javascript:void(0);" className="dropdown-item notify-item">
+                      <Link to="/" className="dropdown-item notify-item">
                         <div className="notify-icon bg-info"><i className="mdi mdi-martini" /></div>
                         <p className="notify-details">Your item is shipped<span className="text-muted">It is a long established fact that a reader will</span></p>
-                      </a>
+                      </Link>
                     </div>
                     {/* All*/}
-                    <a href="javascript:void(0);" className="dropdown-item notify-all">
+                    <Link to="/" className="dropdown-item notify-all">
                       View All
-                    </a>
+                    </Link>
                   </div>
                 </li>
                 <li className="list-inline-item dropdown notification-list">
@@ -289,7 +292,7 @@ const Home = () => {
                   <div className="dropdown-menu dropdown-menu-right dropdown-menu-animated profile-dropdown ">
                     <a className="dropdown-item" href="#"><i className="mdi mdi-account-circle m-r-5 text-muted" /> Profile</a>
                     <a className="dropdown-item" href="#"><span className="badge badge-success mt-1 float-right">5</span><i className="mdi mdi-settings m-r-5 text-muted" /> Settings</a>
-                    <a className="dropdown-item" href="/admin/change-password" > <i className="mdi mdi-lock-open-outline m-r-5 text-muted" /> Change Password</a>
+                    <Link className="dropdown-item" to="/admin/change-password" > <i className="mdi mdi-lock-open-outline m-r-5 text-muted" /> Change Password</Link>
 
                     <a className="dropdown-item" href="#" onClick={Logout}><i className="mdi mdi-logout m-r-5 text-muted" /> Logout</a>
                   </div>
@@ -312,8 +315,8 @@ const Home = () => {
                 <div className="col-sm-12">
                   <div className="float-right page-breadcrumb">
                     <ol className="breadcrumb">
-                      <li className="breadcrumb-item"><a href="#">Home</a></li>
-                      <li className="breadcrumb-item"><a href="#">Pages</a></li>
+                      <li className="breadcrumb-item"><Link to="#">Home</Link></li>
+                      <li className="breadcrumb-item"><Link to="#">Pages</Link></li>
                       <li className="breadcrumb-item active">Starter</li>
                     </ol>
                   </div>

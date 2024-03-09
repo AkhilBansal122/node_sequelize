@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { LOGO_URL, ADMIN_LOGIN_URL } from "../../common";
+import {  Link,useNavigate } from 'react-router-dom';
 
 // import { ToastContainer } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
-    
-const Login = () => {
 
+const Login = () => {
+    const navigate = useNavigate();
     const [state, setState] = useState({
         email: 'akhl@mailinator.com',
         password: '123456789',
@@ -37,12 +38,11 @@ const Login = () => {
             });
 
             var result = response.data;
-            console.log(result);
            
             if (result.status) {
                 var token = result.data.token;
                 localStorage.setItem("token",token);
-                window.location.href = "/admin/dashboard";
+                navigate("/admin/dashboard");
             } else {
               alert(result.message);
             }
@@ -101,10 +101,10 @@ const Login = () => {
                                             </div>
                                             <div className="form-group m-t-10 mb-0 row">
                                                 <div className="col-sm-7 m-t-20">
-                                                    <a href="/admin/forgot-password" className="text-muted"><i className="mdi mdi-lock" /> Forgot your password?</a>
+                                                    <Link to="/admin/forgot-password" className="text-muted"><i className="mdi mdi-lock" /> Forgot your password?</Link>
                                                 </div>
                                                 {/* <div className="col-sm-5 m-t-20">
-                                                    <a href="/admin/forgot-password" className="text-muted"><i className="mdi mdi-account-circle" /> Create an account</a>
+                                                    <Link to="/admin/forgot-password" className="text-muted"><i className="mdi mdi-account-circle" /> Create an account</Link>
                                                 </div> */}
                                             </div>
                                         </form>
