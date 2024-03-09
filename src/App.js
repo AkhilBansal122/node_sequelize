@@ -56,9 +56,9 @@ const App = () => {
       <Routes>
         {/* Pages accessible without authentication */}
         <Route path='/' element={<Login />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/verify-otp" element={<OTPScreen />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/admin/forgot-password" element={<ForgotPassword />} />
+        <Route path="/admin/verify-otp" element={<OTPScreen />} />
+        <Route path="/admin/reset-password" element={<ResetPassword />} />
 
         {/* Redirect to login if auth is false */}
         {auth === false ? (
@@ -68,10 +68,10 @@ const App = () => {
         {/* Pages accessible only with authentication */}
         {auth === true ? (
           <>
-            <Route path="/dashboard" element={<Home />} />
+            <Route path="/admin/dashboard" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path='/change-password' element={<ChangePassword />} />
+            <Route path='/admin/change-password' element={<ChangePassword />} />
           </>
         ) : null}
       </Routes>

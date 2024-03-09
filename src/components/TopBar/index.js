@@ -144,13 +144,13 @@ const TopBar = () => {
                 </li>
                 <li className="list-inline-item dropdown notification-list">
                   <a className="nav-link dropdown-toggle arrow-none waves-effect nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                    <img src="assets/images/users/user-1.jpg" alt="user" className="rounded-circle" />
+                    <img src="/assets/images/users/user-1.jpg" alt="user" className="rounded-circle" />
                   </a>
                   <div className="dropdown-menu dropdown-menu-right dropdown-menu-animated profile-dropdown ">
                     <a className="dropdown-item" href="#"><i className="mdi mdi-account-circle m-r-5 text-muted" /> Profile</a>
                     <a className="dropdown-item" href="#"><span className="badge badge-success mt-1 float-right">5</span><i className="mdi mdi-settings m-r-5 text-muted" /> Settings</a>
                     <a className="dropdown-item" href="#"><i className="mdi mdi-lock-open-outline m-r-5 text-muted" /> Lock screen</a>
-                    <a className="dropdown-item" href="/change-password" > <i className="mdi mdi-lock-open-outline m-r-5 text-muted" /> change Password</a>
+                    <a className="dropdown-item" href="/admin/change-password" > <i className="mdi mdi-lock-open-outline m-r-5 text-muted" /> change Password</a>
 
                     <a className="dropdown-item" href="#" onClick={Logout}><i className="mdi mdi-logout m-r-5 text-muted" /> Logout</a>
                   </div>

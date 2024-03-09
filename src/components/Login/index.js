@@ -42,7 +42,7 @@ const Login = () => {
             if (result.status) {
                 var token = result.data.token;
                 localStorage.setItem("token",token);
-                window.location.href = "/dashboard";
+                window.location.href = "/admin/dashboard";
             } else {
               alert(result.message);
             }
@@ -101,10 +101,10 @@ const Login = () => {
                                             </div>
                                             <div className="form-group m-t-10 mb-0 row">
                                                 <div className="col-sm-7 m-t-20">
-                                                    <a href="/forgot-password" className="text-muted"><i className="mdi mdi-lock" /> Forgot your password?</a>
+                                                    <a href="/admin/forgot-password" className="text-muted"><i className="mdi mdi-lock" /> Forgot your password?</a>
                                                 </div>
                                                 {/* <div className="col-sm-5 m-t-20">
-                                                    <a href="/forgot-password" className="text-muted"><i className="mdi mdi-account-circle" /> Create an account</a>
+                                                    <a href="/admin/forgot-password" className="text-muted"><i className="mdi mdi-account-circle" /> Create an account</a>
                                                 </div> */}
                                             </div>
                                         </form>

@@ -36,7 +36,7 @@ const OTPScreen = () => {
              //   console.log(result.status);
 
                 if (result.status) {
-                    window.location.href = "/reset-password";
+                    window.location.href = "/admin/reset-password";
 
                 } else {
                     alert(result.message);
