@@ -52,22 +52,24 @@ const login = async (req, res) => {
       },
     });
     if (!user) {
-      res.status(401).json({ status:false,message: 'Invalid credentials' });
+    return   Helper.fail(res,[],'Invalid credentials');
     }
     else {
       const isPasswordValid = await bcrypt.compare(password, user.password);
 
       if (!isPasswordValid) {
-        return res.status(401).json({ status:false, error: 'Invalid credentials password' });
+    return   Helper.fail(res,[],'Invalid credentials password');
+   
       }
       const token = jwt.sign({ userId: user.id, email: user.email }, secreate, {
         expiresIn: '1h',
       });
-      res.status(200).json({status:true, token: token, expiresIn: 3600, data: user });
+
+    return   Helper.success(res,{token:token},"Login Successfully");
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({status:false, message: 'Internal server error', error: error });
+        return   Helper.fail(res,[],"Internal server error");
   }
 }
 
@@ -109,26 +111,25 @@ const changePassword = async (req, res) => {
       },
     });
     if (!user) {
-      res.status(401).json({ message: 'No record found' });
+    return  Helper.fail(res,[],"No record found");
     }
     else {
       const isPasswordValid = await bcrypt.compare(currentPassword, user.password);
 
       if (!isPasswordValid) {
-        return res.status(401).json({ error: 'invalid current password' });
+       return Helper.fail(res,[],"invalid current password");
       }
       const hashedPassword = await Helper.hashPasswordConvert(mewPassword);
 
       user.password = hashedPassword;
       await user.save();
-      res.status(200).json({
-        status: true,
-        message: "password change successfully"
-      })
+      return Helper.success(res,[],"Change password Successfully");
     }
   } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: 'Internal server error', error: err });
+    const data={
+      err:err
+    }
+       return Helper.fail(res,data,"Internal server error");
   }
 }
 

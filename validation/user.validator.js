@@ -11,7 +11,7 @@ const registrationSchema = Joi.object({
 // Validation schema for user login
 const loginSchema = Joi.object({
   email: Joi.string().email().required(),
-  password: Joi.string().required(),
+  password: Joi.string().regex(/^[a-zA-Z0-9!@#$%^&*()_+{}\[\]:;<>,.?~\\-]+$/).required(),
 });
 const updateProfileSchema = Joi.object({
   id: Joi.number().required(),
@@ -19,8 +19,8 @@ const updateProfileSchema = Joi.object({
   lastName: Joi.string().alphanum().min(3).max(30).required(),
 });
 const changePasswordSchema = Joi.object({
-  currentPassword: Joi.string().alphanum().min(3).max(30).required(),
-  mewPassword: Joi.string().alphanum().min(3).max(30).required(),
+  currentPassword: Joi.string().regex(/^[a-zA-Z0-9!@#$%^&*()_+{}\[\]:;<>,.?~\\-]+$/).min(3).max(30).required(),
+  mewPassword: Joi.string().regex(/^[a-zA-Z0-9!@#$%^&*()_+{}\[\]:;<>,.?~\\-]+$/).min(3).max(30).required(),
 });
 const forgotPasswordSchema = Joi.object({
   email: Joi.string().email().required()
