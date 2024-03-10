@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import axios from 'axios';
-import { LOGO_URL, ADMIN_LOGIN_URL } from "../../common";
+import { LOGO_URL, ADMIN_LOGIN_URL,MessageAetTimeoutTime } from "../../common";
 import {  Link,useNavigate } from 'react-router-dom';
-
-// import { ToastContainer } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
-
+import {  toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const Login = () => {
     const navigate = useNavigate();
     const [state, setState] = useState({
@@ -38,16 +36,22 @@ const Login = () => {
             });
 
             var result = response.data;
-           
-            if (result.status) {
+            console.log(result.status);
+            if (result.status== true) {
                 var token = result.data.token;
                 localStorage.setItem("token",token);
-                navigate("/admin/dashboard");
+                localStorage.setItem("isLogin",true);
+                toast.success(result.message)
+                setTimeout(() => {
+                    navigate("/admin/dashboard");
+                  }, MessageAetTimeoutTime);
             } else {
-              alert(result.message);
-            }
+                toast.error(result.message)
+
+           }
         } catch (error) {
-        
+            toast.error("Something wan't wrong")
+
         //    console.log(error);
         }
     };

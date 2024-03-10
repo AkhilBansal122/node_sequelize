@@ -1,22 +1,19 @@
 // PageContent.js
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const PageContent = () => {
   return (
-    <div className="page-content-wrapper">
-      <div className="container-fluid">
-      <div className="row">
-                <div className="col-sm-12">
-                  <div className="float-right page-breadcrumb">
-                    <ol className="breadcrumb">
-                      <li className="breadcrumb-item"><a href="#">Home</a></li>
-                      <li className="breadcrumb-item"><a href="#">Pages</a></li>
-                      <li className="breadcrumb-item active">Starter</li>
-                    </ol>
-                  </div>
-                  <h5 className="page-title">Starter Page</h5>
-                </div>
-              </div>
+    <div className="row">
+      <div className="col-sm-12">
+        <div className="float-right page-breadcrumb">
+          <ol className="breadcrumb">
+            <li className="breadcrumb-item"><Link to="#">Home</Link></li>
+            <li className="breadcrumb-item"><Link to="#">Dashboard</Link></li>
+            <li className="breadcrumb-item active">Dashboard</li>
+          </ol>
+        </div>
+        <h5 className="page-title">Admin Dashboard</h5>
       </div>
     </div>
   );

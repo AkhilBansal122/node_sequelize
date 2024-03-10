@@ -1,11 +1,9 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
-import { LOGO_URL, ADMIN_VERIFY_OTP } from "../../common";
+import { LOGO_URL, ADMIN_VERIFY_OTP,MessageAetTimeoutTime } from "../../common";
 import { useNavigate } from 'react-router-dom';
-
-// import { ToastContainer } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
-
+import {  toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const OTPScreen = () => {
     const navigate  = useNavigate();
 
@@ -39,13 +37,19 @@ const OTPScreen = () => {
              //   console.log(result.status);
 
                 if (result.status) {
-                    navigate("/admin/reset-password");
+                    toast.success(result.message)
+                    setTimeout(() => {
+                        navigate("/admin/reset-password");
+                      }, MessageAetTimeoutTime);
+
 
                 } else {
-                    alert(result.message);
+                    toast.error(result.message)
+                
                 }
             } catch (error) {
-                console.log(error);
+                toast.error(error)
+                
             }
         }
     };
@@ -75,7 +79,7 @@ const OTPScreen = () => {
                                                         <input
                                                             className="form-control"
                                                             type="text"
-                                                            required={"true"}
+                                                            required={true}
                                                             maxLength={1}
                                                             value={digit}
                                                             onChange={(e) => handleChange(index, e.target.value)}

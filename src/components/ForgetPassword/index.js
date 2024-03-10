@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { LOGO_URL, ADMIN_ForgotPassword_URL } from "../../common";
+import { LOGO_URL, ADMIN_ForgotPassword_URL,MessageAetTimeoutTime } from "../../common";
 import { useNavigate } from 'react-router-dom';
-// import { ToastContainer } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
+import {  toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ForgotPassword = () => {
     const history = useNavigate();
@@ -31,12 +31,16 @@ const ForgotPassword = () => {
             var result = response.data;
             if(result.status== true){
                 localStorage.setItem('user_id',result.data.user_id);
-                history("/admin/verify-otp");
+                toast.success(result.message)
+                // Redirect after 3 seconds
+            setTimeout(() => {
+                history('/admin/verify-otp');
+              }, MessageAetTimeoutTime);
             } else {
-
+                toast.error(result.message)
             }
         } catch (error) {
-            console.log(error);
+            toast.error("something want wrong!")
         }
     };
 

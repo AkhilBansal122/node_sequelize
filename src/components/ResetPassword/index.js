@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { LOGO_URL, ADMIN_ResetPassword_URL } from "../../common";
+import { LOGO_URL, ADMIN_ResetPassword_URL,MessageAetTimeoutTime } from "../../common";
 import { useNavigate } from 'react-router-dom';
+import {  toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const ResetPassword = () => {
     const navigate  = useNavigate();
     const [state, setState] = useState({
@@ -32,10 +34,7 @@ const ResetPassword = () => {
 
         // Password validation
         if (state.password !== state.confirmPassword) {
-            setState({
-                ...state,
-                error: 'Password and confirm password do not match.',
-            });
+            toast.error("Password and confirm password do not match.");
             return;
         }
 
@@ -49,22 +48,17 @@ const ResetPassword = () => {
 
             if (result.status) {
                 localStorage.clear();
-                navigate("/");
-                setState({
-                    ...state,
-                    isResetSuccessful: true,
-                });
+                toast.success(result.message);
+                setTimeout(() => {
+                    navigate("/");
+                  }, MessageAetTimeoutTime);
+
             } else {
-                setState({
-                    ...state,
-                    error: result.message,
-                });
+                toast.error(result.message);
+              
             }
         } catch (error) {
-            setState({
-                ...state,
-                error: 'An error occurred while resetting the password.',
-            });
+            toast.error('An error occurred while resetting the password.');
         }
     };
 

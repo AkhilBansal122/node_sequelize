@@ -1,5 +1,5 @@
-// src/App.js
-import { React, useEffect, useState } from 'react';
+// App.js
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './components/Home/Home';
 import About from './components/About/About';
@@ -9,48 +9,14 @@ import ForgotPassword from './components/ForgetPassword';
 import OTPScreen from './components/OtpScreen';
 import ResetPassword from './components/ResetPassword';
 import PrivateRoute from './components/PrivateRoute';
-
-
 import ChangePassword from "./components/ChangePassword";
-
 import Sidebar from "./components/Sidebar";
 import TopBar from "./components/TopBar";
 import PageContent from "./components/PageContent";
 import Footer from "./components/Footer";
+import Layout from './Layout';
 
 const App = () => {
-
-  const [auth, setAuth] = useState(null);
-
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        if (token !== null) {
-          setAuth(true);
-        } else {
-          setAuth(false);
-        }
-      } catch (error) {
-        //   console.error("Error checking authentication:", error);
-        setAuth(false);
-      }
-    };
-    checkAuth();
-  }, []);
-
-
-
-  //   return (  <div id="wrapper">
-  //   <Sidebar />
-  //   <div className="content-page">
-  //     <TopBar />
-  //     <PageContent />
-  //     <Footer />
-  //   </div>
-  // </div>)
-
-
   return (
     <Router>
       <Routes>
@@ -60,20 +26,15 @@ const App = () => {
         <Route path="/admin/verify-otp" element={<OTPScreen />} />
         <Route path="/admin/reset-password" element={<ResetPassword />} />
 
-        {/* Redirect to login if auth is false */}
-        {auth === false ? (
-          <Route path="*" element={<Navigate to="/" />} />
-        ) : null}
-
-        {/* Pages accessible only with authentication */}
-        {auth === true ? (
-          <>
-            <Route path="/admin/dashboard" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path='/admin/change-password' element={<ChangePassword />} />
-          </>
-        ) : null}
+        {/* Private routes */}
+        <Route element={<PrivateRoute/>}>
+          <Route  path="/admin/dashboard" element={ <Layout mainComponent={<Home />} /> } />
+          <Route path="/about" element={<About />}  />
+          <Route path="/contact" element={<Contact />} />
+          <Route path='/admin/change-password' element={<ChangePassword />}  />
+        </Route>
+        {/* 404 Redirect */}
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
   );
