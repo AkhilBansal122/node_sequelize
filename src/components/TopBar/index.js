@@ -62,7 +62,7 @@ const TopBar = () => {
     <div className="topbar">
       <div className="topbar-left	d-none d-lg-block">
         <div className="text-center">
-          <Link to="index.html" className="logo"><img src={LOGO_URL} height={20} alt="logo" /></Link>
+          <Link to="#" className="logo"><img src={LOGO_URL} height={20} alt="logo" /></Link>
         </div>
       </div>
       <nav className="navbar-custom">

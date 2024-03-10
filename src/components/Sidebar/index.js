@@ -10,7 +10,7 @@ const Sidebar = () => {
       </button>
       <div className="left-side-logo d-block d-lg-none">
         <div className="text-center">
-          <Link to="index.html" className="logo"><img src="/assets/images/logo-dark.png" height={20} alt="logo" /></Link>
+          <Link to="#" className="logo"><img src="/assets/images/logo-dark.png" height={20} alt="logo" /></Link>
         </div>
       </div>
       <div className="sidebar-inner slimscrollleft">

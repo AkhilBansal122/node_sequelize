@@ -78,7 +78,7 @@ const Login = () => {
                             <div className="card">
                                 <div className="card-body">
                                     <h3 className="text-center mt-0 m-b-15">
-                                        <a href="index.html" className="logo logo-admin"><img src={LOGO_URL} height={30} alt="logo" /></a>
+                                        <a href="#" className="logo logo-admin"><img src={LOGO_URL} height={30} alt="logo" /></a>
                                     </h3>
                                     <h4 className="text-muted text-center font-18"><b>Sign In</b></h4>
                                     <div className="p-2">
