@@ -28,10 +28,10 @@ const App = () => {
 
         {/* Private routes */}
         <Route element={<PrivateRoute/>}>
-          <Route  path="/admin/dashboard" element={ <Layout mainComponent={<Home />} /> } />
+          <Route  path="/admin/dashboard" element={ <Layout pageContents={{ breadcrumbitem:"Home",breadcrumbitems:"Dashboard",breadcrumbitemActive:"Dashboard",pageTitle:"Dashboard" ,LinkTo:"/admin/dshboard"}} mainComponent={<Home />} /> } />
           <Route path="/about" element={<About />}  />
           <Route path="/contact" element={<Contact />} />
-          <Route path='/admin/change-password' element={<ChangePassword />}  />
+          <Route path='/admin/change-password' element={ <Layout pageContents={{ breadcrumbitem:"Home",breadcrumbitems:"Change Password",breadcrumbitemActive:"Change Password",pageTitle:"Change Password" ,LinkTo:"/admin/dshboard"}} mainComponent={<ChangePassword />} /> } />
         </Route>
         {/* 404 Redirect */}
         <Route path="*" element={<Navigate to="/" />} />

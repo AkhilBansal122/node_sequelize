@@ -4,6 +4,7 @@ import { LOGO_URL, ADMIN_VERIFY_OTP,MessageAetTimeoutTime } from "../../common";
 import { useNavigate } from 'react-router-dom';
 import {  toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { CustomButton } from '../CommonFields';
 const OTPScreen = () => {
     const navigate  = useNavigate();
 
@@ -78,7 +79,6 @@ const OTPScreen = () => {
                                                     <div className="col-2" key={index}>
                                                         <input
                                                             className="form-control"
-                                                            type="text"
                                                             required={true}
                                                             maxLength={1}
                                                             value={digit}
@@ -89,9 +89,14 @@ const OTPScreen = () => {
                                                 ))}
                                             </div>
                                             <div className="form-group text-center row m-t-20">
-                                                <div className="col-12">
-                                                    <button className="btn btn-primary btn-block waves-effect waves-light" onClick={handelVerifyOtp} type="submit">Verify OTP</button>
-                                                </div>
+                                         <div className="col-12">
+   
+                                            <CustomButton
+                                                label="Verify OTP"
+                                                className="btn-primary btn-block waves-effect waves-light"
+                                                onClick={handelVerifyOtp}
+                                            />
+                                            </div>
                                             </div>
                                         </form>
                                     </div>

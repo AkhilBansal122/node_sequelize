@@ -1,14 +1,17 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { LOGO_URL, ADMIN_LOGIN_URL,MessageAetTimeoutTime } from "../../common";
-import {  Link,useNavigate } from 'react-router-dom';
-import {  toast } from 'react-toastify';
+import { LOGO_URL, ADMIN_LOGIN_URL, MessageAetTimeoutTime } from "../../common";
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { PasswordField, EmailField } from '../CommonFields';
+
 const Login = () => {
     const navigate = useNavigate();
     const [state, setState] = useState({
         email: 'akhl@mailinator.com',
-        password: '123456789',
+        password: 'New@2023',
+        showPassword: false,
         isLoggedIn: false,
     });
 
@@ -25,10 +28,16 @@ const Login = () => {
         });
     };
 
+    const togglePasswordVisibility = (field) => {
+        setState({
+            ...state,
+            [field]: !state[field],
+        });
+    };
 
     const handleLogin = async (event) => {
         event.preventDefault();
-      //  console.log("Sdda",state);    
+        //  console.log("Sdda",state);    
         try {
             const response = await axios.post(ADMIN_LOGIN_URL, {
                 email: state.email,
@@ -37,25 +46,25 @@ const Login = () => {
 
             var result = response.data;
             console.log(result.status);
-            if (result.status== true) {
+            if (result.status == true) {
                 var token = result.data.token;
-                localStorage.setItem("token",token);
-                localStorage.setItem("isLogin",true);
+                localStorage.setItem("token", token);
+                localStorage.setItem("isLogin", true);
                 toast.success(result.message)
                 setTimeout(() => {
                     navigate("/admin/dashboard");
-                  }, MessageAetTimeoutTime);
+                }, MessageAetTimeoutTime);
             } else {
                 toast.error(result.message)
 
-           }
+            }
         } catch (error) {
             toast.error("Something wan't wrong")
 
-        //    console.log(error);
+            //    console.log(error);
         }
     };
-    
+
 
 
 
@@ -76,18 +85,25 @@ const Login = () => {
                                         <form className="form-horizontal m-t-20" action="#" method='POST'>
                                             <div className="form-group row">
                                                 <div className="col-12">
-                                                    <input className="form-control" name="email"
-                                                        onChange={handleEmailChange}
 
-                                                        value={state.email} type="email" placeholder="Email" />
+                                                    <EmailField
+                                                        name="email"
+                                                        onChange={handleEmailChange}
+                                                        value={state.email}
+                                                        placeholder="Email"
+                                                    />
                                                 </div>
                                             </div>
                                             <div className="form-group row">
                                                 <div className="col-12">
-                                                    <input className="form-control" name="password"
-
+                                                    <PasswordField
+                                                        name="password"
+                                                        value={state.password}
                                                         onChange={handlePasswordChange}
-                                                        value={state.password} type="password" required placeholder="Password" />
+                                                        showPassword={state.showPassword}
+                                                        onToggle={() => togglePasswordVisibility('showPassword')}
+                                                        placeholder="Enter A Password"
+                                                    />
                                                 </div>
                                             </div>
                                             <div className="form-group row">

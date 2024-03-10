@@ -1,19 +1,23 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { LOGO_URL, ADMIN_ResetPassword_URL,MessageAetTimeoutTime } from "../../common";
+import { LOGO_URL, ADMIN_ResetPassword_URL, MessageAetTimeoutTime } from "../../common";
 import { useNavigate } from 'react-router-dom';
-import {  toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { PasswordField, CustomButton } from '../CommonFields';
+
 const ResetPassword = () => {
-    const navigate  = useNavigate();
+    const navigate = useNavigate();
     const [state, setState] = useState({
         password: '',
         confirmPassword: '',
+        showPassword: false,
+        showConfirmPassword: false,
         isResetSuccessful: false,
         error: null,
     });
 
-    
+
 
     const handlePasswordChange = (event) => {
         setState({
@@ -40,7 +44,7 @@ const ResetPassword = () => {
 
         try {
             const response = await axios.post(ADMIN_ResetPassword_URL, {
-                user_id :localStorage.getItem("user_id"),
+                user_id: localStorage.getItem("user_id"),
                 newPassword: state.password,
             });
 
@@ -51,16 +55,23 @@ const ResetPassword = () => {
                 toast.success(result.message);
                 setTimeout(() => {
                     navigate("/");
-                  }, MessageAetTimeoutTime);
+                }, MessageAetTimeoutTime);
 
             } else {
                 toast.error(result.message);
-              
+
             }
         } catch (error) {
             toast.error('An error occurred while resetting the password.');
         }
     };
+    const togglePasswordVisibility = (field) => {
+        setState({
+            ...state,
+            [field]: !state[field],
+        });
+    };
+
 
     return (
         <div className="accountbg">
@@ -80,47 +91,39 @@ const ResetPassword = () => {
                                                 <p className="text-success">Password reset successful!</p>
                                             ) : (
                                                 <form className="form-horizontal m-t-20" action="#" method="POST">
-                                                    
+
                                                     <div className="form-group row">
                                                         <div className="col-12">
-                                                            <input
-                                                                className="form-control"
+                                                            <PasswordField
                                                                 name="password"
-                                                                onChange={handlePasswordChange}
                                                                 value={state.password}
-                                                                type="password"
-                                                                required
+                                                                onChange={handlePasswordChange}
+                                                                showPassword={state.showPassword}
+                                                                onToggle={() => togglePasswordVisibility('showPassword')}
                                                                 placeholder="New Password"
                                                             />
                                                         </div>
                                                     </div>
                                                     <div className="form-group row">
                                                         <div className="col-12">
-                                                            <input
-                                                                className="form-control"
+
+                                                            <PasswordField
                                                                 name="confirmPassword"
-                                                                onChange={handleConfirmPasswordChange}
                                                                 value={state.confirmPassword}
-                                                                type="password"
-                                                                required
+                                                                onChange={handleConfirmPasswordChange}
+                                                                showPassword={state.showConfirmPassword}
+                                                                onToggle={() => togglePasswordVisibility('showConfirmPassword')}
                                                                 placeholder="Confirm Password"
                                                             />
                                                         </div>
                                                     </div>
-                                                    {state.error && (
-                                                        <div className="form-group text-center row text-danger">
-                                                            <div className="col-12">{state.error}</div>
-                                                        </div>
-                                                    )}
                                                     <div className="form-group text-center row m-t-20">
                                                         <div className="col-12">
-                                                            <button
-                                                                className="btn btn-primary btn-block waves-effect waves-light"
+                                                            <CustomButton
+                                                                label="Reset Password"
                                                                 onClick={handleResetPassword}
-                                                                type="submit"
-                                                            >
-                                                                Reset Password
-                                                            </button>
+                                                                className={'btn-primary btn-block waves-effect waves-light'}
+                                                            />
                                                         </div>
                                                     </div>
                                                 </form>

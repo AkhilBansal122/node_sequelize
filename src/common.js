@@ -8,3 +8,11 @@ export const ADMIN_ResetPassword_URL = `${BASE_URL}/users/reset-password`;
 export const ADMIN_LOGOUT = `${BASE_URL}/users/logout`;
 export const ADMIN_ChangePassword_URL = `${BASE_URL}/users/change-password`;
 
+{/*===========================Admin Sidebar=========================*/}
+export const Admin_dashboard ="Dashboard";
+
+export const Admin_User_Management ="User";
+export const Admin_Caregory_Management ="Caregory ";
+export const Admin_SubCategory_Management ="Sub Caregory";
+export const ADMIN_Email_template ="Email Template";
+

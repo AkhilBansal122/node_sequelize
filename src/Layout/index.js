@@ -5,7 +5,7 @@ import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
 import PageContent from "../components/PageContent";
 
-const Layout = ({ mainComponent }) => {
+const Layout = ({ pageContents, mainComponent }) => {
     return (
         <div id="wrapper">
             {/* ========== Left Sidebar Start ========== */}
@@ -20,7 +20,7 @@ const Layout = ({ mainComponent }) => {
                     {/* Top Bar End */}
                     <div className="page-content-wrapper ">
                         <div className="container-fluid">
-                            <PageContent />
+                            <PageContent pageContents={pageContents} />
                             {mainComponent}
                         </div>{/* container fluid */}
                     </div> {/* Page content Wrapper */}
