@@ -171,7 +171,7 @@ const TopBar = () => {
               <img src="/assets/images/users/user-1.jpg" alt="user" className="rounded-circle" />
             </a>
             <div className="dropdown-menu dropdown-menu-right dropdown-menu-animated profile-dropdown ">
-              <a className="dropdown-item" href="#"><i className="mdi mdi-account-circle m-r-5 text-muted" /> Profile</a>
+              <Link className="dropdown-item" to="/admin/profile"><i className="mdi mdi-account-circle m-r-5 text-muted" /> Profile</Link>
               <a className="dropdown-item" href="#"><span className="badge badge-success mt-1 float-right">5</span><i className="mdi mdi-settings m-r-5 text-muted" /> Settings</a>
               <Link className="dropdown-item" to="/admin/change-password" > <i className="mdi mdi-lock-open-outline m-r-5 text-muted" /> Change Password</Link>
 

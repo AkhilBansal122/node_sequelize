@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './components/Home/Home';
-import About from './components/About/About';
+import Profile from './components/Profile';
 import Contact from './components/Contact/Contact';
 import Login from "./components/Login";
 import ForgotPassword from './components/ForgetPassword';
@@ -29,7 +29,7 @@ const App = () => {
         {/* Private routes */}
         <Route element={<PrivateRoute/>}>
           <Route  path="/admin/dashboard" element={ <Layout pageContents={{ breadcrumbitem:"Home",breadcrumbitems:"Dashboard",breadcrumbitemActive:"Dashboard",pageTitle:"Dashboard" ,LinkTo:"/admin/dshboard"}} mainComponent={<Home />} /> } />
-          <Route path="/about" element={<About />}  />
+          <Route path="/admin/profile" element={ <Layout pageContents={{ breadcrumbitem:"Home",breadcrumbitems:"Profile",breadcrumbitemActive:"Profile",pageTitle:"Profile" ,LinkTo:"/admin/profile"}} mainComponent={<Profile />} /> } />
           <Route path="/contact" element={<Contact />} />
           <Route path='/admin/change-password' element={ <Layout pageContents={{ breadcrumbitem:"Home",breadcrumbitems:"Change Password",breadcrumbitemActive:"Change Password",pageTitle:"Change Password" ,LinkTo:"/admin/dshboard"}} mainComponent={<ChangePassword />} /> } />
         </Route>

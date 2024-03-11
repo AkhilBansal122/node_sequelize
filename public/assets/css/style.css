@@ -1,9 +1,4 @@
-/*
-Template Name: Drixo - Bootstrap 4 Admin Dashboard
-Author: Themesdesign
-Website: www.themesdesign.in
-File: Main Css File
-*/
+
 /*
 01. General
 02. Loader
@@ -3059,3 +3054,28 @@ File: Responsive
   }
 }
 /*# sourceMappingURL=style.css.map */
+/* Sidebar.css */
+
+.sidebar-inner {
+  max-height: 100%;
+  overflow-y: auto;
+  padding-right: 10px; /* Add padding to avoid overlap with scrollbar */
+}
+
+/* Customize scrollbar appearance */
+.sidebar-inner::-webkit-scrollbar {
+  width: 8px;
+}
+
+.sidebar-inner::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+
+.sidebar-inner::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+.sidebar-inner::-webkit-scrollbar-track {
+  background-color: #eee;
+}
