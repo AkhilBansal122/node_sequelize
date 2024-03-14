@@ -21,11 +21,11 @@ const CustomerModal = db.Customer;
 const ProfileModal = db.Profile;
     router.post("/register",registerValidation,async( req,res)=>{
         try {
-        const { firstName, lastName, username, email, password,role  } = req.body;
+        const { first_name, last_name, username, email, password,role  } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = await User.create({
-            firstName,
-            lastName,
+            first_name,
+            last_name,
             username,
             email,
             password: hashedPassword,
@@ -101,8 +101,8 @@ const ProfileModal = db.Profile;
             parmanent_address:"parmanent_address",
             current_address:"sdasda",
             User:{
-                firstName:"al",
-                lastName:'sd',
+                first_name:"al",
+                last_name:'sd',
                 email:"dasdas@gmail.com",
                 username:'121212',
                 password:bcrypt.hash("12345",10)

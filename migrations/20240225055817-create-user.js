@@ -9,44 +9,63 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      firstName: {
-        type: Sequelize.STRING,
+      role: {
+        type: Sequelize.INTEGER(2),
+        comment: "Admin =>1 User =>2",
+      },
+      business_name: {
+        type: Sequelize.STRING(255),
         allowNull: false,
       },
-      lastName: {
-        type: Sequelize.STRING,
+      first_name: {
+        type: Sequelize.STRING(255),
         allowNull: false,
       },
-      username: {
-        type: Sequelize.STRING,
+      last_name: {
+        type: Sequelize.STRING(255),
         allowNull: false,
       },
       email: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(255),
         unique: true,
         allowNull: false,
       },
       password: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(255),
       },
-      role: {
-        type: Sequelize.ENUM('admin', 'user'), // Corrected ENUM definition
-        allowNull: false,
-        defaultValue: 'user',
+      mobile_no:{
+        type:Sequelize.STRING(12),
+        allowNull:false,
+      },
+      country_id:{
+        type:Sequelize.INTEGER,
+        allowNull:true
+      },
+      state_id:{
+        type:Sequelize.INTEGER,
+        allowNull:true
+      },
+      city_id:{
+        type:Sequelize.INTEGER,
+        allowNull:true
+      },
+      pincode:{
+        type:Sequelize.INTEGER,
+        allowNull:true
       },
       resetToken: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(255),
       },
       resetTokenExpiration: {
         type: Sequelize.DATE,
       },
-      otpEmail: {
-        allowNull:true,
+      otp: {
+        allowNull: true,
         type: Sequelize.INTEGER(6),
       },
       otpVerify: {
         type: Sequelize.BOOLEAN,
-        defaultValue:false
+        defaultValue: false
       },
       createdAt: {
         allowNull: false,

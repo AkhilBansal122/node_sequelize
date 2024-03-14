@@ -1,7 +1,7 @@
 	const  Joi = require('joi');
 const registrationSchema = Joi.object({
-  firstName: Joi.string().alphanum().min(3).max(30).required(),
-  lastName: Joi.string().alphanum().min(3).max(30).required(),
+  first_name: Joi.string().alphanum().min(3).max(30).required(),
+  last_name: Joi.string().alphanum().min(3).max(30).required(),
   username: Joi.string().alphanum().min(3).max(30).required(),
   email: Joi.string().email().required(),
   password: Joi.string().min(6).required(),
@@ -15,8 +15,8 @@ const loginSchema = Joi.object({
 });
 const updateProfileSchema = Joi.object({
   id: Joi.number().required(),
-  firstName: Joi.string().alphanum().min(3).max(30).required(),
-  lastName: Joi.string().alphanum().min(3).max(30).required(),
+  first_name: Joi.string().alphanum().min(3).max(30).required(),
+  last_name: Joi.string().alphanum().min(3).max(30).required(),
 });
 const changePasswordSchema = Joi.object({
   currentPassword: Joi.string().regex(/^[a-zA-Z0-9!@#$%^&*()_+{}\[\]:;<>,.?~\\-]+$/).min(3).max(30).required(),

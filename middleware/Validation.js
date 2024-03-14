@@ -3,8 +3,8 @@ const joi = require("joi");
 const registerValidation = async (req,res,next)=>{
 
     const Schema = await joi.object().keys({
-        firstName:joi.string().required(),
-        lastName:joi.string().required(),
+        first_name:joi.string().required(),
+        last_name:joi.string().required(),
         username:joi.string().required(),
         email:joi.string().required(),
         password:joi.string().required(),
@@ -25,10 +25,10 @@ const loginValidation = async (req,res,next)=>{
 
     const Schema = await joi.object().keys({
         
-        firstName:joi.string().required(),
+        first_name:joi.string().required(),
         email:joi.string().required(),
         password:joi.string().required(),
-        role: joi.when('firstName', {
+        role: joi.when('first_name', {
             is: 'text',
             then: joi.string().valid('admin', 'user').required(),
             otherwise: joi.optional(),

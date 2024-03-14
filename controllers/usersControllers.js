@@ -16,7 +16,7 @@ const Helper = require("../helper");
 
 const register = async (req, res) => {
   try {
-    const { firstName, lastName, role, username, email, password } = await userValidation.registrationSchema.validateAsync(req.body);
+    const { first_name, last_name, role, username, email, password } = await userValidation.registrationSchema.validateAsync(req.body);
 
     // Check if the email already exists
     const existingUser = await UserModal.findOne({
@@ -34,7 +34,7 @@ const register = async (req, res) => {
     const hashedPassword = await Helper.hashPasswordConvert(password);
 
     // Create the user
-    await UserModal.create({ firstName, lastName, username, email, password: hashedPassword, role });
+    await UserModal.create({ first_name, last_name, username, email, password: hashedPassword, role });
 
     res.json({ status: true, message: "Record Added Successfully" });
   } catch (error) {
@@ -83,12 +83,12 @@ const profile = async (req, res) => {
 
 const updateProfile = async (req, res) => {
   try {
-    const { id, firstName, lastName, } = await userValidation.updateProfileSchema.validateAsync(req.body);
+    const { id, first_name, last_name, } = await userValidation.updateProfileSchema.validateAsync(req.body);
 
     checkedUser = await UserModal.findByPk(id);
     if (checkedUser) {
-      checkedUser.firstName = firstName;
-      checkedUser.loginSchema = lastName;
+      checkedUser.first_name = first_name;
+      checkedUser.loginSchema = last_name;
       await checkedUser.save();
       res.json({ status: true, message: 'Profile updated successfully', data: checkedUser });
     }
@@ -139,7 +139,7 @@ const forgotPassword = async (req, res) => {
 
     const user = await UserModal.findOne({
       where: { email },
-      attributes: ['id', 'email', 'resetToken','otpEmail','otpVerify'],
+      attributes: ['id', 'email', 'resetToken','otp','otpVerify'],
     });
 
     if (user !== null) {
@@ -156,7 +156,7 @@ const forgotPassword = async (req, res) => {
       };
 
       // Update only the resetToken attribute using save method
-      user.otpEmail = randomOTP;
+      user.otp = randomOTP;
      // const expirationTimestamp = Date.now() + 300000; // 5 minit in milliseconds
    //  user.resetTokenExpiration= new Date(expirationTimestamp),
       await user.save();
@@ -242,11 +242,11 @@ const verifyOtp = async (req,res)=>{
         id:user_id
       }
     }).then((result)=>{
-      if(result.otpEmail!=otp){
+      if(result.otp!=otp){
        return Helper.fail(res,[],"Invalid otp Please again forgot password");
       }
-      else if(result.otpEmail == otp){
-        result.otpEmail= null;
+      else if(result.otp == otp){
+        result.otp= null;
         result.otpVerify = true;
          result.save();
     return  Helper.success(res,[],"Otp verify successfully"); 

@@ -18,15 +18,15 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true,
     },
-    firstName: {
+    business_name:{
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    first_name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    lastName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    username: {
+    last_name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -36,10 +36,12 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
     },
     role: {
-      type: DataTypes.ENUM('admin', 'user'),
-      allowNull: false,
-      defaultValue: 'user',
+        type: DataTypes.INTEGER, 
     },
+    country_id:DataTypes.INTEGER,
+    state_id:DataTypes.INTEGER,
+    city_id:DataTypes.INTEGER,
+    pincode:DataTypes.INTEGER,
     resetToken: {
       type: DataTypes.STRING,
       allowNull: true,
@@ -48,7 +50,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-     otpEmail: {
+    mobile_no_1:DataTypes.STRING,
+    otp: {
         allowNull:true,
         type: DataTypes.INTEGER(6),
       },
