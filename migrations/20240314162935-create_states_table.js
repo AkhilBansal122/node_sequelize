@@ -1,5 +1,4 @@
 'use strict';
-
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('states', {
@@ -9,24 +8,20 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      countryId: {
+      country_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'countries',
+          model: 'Countries',
           key: 'id'
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        }
+      },
+      name: {
+        type: Sequelize.STRING(255)
       },
       status: {
-        type: Sequelize.ENUM('active', 'inactive'),
-        defaultValue: 'active',
-        allowNull: false
+        type: Sequelize.INTEGER,
+        defaultValue: 1 // 1 for active, 2 for inactive
       },
       createdAt: {
         allowNull: false,
@@ -37,8 +32,11 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
-  },
 
+    // Adding index to the name column
+    await queryInterface.addIndex('states', ['country_id']);
+    await queryInterface.addIndex('states', ['name']);
+  },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('states');
   }
