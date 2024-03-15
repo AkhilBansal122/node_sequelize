@@ -11,6 +11,9 @@ module.exports = {
       name: {
         type: Sequelize.STRING(100)
       },
+      short_name:{
+        type:Sequelize.STRING(50)
+      },
       country_code: {
         type: Sequelize.STRING(2)
       },
@@ -30,6 +33,7 @@ module.exports = {
 
     // Adding index to the name column
     await queryInterface.addIndex('countries', ['name']);
+    await queryInterface.addIndex('countries', ['short_name']);
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('countries');
