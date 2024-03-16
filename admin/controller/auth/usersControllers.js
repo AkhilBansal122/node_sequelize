@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const dotenv = require('dotenv');
 const db = require("../../../models");
 const Sequelize = require('sequelize');
-const AdminMoal = db.Admin;
+const AdminModal = db.Admin;
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
 // Validation schema for user registration
@@ -19,7 +19,7 @@ module.exports={
   login : async (req, res) => {
   try {
     const { email, password } = await userValidation.loginSchema.validateAsync(req.body);
-    const user = await AdminMoal.findOne({
+    const user = await AdminModal.findOne({
       where: {
         email,
       },
@@ -55,7 +55,7 @@ module.exports={
     try {
       const { id, first_name, last_name, } = await userValidation.updateProfileSchema.validateAsync(req.body);
   
-      checkedUser = await AdminMoal.findByPk(id);
+      checkedUser = await AdminModal.findByPk(id);
       if (checkedUser) {
         checkedUser.first_name = first_name;
         checkedUser.loginSchema = last_name;
@@ -74,7 +74,7 @@ module.exports={
     try {
       const {  currentPassword, mewPassword } = await userValidation.changePasswordSchema.validateAsync(req.body);
    
-      const user = await AdminMoal.findOne({
+      const user = await AdminModal.findOne({
         where: {
           id:req.user.userId,
         },
@@ -105,7 +105,7 @@ module.exports={
     try {
       const { email } = await userValidation.forgotPasswordSchema.validateAsync(req.body);
   
-      const user = await AdminMoal.findOne({
+      const user = await AdminModal.findOne({
         where: { email },
         attributes: ['id', 'email', 'resetToken','otp','otpVerify'],
       });
@@ -133,7 +133,7 @@ module.exports={
         if (mailResponse) {
           return res.status(200).send({
             status: true,
-            data:{user_id:user.id},
+            data:{email:email},
             message: "Please check your email for the forgot password OTP",
           });
         } else {
@@ -161,49 +161,14 @@ module.exports={
   logouts : async (req, res) => {
     logout(req, res);
   },
-  resetPassword : async (req, res) => {
+
   
-    try {
-      const { user_id, newPassword } = await userValidation.resetPasswordSchema.validateAsync(req.body);
-  
-      // Validate reset token
-      const user = await AdminMoal.findOne({
-        where: {
-          id:user_id,
-        },
-      });
-  
-      if (!user) {
-        return res.status(401).send({
-          status: false,
-          message: 'Invalid or expired otp.',
-        });
-      }
-  
-      // Hash the new password
-      const hashedPassword = await Helper.hashPasswordConvert(newPassword);
-    //  console.log(hashedPassword);
-      // Update user's password and reset token
-      await AdminMoal.update(
-        {
-          password: hashedPassword,
-          resetToken: null,
-          resetTokenExpiration:null
-        },
-        {
-          where: { id: user.id },
-        }
-      );
-     return res.status(200).status({status:true,message:'Password reset successfully.'});
-    } catch (error) {
-     return res.status(400).status({status:true,message:'Internal error'});
-    }
-  },
+
   verifyOtp : async (req,res)=>{
-    const {user_id,otp} = req.body;
-     await AdminMoal.findOne({
+    const {email,otp} = req.body;
+     await AdminModal.findOne({
         where:{
-          id:user_id
+          email:email
         }
       }).then((result)=>{
         if(result.otp!=otp){
@@ -220,5 +185,38 @@ module.exports={
         return res.status(400).send({status:false,message:"Something wan't wrong"});
       });
     
+  },
+  resetPassword : async (req,res)=>{
+    try{
+      const { email, newPassword } = await userValidation.resetPasswordSchema.validateAsync(req.body);
+      const user = await AdminModal.findOne({
+        where: {
+          email:email,
+        },
+      });
+
+    if (!user) {
+        return res.status(401).send({
+          status: false,
+          message: 'Invalid email.',
+        });
+      }
+      const hashedPassword = await Helper.hashPasswordConvert(newPassword);
+
+      await AdminModal.update(
+      {
+          password: hashedPassword,
+          resetToken: null,
+          resetTokenExpiration:null
+      },
+      {
+        where: { id: user.id },
+        }
+      );
+     return res.status(200).send({status:true,message:'Password reset successfully.'});
+    }
+    catch (error) {
+     return res.status(400).send({status:true,message:'Internal error'});
+    }
   }
 }

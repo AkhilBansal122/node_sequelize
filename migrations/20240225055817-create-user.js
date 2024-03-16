@@ -53,9 +53,8 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         defaultValue: false
       },
-
       resetToken: {
-        type: Sequelize.STRING(255),
+        type: Sequelize.STRING(50),
         allowNull: true
       },
       resetTokenExpiration: {

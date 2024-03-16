@@ -44,6 +44,10 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         defaultValue: false
       },
+      resetToken: {
+        type: Sequelize.STRING(50),
+        allowNull: true
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -53,8 +57,8 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
-    await queryInterface.addIndex('admins', ['email']);
-    await queryInterface.addIndex('admins', ['vendor_id']);
+//    await queryInterface.addIndex('admins', ['email']);
+  //  await queryInterface.addIndex('admins', ['vendor_id']);
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('admins');

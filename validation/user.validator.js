@@ -19,7 +19,7 @@ module.exports = {
     email: Joi.string().email().required()
   }),
   resetPasswordSchema: Joi.object({
-    user_id: Joi.number().required(),
+    email: Joi.string().email().required(),
     newPassword: Joi.string().required()
   })
 }

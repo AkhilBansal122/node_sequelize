@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     image:DataTypes.STRING,
     otp:DataTypes.INTEGER,
     otpVerify:DataTypes.BOOLEAN,
+    resetToken:DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Admin',
