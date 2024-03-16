@@ -11,10 +11,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // Define association with Category model
-      Brand.belongsTo(models.Category, {
-        foreignKey: 'category_id',
-        as: 'category'
-      });
+      // Brand.belongsTo(models.Category, {
+      //   foreignKey: 'category_id',
+      //   as: 'category'
+      // });
       
       // Define association with Vendor model
       Brand.belongsTo(models.Vendor, {
