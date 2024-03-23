@@ -10,7 +10,8 @@ module.exports = (sequelize, DataTypes) => {
   }
   State.init({
     country_id: DataTypes.INTEGER,
-    name: DataTypes.STRING(255),
+    name: DataTypes.STRING,
+    state_code: DataTypes.STRING,
     status: DataTypes.INTEGER
   }, {
     sequelize,

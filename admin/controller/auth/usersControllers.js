@@ -16,6 +16,7 @@ const Helper = require("../../../helper");
 
 module.exports={
 
+
   login : async (req, res) => {
   try {
     const { email, password } = await userValidation.loginSchema.validateAsync(req.body);
@@ -37,11 +38,19 @@ module.exports={
         expiresIn: '5d',
       });
 
-    return   res.status(200).send({status:true,access_token:token,message:'Login Successfully'});
+      const data={
+        id:user.id,
+        email :user.email,
+        image:Helper.imagePath(user.image),
+        name:user.name,
+        mobile:user.mobile,
+        type:user.type
+      }
+    return   res.status(200).send({status:true,access_token:token,data:data,message:'Login Successfully'});
     }
   } catch (error) {
     console.error(error);
-        return   res.status(400).send({status:true,data:[],message:'Internal server error'});
+        return   res.status(400).send({status:false,data:[],message:'Internal server error'});
       }
   },
   profile : async (req, res) => {
@@ -52,27 +61,46 @@ module.exports={
     })
   },
   updateProfile : async (req, res) => {
-    try {
-      const { id, first_name, last_name, } = await userValidation.updateProfileSchema.validateAsync(req.body);
-  
-      checkedUser = await AdminModal.findByPk(id);
-      if (checkedUser) {
-        checkedUser.first_name = first_name;
-        checkedUser.loginSchema = last_name;
-        await checkedUser.save();
-        res.json({ status: true, message: 'Profile updated successfully', data: checkedUser });
-      }
-      else {
-        res.status(404).json({ status: false, message: 'User not found' });
-      }
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ status: false, message: 'Internal server error', error: error });
+  try {
+
+    const { id, name, email, mobile } = await userValidation.updateProfileSchema.validateAsync(req.body);
+    let image = req.file ? req.file.path : null; // Assuming you're using multer or similar middleware for file uploads
+
+    // Find user by userId, assuming userId is available in req.body
+    let checkedUser = await AdminModal.findByPk(req.user.userId);
+
+    if (!checkedUser) {
+      return res.status(404).json({ status: false, message: 'User not found' });
     }
-  },
+    // Update user data if found
+    checkedUser.name = name;
+    checkedUser.email = email;
+    checkedUser.mobile = mobile;
+    if (image) {
+      checkedUser.image = image;
+    }
+    await checkedUser.save();
+
+    // Prepare response data
+    const data = {
+      id: checkedUser.id,
+      email: checkedUser.email,
+      image: checkedUser.image,
+      name: checkedUser.name,
+      mobile: checkedUser.mobile,
+      type: checkedUser.type
+    };
+
+   return res.status(200).send({ status: true, message: 'Profile updated successfully', data: data });
+  } catch (error) {
+    console.error(error);
+   return res.status(500).send({ status: false, message: 'Internal server error', error: error });
+  }
+},
+
   changePassword : async (req, res) => {
     try {
-      const {  currentPassword, mewPassword } = await userValidation.changePasswordSchema.validateAsync(req.body);
+      const {  currentPassword, newPassword } = await userValidation.changePasswordSchema.validateAsync(req.body);
    
       const user = await AdminModal.findOne({
         where: {
@@ -88,7 +116,7 @@ module.exports={
         if (!isPasswordValid) {
          return   res.status(400).send({status:false,data:[],message:'invalid current password'});
         }
-        const hashedPassword = await Helper.hashPasswordConvert(mewPassword);
+        const hashedPassword = await Helper.hashPasswordConvert(newPassword);
   
         user.password = hashedPassword;
         await user.save();

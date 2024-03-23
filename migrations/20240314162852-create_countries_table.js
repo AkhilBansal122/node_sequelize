@@ -15,7 +15,7 @@ module.exports = {
         type:Sequelize.STRING(50)
       },
       country_code: {
-        type: Sequelize.STRING(2)
+        type: Sequelize.STRING(10)
       },
       status: {
         type: Sequelize.INTEGER,

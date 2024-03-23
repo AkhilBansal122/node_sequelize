@@ -71,7 +71,14 @@ function fail(res,data,message){
         message:message
     });
 }
-
+function imagePath (filePath){
+  
+    // Normalize the file path to ensure it works across different operating systems
+    const normalizedFilePath = filePath.replace(/\\/g, '/'); // Replacing backslashes with forward slashes for URL compatibility
+    
+    // Combine the base URL with the file path
+    return  completeUrl = process.env.BASE_URL+process.env.PORT+ + normalizedFilePath;
+}
 
 module.exports = {
     generateResetToken,
@@ -79,5 +86,6 @@ module.exports = {
     hashPasswordConvert,
     generateOTP,
     fail,
-    success
+    success,
+    imagePath
 }

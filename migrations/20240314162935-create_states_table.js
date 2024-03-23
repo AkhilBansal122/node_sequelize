@@ -19,6 +19,9 @@ module.exports = {
       name: {
         type: Sequelize.STRING(255)
       },
+      state_code: {
+        type: Sequelize.STRING(20)
+      },
       status: {
         type: Sequelize.INTEGER,
         defaultValue: 1 // 1 for active, 2 for inactive

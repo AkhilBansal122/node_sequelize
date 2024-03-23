@@ -15,6 +15,8 @@ const Model = require('../models');
  
 const db = require("../models");
 
+
+
 const User = db.User;
 const Contact = db.Contact;
 const CustomerModal = db.Customer;
@@ -67,7 +69,7 @@ const ProfileModal = db.Profile;
         });
   
     
-        res.status(200).json({ token, expiresIn: 3600, userId: user.id });    
+        res.status(200).json({ token, expiresIn: 3600, userId: user.id,data:user });    
         } catch (error) {
             errormsg="";
             if (error.name === 'SequelizeUniqueConstraintError') {
