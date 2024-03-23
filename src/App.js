@@ -1,43 +1,63 @@
-// App.js
-import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Home from './components/Home/Home';
-import Profile from './components/Profile';
-import Contact from './components/Contact/Contact';
-import Login from "./components/Login";
-import ForgotPassword from './components/ForgetPassword';
-import OTPScreen from './components/OtpScreen';
-import ResetPassword from './components/ResetPassword';
-import PrivateRoute from './components/PrivateRoute';
-import ChangePassword from "./components/ChangePassword";
-import Sidebar from "./components/Sidebar";
-import TopBar from "./components/TopBar";
-import PageContent from "./components/PageContent";
-import Footer from "./components/Footer";
-import Layout from './Layout';
+import React, { Suspense, useEffect } from 'react'
+import { HashRouter, Route, Routes, BrowserRouter } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
+import { CSpinner, useColorModes } from '@coreui/react'
+import './scss/style.scss'
+
+// Pages
+
+import ForgotPassword from './views/pages/forgotPassword'
+import Login from './views/pages/login/Login'
+import Page404 from './views/pages/page404/Page404'
+import Page500 from './views/pages/page500/Page500'
+import DefaultLayout from './layout/DefaultLayout'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import VerifyOTP from './views/pages/verifyOtp'
+import ResetPassword from './views/pages/resetPassword'
+import ChangePassword from './views/pages/changePassword'
 const App = () => {
+  const { isColorModeSet, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
+  const storedTheme = useSelector((state) => state.theme)
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.href.split('?')[1])
+    const theme = urlParams.get('theme') && urlParams.get('theme').match(/^[A-Za-z0-9\s]+/)[0]
+    if (theme) {
+      setColorMode(theme)
+    }
+
+    if (isColorModeSet()) {
+      return
+    }
+
+    setColorMode(storedTheme)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
-    <Router>
-      <Routes>
-        {/* Pages accessible without authentication */}
-        <Route path='/' element={<Login />} />
-        <Route path="/admin/forgot-password" element={<ForgotPassword />} />
-        <Route path="/admin/verify-otp" element={<OTPScreen />} />
-        <Route path="/admin/reset-password" element={<ResetPassword />} />
+    <BrowserRouter>
+      <ToastContainer />
 
-        {/* Private routes */}
-        <Route element={<PrivateRoute/>}>
-          <Route  path="/admin/dashboard" element={ <Layout pageContents={{ breadcrumbitem:"Home",breadcrumbitems:"Dashboard",breadcrumbitemActive:"Dashboard",pageTitle:"Dashboard" ,LinkTo:"/admin/dshboard"}} mainComponent={<Home />} /> } />
-          <Route path="/admin/profile" element={ <Layout pageContents={{ breadcrumbitem:"Home",breadcrumbitems:"Profile",breadcrumbitemActive:"Profile",pageTitle:"Profile" ,LinkTo:"/admin/profile"}} mainComponent={<Profile />} /> } />
-          <Route path="/contact" element={<Contact />} />
-          <Route path='/admin/change-password' element={ <Layout pageContents={{ breadcrumbitem:"Home",breadcrumbitems:"Change Password",breadcrumbitemActive:"Change Password",pageTitle:"Change Password" ,LinkTo:"/admin/dshboard"}} mainComponent={<ChangePassword />} /> } />
-        </Route>
-        {/* 404 Redirect */}
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
-    </Router>
-  );
-};
+      <Suspense
+        fallback={
+          <div className="pt-3 text-center">
+            <CSpinner color="primary" variant="grow" />
+          </div>
+        }
+      >
+        <Routes>
+          <Route exact path="/" name="Login Page" element={<Login />} />
+          <Route exact path="/forgot-password" name="Login Page" element={<ForgotPassword />} />
+          <Route exact path='/Verify-otp' name="VerifyOTP" element={<VerifyOTP />} />
+          <Route exact path="/reset-password" element={<ResetPassword />} />
+          <Route exact path="/404" name="Page 404" element={<Page404 />} />
+          <Route exact path="/500" name="Page 500" element={<Page500 />} />
+          <Route path="*" name="Home" element={<DefaultLayout />} />
+        </Routes>
+      </Suspense>
+    </BrowserRouter>
+  )
+}
 
-export default App;
+export default App

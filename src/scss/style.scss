@@ -1,0 +1,28 @@
+// If you want to override variables do it here
+@import "variables";
+
+// Import styles
+@import "@coreui/coreui/scss/coreui";
+
+// Vendors
+@import "vendors/simplebar";
+
+// Custom styles for this theme
+@import "theme";
+
+// If you want to add custom CSS you can put it here
+@import "custom";
+
+.preview-box {
+  width: 150px; // Adjust width as needed
+  height: 150px; // Adjust height as needed
+  border-radius: 50%; // This creates a circular shape
+  overflow: hidden; // This hides any overflow outside the circular shape
+  margin-top: 10px;
+
+  img {
+    width: 100%; // Ensures the image fills the circular container
+    height: 100%; // Ensures the image fills the circular container
+    object-fit: cover; // This scales the image to cover the entire area
+  }
+}
