@@ -77,6 +77,7 @@ module.exports={
     checkedUser.email = email;
     checkedUser.mobile = mobile;
     if (image) {
+      Helper.removeImageFromFolder(checkedUser.image);
       checkedUser.image = image;
     }
     await checkedUser.save();
@@ -85,7 +86,7 @@ module.exports={
     const data = {
       id: checkedUser.id,
       email: checkedUser.email,
-      image: checkedUser.image,
+      image:Helper.imagePath(checkedUser.image),
       name: checkedUser.name,
       mobile: checkedUser.mobile,
       type: checkedUser.type

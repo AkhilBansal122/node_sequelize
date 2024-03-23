@@ -2,7 +2,8 @@
 var nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const bcrypt = require("bcryptjs");
-
+const fs = require('fs');
+const path = require('path');
 require('dotenv').config();
 
 // Function to generate a random token
@@ -11,7 +12,7 @@ const generateResetToken = () => {
 };
 
 // Function to send reset password email
-const sendResetEmail =async (email, type, data) => {
+const sendResetEmail = async (email, type, data) => {
     try {
         var transporter = nodemailer.createTransport({
             service: 'gmail',
@@ -29,7 +30,7 @@ const sendResetEmail =async (email, type, data) => {
             };
         }
 
-     response = await   transporter.sendMail(mailOptions, function (error, info) {
+        response = await transporter.sendMail(mailOptions, function (error, info) {
             if (error != null) {
                 return false;
             } else {
@@ -44,42 +45,58 @@ const sendResetEmail =async (email, type, data) => {
 
 const hashPasswordConvert = async (password) => {
     try {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      return hashedPassword;
+        const hashedPassword = await bcrypt.hash(password, 10);
+        return hashedPassword;
     } catch (error) {
-      throw error;
+        throw error;
     }
-  };
-  function generateOTP() {
-  // Generate a random 6-digit number
-  const otp = Math.floor(100000 + Math.random() * 900000);
-  return otp.toString();
+};
+function generateOTP() {
+    // Generate a random 6-digit number
+    const otp = Math.floor(100000 + Math.random() * 900000);
+    return otp.toString();
 }
 
-function  success (res,data,message){
-   return  res.json({
-        status:true,
-        data:data,
-        message:message
+function success(res, data, message) {
+    return res.json({
+        status: true,
+        data: data,
+        message: message
     });
 }
 
-function fail(res,data,message){
-   return  res.json({
-        status:false,
-        data:data,
-        message:message
+function fail(res, data, message) {
+    return res.json({
+        status: false,
+        data: data,
+        message: message
     });
 }
-function imagePath (filePath){
-  
+function imagePath(filePath = null) {
     // Normalize the file path to ensure it works across different operating systems
     const normalizedFilePath = filePath.replace(/\\/g, '/'); // Replacing backslashes with forward slashes for URL compatibility
-    
-    // Combine the base URL with the file path
-    return  completeUrl = process.env.BASE_URL+process.env.PORT+ + normalizedFilePath;
+    return process.env.BASE_URL + process.env.PORT + "/" + normalizedFilePath;
 }
 
+function removeImageFromFolder  (filePath = null){
+    // Check if the file exists
+    if (filePath) {
+
+        fs.access(filePath, fs.constants.F_OK, (err) => {
+            if (err) {
+                return false;
+            }
+
+            // File exists, so delete it
+            fs.unlink(filePath, (err) => {
+                if (err) {
+                    return false;
+                }
+                return true;
+            });
+        });
+    }
+}
 module.exports = {
     generateResetToken,
     sendResetEmail,
@@ -87,5 +104,6 @@ module.exports = {
     generateOTP,
     fail,
     success,
-    imagePath
+    imagePath,
+    removeImageFromFolder
 }
