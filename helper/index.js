@@ -97,6 +97,31 @@ function removeImageFromFolder  (filePath = null){
         });
     }
 }
+// Function to extract and format error messages
+function validateData(schema, req, res, next) {
+    const data = req.body; // Assuming form data is parsed and available in req.body
+    const { error } = schema.validate(data, { abortEarly: false });
+    if (error) {
+        const validationErrors = error.details.map(detail => {
+            return {
+                field: detail.context.key,
+                message: detail.message
+            };
+        });
+        return res.status(400).send({ status: false, message: validationErrors });
+    } else {
+        next();
+    }
+}
+function createSlug(text) {
+    return text.toString().toLowerCase()
+        .replace(/\s+/g, '-')           // Replace spaces with -
+        .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+        .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+        .replace(/^-+/, '')             // Trim - from start of text
+        .replace(/-+$/, '');            // Trim - from end of text
+}
+
 module.exports = {
     generateResetToken,
     sendResetEmail,
@@ -105,5 +130,7 @@ module.exports = {
     fail,
     success,
     imagePath,
-    removeImageFromFolder
+    removeImageFromFolder,
+    validateData,
+    createSlug
 }
