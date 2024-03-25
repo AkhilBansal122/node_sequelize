@@ -34,5 +34,6 @@ router.post('/create-brand', [authenticateToken], upload.single('image'), authCo
 router.post('/edit-brand', [authenticateToken], authController.editBrand);
 router.post('/update-brand', [authenticateToken], upload.single('image'), authController.updateBrand);
 router.post('/listing-brand', [authenticateToken], authController.listingBrand);
+router.post('/status-brand', [authenticateToken], authController.statusBrand);
 
 module.exports = router;

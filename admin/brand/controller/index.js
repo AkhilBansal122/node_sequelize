@@ -86,7 +86,7 @@ module.exports = {
             await checkedBrand.save();
             return res.status(200).json({ status: true, message: "Record updated successfully", data: checkedBrand })            
         } catch (error) {
-            console.log(error);s
+            console.log(error);
         }
 ;
     },
@@ -118,5 +118,28 @@ module.exports = {
             limit,
         })
         return res.status(200).send({ status: true, message: "New Record listing Successfully", total_record: total_record, data: getAllRecord });
-    }
+    },
+    statusBrand: async (req, res) => {
+        try {
+            const { id, status } = await brandValidation.statusBrandSchema.validateAsync(req.body);
+            let checkedBrand = await BrandModal.findOne({where:{
+                id:id
+            }});
+            if (!checkedBrand) {
+                return res.status(404).json({ status: false, message: 'Brand not found' });
+            }
+            checkedBrand.status = status;
+            await checkedBrand.save();
+            console.log(checkedBrand);
+            return res.status(200).json({ status: true, message: "Status updated successfully", data: checkedBrand })            
+                
+        } catch (error) {
+            if (error.isJoi === true) {
+                return res.status(400).json({ status: false, message: error.message });
+              }
+              // Handle other errors
+              console.error('Error updating brand status:', error);
+              return res.status(500).json({ status: false, message: 'Internal server error' });
+        }
+    },
 }

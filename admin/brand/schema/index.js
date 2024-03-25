@@ -30,10 +30,15 @@ const listbrandSchema = joi.object().keys({
     offset:joi.number().required(),
     limit:joi.number().required()
 })
+const statusBrandSchema = joi.object().keys({
+    id:joi.number().required(),
+    status:joi.number().required()
+})
 module.exports = {
     addbrandSchema,
     editbrandSchema,
     updatebrandSchema,
-    listbrandSchema
+    listbrandSchema,
+    statusBrandSchema
 }
 
