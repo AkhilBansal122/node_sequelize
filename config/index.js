@@ -6,7 +6,16 @@ export const ADMIN_VERIFY_OTP = `${BASE_URL}/verify-otp`;
 export const ADMIN_ResetPassword_URL = `${BASE_URL}/reset-password`;
 export const ADMIN_LOGOUT = `${BASE_URL}/logout`;
 export const ADMIN_ChangePassword_URL = `${BASE_URL}/change-password`;
-export const ADMIN_UPDATE_PROFILE   = `${BASE_URL}/update-profile`;
+export const ADMIN_UPDATE_PROFILE = `${BASE_URL}/update-profile`;
+
+export const ADMIN_BRAND_CREATE = `${BASE_URL}/brand/create-brand`;
+export const ADMIN_BRAND_EDIT = `${BASE_URL}/brand/edit-brand`;
+export const ADMIN_BRAND_LIST = `${BASE_URL}/brand/listing-brand`;
+export const ADMIN_BRAND_UPDATE = `${BASE_URL}/brand/update-brand`;
+export const ADMIN_BRAND_STATUS = `${BASE_URL}/brand/status-brand`;
+export const offset = 0;
+export const limit = 10;
+
 export const authHeader = () => {
   const header = {
     Accept: 'application/json',

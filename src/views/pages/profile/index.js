@@ -18,6 +18,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { ADMIN_UPDATE_PROFILE, MessageAetTimeoutTime, authHeader } from '../../../../config';
 import { useAuth } from '../../../Context/AuthContext';
 import axios from 'axios';
+
 const Profile = () => {
   const [Name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -28,14 +29,11 @@ const Profile = () => {
   const [fileupload, setFile] = useState(null);
 
   useEffect(() => {
-    if (user != null) {
-      setName(user.name);
-      setEmail(user.email);
-      setMobile(user.mobile);
-      setProfileImage(user.image ?? null);
-    }
-
-  }, [user]);
+    setName(localStorage.getItem('name'));
+    setEmail(localStorage.getItem('email'));
+    setMobile(localStorage.getItem('mobile'));
+    setProfileImage(localStorage.getItem('image') ?? null);
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -62,7 +60,12 @@ const Profile = () => {
         });
         var result = response.data;
         if (result.status == true) {
-          authlogin(result.data);
+
+          localStorage.setItem("isLogin", true);
+          localStorage.setItem("name", result.data.name);
+          localStorage.setItem("email", result.data.email);
+          localStorage.setItem("mobile", result.data.mobile);
+          localStorage.setItem("image", result.data.image);
           toast.success(result.message)
           setTimeout(() => {
           }, MessageAetTimeoutTime);

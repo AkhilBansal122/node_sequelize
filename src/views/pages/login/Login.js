@@ -63,10 +63,14 @@ const Login = () => {
       });
       var result = response.data;
       if (result.status == true) {
-      //  console.log(result.data);
-        authlogin(result.data);
+        //  console.log(result.data);
+//        authlogin(result.data);
         localStorage.setItem("token", result.access_token);
         localStorage.setItem("isLogin", true);
+        localStorage.setItem("name", result.data.name);
+        localStorage.setItem("email", result.data.email);
+        localStorage.setItem("mobile", result.data.mobile);
+        localStorage.setItem("image", result.data.image);
         toast.success(result.message)
         setTimeout(() => {
           navigate("/dashboard");

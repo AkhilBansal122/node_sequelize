@@ -54,10 +54,12 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 const ChangePassword = React.lazy(() => import('./views/pages/changePassword'))
 const Profile = React.lazy(() => import('./views/pages/profile'))
 
+const Brand = React.lazy(() => import('../src/views/pages/brand'))
 const routes = [
 
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
+  { path: '/brand', name: 'Brand', element: Brand },
   // { path: '/theme', name: 'Theme', element: Colors, exact: true },
   // { path: '/theme/colors', name: 'Colors', element: Colors },
   // { path: '/theme/typography', name: 'Typography', element: Typography },
