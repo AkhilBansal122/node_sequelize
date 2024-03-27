@@ -19,7 +19,7 @@ module.exports={
 
   login : async (req, res) => {
   try {
-    const { email, password } = await userValidation.loginSchema.validateAsync(req.body);
+    const { email, password } = await req.body;
     const user = await AdminModal.findOne({
       where: {
         email,
@@ -63,7 +63,7 @@ module.exports={
   updateProfile : async (req, res) => {
   try {
 
-    const { id, name, email, mobile } = await userValidation.updateProfileSchema.validateAsync(req.body);
+    const { id, name, email, mobile } = await req.body;
     let image = req.file ? req.file.path : null; // Assuming you're using multer or similar middleware for file uploads
 
     // Find user by userId, assuming userId is available in req.body
@@ -101,7 +101,7 @@ module.exports={
 
   changePassword : async (req, res) => {
     try {
-      const {  currentPassword, newPassword } = await userValidation.changePasswordSchema.validateAsync(req.body);
+      const {  currentPassword, newPassword } = req.body;
    
       const user = await AdminModal.findOne({
         where: {
@@ -132,7 +132,7 @@ module.exports={
   },
   forgotPassword : async (req, res) => {
     try {
-      const { email } = await userValidation.forgotPasswordSchema.validateAsync(req.body);
+      const { email } = req.body;
   
       const user = await AdminModal.findOne({
         where: { email },
@@ -217,7 +217,7 @@ module.exports={
   },
   resetPassword : async (req,res)=>{
     try{
-      const { email, newPassword } = await userValidation.resetPasswordSchema.validateAsync(req.body);
+      const { email, newPassword } = req.body;
       const user = await AdminModal.findOne({
         where: {
           email:email,
