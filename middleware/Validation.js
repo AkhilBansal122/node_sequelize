@@ -41,7 +41,7 @@ const loginValidation = async (req,res,next)=>{
         next();
     } catch (error) {
         // If validation fails, send the error response
-        res.status(400).json({
+        res.status(200).json({
             error: {
                 message: 'Validation error',
                 details: error.details,

@@ -15,7 +15,7 @@ module.exports = {
             where: { name: name, slug: slug }
         }).then((result) => {
             if (result) {
-                return res.status(400).send({
+                return res.status(200).send({
                     status: false,
                     message: "Brand Name is Already  Exists"
                 });
@@ -38,7 +38,7 @@ module.exports = {
                         })
                     }
                 }).catch(() => {
-                    return res.status(400).send({
+                    return res.status(200).send({
                         status: false,
                         message: "Something want wrong"
                     })
@@ -70,7 +70,7 @@ module.exports = {
             return res.send({data:checkedBrand});
 
             if (checkedBrand) {
-                return res.status(400).json({ status: false, message: 'Brand name already exists' });
+                return res.status(200).json({ status: false, message: 'Brand name already exists' });
             }
     
             checkedBrand.name = name;
@@ -135,7 +135,7 @@ module.exports = {
                 
         } catch (error) {
             if (error.isJoi === true) {
-                return res.status(400).json({ status: false, message: error.message });
+                return res.status(200).json({ status: false, message: error.message });
               }
               // Handle other errors
               console.error('Error updating brand status:', error);

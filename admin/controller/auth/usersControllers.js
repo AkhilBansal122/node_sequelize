@@ -26,13 +26,13 @@ module.exports={
       },
     });
     if (!user) {
-    return   res.status(400).send({status:false,data:[],message:'Invalid credentials'});
+    return   res.status(200).send({status:false,data:[],message:'Invalid credentials'});
     }
     else {
       const isPasswordValid = await bcrypt.compare(password, user.password);
 
       if (!isPasswordValid) {
-        return   res.status(400).send({status:false,data:[],message:'Invalid credentials password'});
+        return   res.status(200).send({status:false,data:[],message:'Invalid credentials password'});
       }
       const token = jwt.sign({ userId: user.id, email: user.email }, secreate, {
         expiresIn: '5d',
@@ -50,7 +50,7 @@ module.exports={
     }
   } catch (error) {
     console.error(error);
-        return   res.status(400).send({status:false,data:[],message:'Internal server error'});
+        return   res.status(200).send({status:false,data:[],message:'Internal server error'});
       }
   },
   profile : async (req, res) => {
@@ -109,13 +109,13 @@ module.exports={
         },
       });
       if (!user) {
-        return   res.status(400).send({status:false,data:[],message:'No record found'});
+        return   res.status(200).send({status:false,data:[],message:'No record found'});
       }
       else {
         const isPasswordValid = await bcrypt.compare(currentPassword, user.password);
   
         if (!isPasswordValid) {
-         return   res.status(400).send({status:false,data:[],message:'invalid current password'});
+         return   res.status(200).send({status:false,data:[],message:'invalid current password'});
         }
         const hashedPassword = await Helper.hashPasswordConvert(newPassword);
   
@@ -127,7 +127,7 @@ module.exports={
       const data={
         err:err
       }
-         return   res.status(400).send({status:true,data:[],message:'Internal server error'});
+         return   res.status(200).send({status:true,data:[],message:'Internal server error'});
     }
   },
   forgotPassword : async (req, res) => {
@@ -180,7 +180,7 @@ module.exports={
     } catch (error) {
       if (error instanceof Sequelize.ValidationError) {
         const errorMessages = error.errors.map(err => ({ field: err.path, message: err.message }));
-        return res.status(400).send({ success: false, errors: errorMessages });
+        return res.status(200).send({ success: false, errors: errorMessages });
       } else {
         console.error(error);
         return res.status(500).send({ success: false, error: error.message });
@@ -201,7 +201,7 @@ module.exports={
         }
       }).then((result)=>{
         if(result.otp!=otp){
-         return res.status(400).send({status:false,message:"Invalid otp Please again forgot password"});
+         return res.status(200).send({status:false,message:"Invalid otp Please again forgot password"});
         }
         else if(result.otp == otp){
           result.otp= null;
@@ -211,7 +211,7 @@ module.exports={
         }
       }).catch((err)=>{
         let data = {err:err};
-        return res.status(400).send({status:false,message:"Something wan't wrong"});
+        return res.status(200).send({status:false,message:"Something wan't wrong"});
       });
     
   },
@@ -245,7 +245,7 @@ module.exports={
      return res.status(200).send({status:true,message:'Password reset successfully.'});
     }
     catch (error) {
-     return res.status(400).send({status:true,message:'Internal error'});
+     return res.status(200).send({status:true,message:'Internal error'});
     }
   }
 }

@@ -108,7 +108,7 @@ function validateData(schema, req, res, next) {
                 message: detail.message
             };
         });
-        return res.status(400).send({ status: false, message: validationErrors });
+        return res.status(200).send({ status: false, message: validationErrors });
     } else {
         next();
     }
