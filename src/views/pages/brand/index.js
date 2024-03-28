@@ -3,19 +3,27 @@ import { ADMIN_BRAND_LIST, offset, limit, authHeader, ADMIN_BRAND_STATUS } from 
 import {
   CAvatar,
   CButton,
-
+  CModal,
   CCard,
   CCardBody,
   CCol,
-  CPagination,
+  CForm,
+  CModalFooter,
+  CModalHeader,
   CRow,
   CTable,
   CTableBody,
   CTableDataCell,
   CTableHead,
+  CModalTitle,
+  CModalBody,
   CTableHeaderCell,
   CTableRow,
 } from '@coreui/react'
+import { CCardHeader, CFormLabel, CFormInput } from '@coreui/react';
+import { CFormTextarea } from '@coreui/react';
+
+
 import CIcon from '@coreui/icons-react'
 import {
   cilPeople,
@@ -29,7 +37,8 @@ import axios from 'axios';
 
 
 const Brand = () => {
-
+  const [showModal, setShowModal] = useState(false);
+  const [ModalHeading, setModalHeading] = useState("AddModal");
   const [brandList, setBrandList] = useState([]);
   const [totalRecord, settotalRecord] = useState(0);
 
@@ -45,6 +54,12 @@ const Brand = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const itemsToShow = brandList.slice(startIndex, endIndex);
+
+  const [data, setData] = useState({
+    id:'',
+    name: "",
+    description: ""
+  });
   useEffect(() => {
     getBrandList();
   }, []);
@@ -69,6 +84,7 @@ const Brand = () => {
 
   const tableExample = brandList.map((brand) => ({
     id: brand.id,
+    name:brand.fullName,
     statusValue: brand.status == 1 ? 2 : 1,
     avatar: { src: brand.brandImage, status: brand.status == '1' ? 'success' : 'danger' }, // Assuming avatarSrc and status are properties in your brand object
     user: {
@@ -100,13 +116,104 @@ const Brand = () => {
     }
   };
 
-  return (
+  const handleNewRecord = async (req, res) => {
+    setModalHeading("Add Brand");
+    setData({
+      id:'',
+      name:'',
+      description:""
+    })
+    setShowModal(true);
+  }
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const hakdkeEdutModal = async (item) => {
+    setModalHeading("Edit Brand");
+    setData({
+      id: item.id,
+      name: item.name ?? '',
+      description: item.description ?? ''
+    });
+    setShowModal(true);
+  }
+    return (
     <>
       <CRow>
         <CCol xs>
           <CCard className="mb-4">
+
             <CCardBody>
-              <br />
+              <div className="d-flex justify-content-end mb-4">
+                <CButton
+                  color="primary"
+                  size="sm"
+                  onClick={handleNewRecord} >New Record</CButton>
+              </div>
+              <CModal
+                backdrop="static"
+                alignment="center"
+                visible={showModal}
+                onClose={() => handleCloseModal()}
+                aria-labelledby="StaticBackdropExampleLabel"
+              >
+                <CModalHeader>
+                  <CModalTitle id="StaticBackdropExampleLabel">{ModalHeading}</CModalTitle>
+                </CModalHeader>
+                <CModalBody>
+                  <CForm>
+                    <div className="input-group">
+                    <CFormInput
+                    type="hidden"
+                    id="id"
+                    onChange={(e) => {
+                      setData({
+                        ...data,
+                        id: e.target.value
+                       })
+                      }}
+                      value={ data.id }
+                      placeholder="Enter name"/>
+
+
+                    <CFormInput
+                    type="text"
+                    id="name"
+                    onChange={(e) => {
+                      setData({
+                        ...data,
+                        name: e.target.value
+                       })
+                      }}
+                      value={ data.name }
+                      placeholder="Enter name"/>
+
+                    </div>
+                    <div className="input-group mt-3">
+                      <CFormTextarea
+                      value={data.description}
+                      onChange={(e) => {
+                        setData({
+                          ...data,
+                          description: e.target.value
+                         })
+                        }}
+
+                        id="description"
+                        placeholder="Enter description"
+                      />
+                    </div>
+                  </CForm>
+                </CModalBody>
+
+                <CModalFooter>
+                  <CButton color="secondary" onClick={() => handleCloseModal()}>
+                    Close
+                  </CButton>
+                  <CButton color="primary">Save changes</CButton>
+                </CModalFooter>
+              </CModal>
               <CTable align="middle" className="mb-0 border" hover responsive>
                 <CTableHead className="text-nowrap">
                   <CTableRow>
@@ -141,6 +248,17 @@ const Brand = () => {
                           {item.actionName}
                         </CButton>
 
+
+                        <CButton
+                        title='Edit'
+                          className="shadow"
+                          style={{ color: 'white' }}
+                          color='primary'
+                          onClick={() => hakdkeEdutModal(item)}
+                        >
+                          Edit
+                        </CButton>
+
                       </CTableDataCell>
                     </CTableRow>
                   ))}
@@ -149,6 +267,8 @@ const Brand = () => {
               </CTable>
             </CCardBody>
           </CCard>
+
+
         </CCol>
       </CRow>
     </>

@@ -77,10 +77,8 @@ const Login = () => {
         }, MessageAetTimeoutTime);
       } else {
         toast.error(result.message)
-
       }
     } catch (error) {
-      console.log(error);
       toast.error("Something wan't wrong")
     }
   }
