@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
-
 require('dotenv').config();
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
+const joi = require('joi');
+
 
 // Multer storage configuration
 const storage = multer.diskStorage({
@@ -27,13 +28,14 @@ const storage = multer.diskStorage({
 
 // Multer file upload configuration
 const upload = multer({ storage: storage });
-const authController = require("../../brand/controller");
+const brandController = require("../controller");
 const { authenticateToken } = require("../../../middleware/authenticateToken");
+const { addbrandSchema,editbrandSchema,updatebrandSchema,listbrandSchema,statusBrandSchema } = require('../schema/index');
 
-router.post('/create-brand', [authenticateToken], upload.single('image'), authController.addNewBrand);
-router.post('/edit-brand', [authenticateToken], authController.editBrand);
-router.post('/update-brand', [authenticateToken], upload.single('image'), authController.updateBrand);
-router.post('/listing-brand', [authenticateToken], authController.listingBrand);
-router.post('/status-brand', [authenticateToken], authController.statusBrand);
+router.post('/listing-brand', authenticateToken, listbrandSchema, upload.none(), brandController.listingBrand);
+router.post('/create-brand', [authenticateToken,addbrandSchema], upload.single('image'), brandController.addNewBrand);
+router.post('/edit-brand', [authenticateToken,editbrandSchema], brandController.editBrand);
+router.post('/update-brand', [authenticateToken,updatebrandSchema], upload.single('image'), brandController.updateBrand);
+router.post('/status-brand', [authenticateToken,statusBrandSchema], brandController.statusBrand);
 
 module.exports = router;

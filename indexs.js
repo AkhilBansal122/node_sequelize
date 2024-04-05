@@ -12,12 +12,8 @@ const db = require("./models");
 const path = require('path');
 //app.use(express.json());
 app.use(cors())
-const multer = require('multer');
-const upload = multer(); // Initialize multer for handling multipart/form-data
-
-app.use(upload.array()); // Use multer middleware for parsing multipart/form-data
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+//app.use(bodyParser.json()); 
+//app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -25,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/admin",AdminRoute);
 app.use("/api/admin/brand/",AdminBrandRoute);
 app.use('/uploads', express.static('uploads'));
-  
+	
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+	console.log(`Server is running on port ${PORT}`);
 });

@@ -49,6 +49,7 @@ module.exports = {
 
     updateBrand: async (req, res) => {
         try {
+
             const { id, name, meta_title, meta_description, meta_keywords, description } = await brandValidation.updatebrandSchema.validateAsync(req.body);
             let image = req.file ? req.file.path : null; // Assuming you're using multer or similar middleware for file uploads
     
@@ -65,15 +66,15 @@ module.exports = {
                 slug: createSlug(name)
             };
     
-            checkedBrand = await BrandModal.findOne({ where: condition });
+            alreadyCheckedBrand = await BrandModal.findOne({ where: condition });
             
-            return res.send({data:checkedBrand});
+         //  return res.send({data:image});
 
-            if (checkedBrand) {
+            if (alreadyCheckedBrand) {
                 return res.status(200).json({ status: false, message: 'Brand name already exists' });
             }
-    
-            checkedBrand.name = name;
+
+            checkedBrand.name = req.body.name;
             checkedBrand.meta_title = meta_title;
             checkedBrand.meta_description = meta_description;
             checkedBrand.meta_keywords = meta_keywords;
@@ -83,10 +84,12 @@ module.exports = {
                 removeImageFromFolder(checkedBrand.image);
                 checkedBrand.image = image;
             }
+           // return res.send({data:checkedBrand});
             await checkedBrand.save();
             return res.status(200).json({ status: true, message: "Record updated successfully", data: checkedBrand })            
         } catch (error) {
             console.log(error);
+             return res.status(200).json({ status: false, message: "Record updated failed", data: [] })            
         }
 ;
     },
@@ -116,12 +119,13 @@ module.exports = {
         const getAllRecord = await BrandModal.findAll({
             offset,
             limit,
+            order: [['id', 'DESC']]
         })
         return res.status(200).send({ status: true, message: "New Record listing Successfully", total_record: total_record, data: getAllRecord });
     },
     statusBrand: async (req, res) => {
         try {
-            const { id, status } = await brandValidation.statusBrandSchema.validateAsync(req.body);
+            const { id, status } = await req.body;
             let checkedBrand = await BrandModal.findOne({where:{
                 id:id
             }});

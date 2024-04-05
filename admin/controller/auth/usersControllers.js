@@ -16,7 +16,6 @@ const Helper = require("../../../helper");
 
 module.exports={
 
-
   login : async (req, res) => {
   try {
     const { email, password } = await req.body;
@@ -49,7 +48,6 @@ module.exports={
     return   res.status(200).send({status:true,access_token:token,data:data,message:'Login Successfully'});
     }
   } catch (error) {
-    console.error(error);
         return   res.status(200).send({status:false,data:[],message:'Internal server error'});
       }
   },
@@ -60,9 +58,11 @@ module.exports={
       message: "get Profile successfully"
     })
   },
-  updateProfile : async (req, res) => {
+  updateProfile :async(req,res)=>{
+    console.log("c");
+  },
+  updateProfiles : async (req, res) => {
   try {
-
     const { id, name, email, mobile } = await req.body;
     let image = req.file ? req.file.path : null; // Assuming you're using multer or similar middleware for file uploads
 
