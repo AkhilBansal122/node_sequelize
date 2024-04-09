@@ -25,7 +25,8 @@ function validationRequest(req, res, next, schema)
             return res.status(200).json({ status: false, status_code: 200,errorMessage: errorMessages,message :message});
          } 
          else { 
-            req.body = value; next();
+            //req.body = value; 
+            next();
          } 
         } 
         module.exports = validationRequest;

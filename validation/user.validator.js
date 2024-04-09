@@ -41,7 +41,7 @@ const   changePasswordSchema= async (req,res,next)=>{
 
 const forgotPasswordSchema= async (req,res,next)=>{
   schema =   Joi.object({
-    email: Joi.string().email().required()
+    email: Joi.string().email().required(),
   });
   validationRequest(req, res, next, schema)
 
@@ -63,6 +63,22 @@ const verifyOtpSchema = async (req,res,next)=>{
   validationRequest(req, res, next, schema)
   
   }
+  const formDataSchema = async (req,res,next)=>{
+   schema =  Joi.object({
+      name: Joi.string().required(), // Validate name as required string
+      image: Joi.any() // Allow any file type for image upload
+          .required()
+          .custom((value, helpers) => {
+              // Validate file type (you can add more checks here)
+              if (!value.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
+                  return helpers.error('any.invalid');
+              }
+              return value;
+          })
+  }).options({ abortEarly: false });
+  validationRequest(req,res,next,schema);
+  } // Return all errors, not just the first one
+
 module.exports = {
   loginSchema,
   updateProfileSchema,
@@ -70,7 +86,8 @@ module.exports = {
   forgotPasswordSchema,
   resetPasswordSchema ,
   fileSchema,
-  verifyOtpSchema
+  verifyOtpSchema,
+  formDataSchema
   
 
 }

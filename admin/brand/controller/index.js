@@ -7,7 +7,8 @@ const brandValidation = require("../schema");
 module.exports = {
 
     addNewBrand: async (req, res) => {
-        const { name, meta_title, meta_description, meta_keywords, description } = await brandValidation.addbrandSchema.validateAsync(req.body);
+        return res.send(req);
+        const { name, meta_title, meta_description, meta_keywords, description } =req.body;
         let image = req.file ? req.file.path : null; // Assuming you're using multer or similar middleware for file uploads
         const slug = createSlug(name);
 
@@ -114,14 +115,18 @@ module.exports = {
         }
     },
     listingBrand: async (req, res) => {
-        const { offset, limit } = req.body;
-        const total_record = await BrandModal.count();
+        console.log(typeof(req.body.offset));
+        const offset = parseInt(req.body.offset);
+        const limit = parseInt(req.body.limit);
+
+        const total_records = await BrandModal.count();
+        
         const getAllRecord = await BrandModal.findAll({
-            offset,
-            limit,
+            offset:offset,
+            limit:limit,
             order: [['id', 'DESC']]
-        })
-        return res.status(200).send({ status: true, message: "New Record listing Successfully", total_record: total_record, data: getAllRecord });
+        });
+        return res.status(200).send({ status: true, message: "New Record listing Successfully", total_record: total_records, data: getAllRecord });
     },
     statusBrand: async (req, res) => {
         try {
@@ -146,4 +151,16 @@ module.exports = {
               return res.status(500).json({ status: false, message: 'Internal server error' });
         }
     },
+    formdata: async (req, res) => {
+        try {
+          console.log(req.body); // Access the fields in req.body
+          console.log("Image::", req.file); // Access the uploaded file information
+      
+          // If you need to access the validated body, you can access 'value' from req object
+          return res.send({ data: req.body });
+        } catch (error) {
+          console.error(error);
+          return res.status(500).json({ error: 'Internal server error' });
+        }
+      }
 }
