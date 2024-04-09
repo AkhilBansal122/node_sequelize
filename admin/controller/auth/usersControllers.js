@@ -101,7 +101,8 @@ module.exports = {
         } else {
             getProfile.mobile = value;
         }
-    }    });
+    }
+      });
     form.on('file', (name, file) => {
       file.field = name;
     });
@@ -111,7 +112,14 @@ module.exports = {
         // Handle error
         return next(err);
       }
-      
+      if(!fields.mobile){
+        errorMessage.mobile = { message: "Mobile Field Is Required" };
+        message = "Mobile Field Is Required";
+      }
+      if(!fields.email){
+        errorMessage.email = { message: "Email Field Is Required" };
+        message = "Email Field Is Required";
+      }
       
         
         // Access files here
@@ -157,7 +165,6 @@ module.exports = {
                 errorMessage.profile_picture = { message: "Error copying Profile Picture" };
                 return res.status(500).json({ error: "Error copying file" });
               } else {
-                console.log("File copied successfully");
                 getProfile.image = newFolderDir + "/" + newFileName;
 
                 // Continue with your code logic
@@ -189,49 +196,6 @@ module.exports = {
   },
 
 
-  updateProfiles: async (req, res, next) => {
-
-    var form = new formidable.IncomingForm();
-
-    let errorMessage = {};
-
-    form.on('image', (name, file) => {
-      file.field = name;
-    });
-
-    var data = form.on('image', function (field, files) {
-      return files.toJSON()
-    })
-    form.parse(req, function (err, fields, files) {
-      let errorMessage = {};
-      var message = "";
-
-      var allFiles = data.openedFiles;
-      return res.send({ status: allFiles });
-      if (allFiles) {
-        const allDocFiles = Array.isArray(allFiles) ? allFiles : [allFiles];
-
-        var countProfilePicture = 0;
-
-        for (const file of allDocFiles) {
-          const allowedFormats = ['image/jpeg', 'image/jpg', 'image/png'];
-          if (file.field == 'image') {
-            if (!allowedFormats.includes(file.mimetype)) {
-              errorMessage.image = { message: "Only jpeg, jpg, and png image formats are allowed for Prodile picture" };
-              message = "Only jpeg, jpg, and png image formats are allowed for Prodile picture";
-            }
-          }
-          countProfilePicture = countProfilePicture + 1;
-        }
-      }
-      if (countProfilePicture == 0) {
-        errorMessage.image = { message: `Prodile picture is required` };
-        message = `Prodile picture is required`;
-      }
-
-    })
-
-  },
 
   changePassword: async (req, res) => {
     try {
