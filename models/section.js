@@ -18,9 +18,11 @@ module.exports = (sequelize, DataTypes) => {
     status: DataTypes.INTEGER,
     meta_title: DataTypes.STRING,
     meta_description: DataTypes.STRING,
-    meta_keywords: DataTypes.STRING
+    meta_keywords: DataTypes.STRING,
+    status:DataTypes.INTEGER
   }, {
     sequelize,
+    tableName:"sections",
     modelName: 'Section',
     
   });

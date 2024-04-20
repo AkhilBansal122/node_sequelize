@@ -65,11 +65,28 @@ module.exports = {
     }
   },
   profile: async (req, res) => {
-    res.json({
-      status: true,
-      data: req.user,
-      message: "get Profile successfully"
-    })
+
+    const getProfile = await AdminModal.findOne({
+      where: {
+        id: req.user.userId
+      }
+    });
+    if(getProfile){
+      getProfile.image = Helper.imagePath(getProfile.image);
+      return res.status(200).send({
+        status: true,
+        data: getProfile,
+        message: "get Profile successfully"
+      });
+
+    }
+    else{
+      return res.status(400).send({
+        status: false,
+        data: null,
+        message: "get Profile failed"
+      });
+    }
   },
 
 

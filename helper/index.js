@@ -75,7 +75,7 @@ function fail(res, data, message) {
 function imagePath(filePath = null) {
     // Normalize the file path to ensure it works across different operating systems
     const normalizedFilePath = filePath.replace(/\\/g, '/'); // Replacing backslashes with forward slashes for URL compatibility
-    return process.env.BASE_URL + process.env.PORT + "/" + normalizedFilePath;
+    return process.env.BASE_URL + process.env.PORT +  normalizedFilePath;
 }
 
 function removeImageFromFolder  (filePath = null){
