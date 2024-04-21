@@ -52,6 +52,7 @@ module.exports = {
     }
   const checked=  await CategoriesMddel.count({
       where: {
+        section_id :section_id,
         id: {
           [Op.ne]: id
         },
@@ -139,4 +140,25 @@ module.exports = {
       return res.status(500).json({ status: false, message: 'Internal server error' });
     }
   },
+  getActiveSection: async (req,res)=>{
+    const data = await SectionsModal.findAll({
+      where:{
+        status:1
+      }
+    });
+    if(data && data.length > 0){
+      return res.status(200).send({
+        status:true,
+        mssage:"get active Sections",     
+        data:data
+      });
+    }
+    else{
+      return res.status(400).send({
+        status:false,
+        mssage:"get active Sections",     
+        data:[]
+      });
+    }
+  }
 }

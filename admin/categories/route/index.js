@@ -9,5 +9,7 @@ router.post('/listing', [authenticateToken,listcategoriesSchema], categoriesCont
 router.post('/edit', [authenticateToken, editcategoriesSchema], categoriesController.editcategories);
 router.post('/update', [authenticateToken,updatecategroiesSchema], categoriesController.updatecategories);
 router.post('/status', [authenticateToken, statuscategoriesSchema], categoriesController.statuscategories);
+router.post('/activesections', [authenticateToken], categoriesController.getActiveSection);
+
 
 module.exports = router;
