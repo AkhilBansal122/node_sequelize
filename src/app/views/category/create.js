@@ -22,6 +22,7 @@ export default function create() {
             </Box>
             <Stack spacing={3}>
                 <SectionsForm id={null} stateVal={{
+                    section_id: "",
                     name: "",
                     meta_title: "",
                     meta_description: "",

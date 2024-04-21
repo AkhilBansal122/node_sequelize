@@ -6,11 +6,18 @@ import React from 'react';
 
 import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import { Dialog, TextField, Card, Grid, styled } from '@mui/material';
-import Avatar from '@mui/material/Avatar';
+import { TextField } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import { useState } from 'react';
+
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+
+
+
+
 export const ActiveInactiveComponent = ({ status }) => {
     return (<Stack spacing={1} alignItems="center">
         <Stack direction="row" spacing={1}>
@@ -166,4 +173,25 @@ export const SuccessMessage = ({ isOpemClose, message }) => {
         </div>
     );
 };
+export const SelectOption = ({ label, list, values, handleSelectChange }) => {
+
+    return (
+        <>
+            <FormControl sx={{ mb: 1 }} fullWidth>
+                <InputLabel id="demo-simple-select-helper-label">Select Selection</InputLabel>
+                <Select
+                    labelId="demo-simple-select-helper-label"
+                    id="demo-simple-select-helper"
+                    value={values}
+                    onChange={handleSelectChange}
+                >
+                    <MenuItem value="select option"><em>select Section</em></MenuItem>
+                    {list.map((item, index) => (
+                        <MenuItem key={index} value={item.id}>{item.name}</MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
+        </>
+    );
+}
 

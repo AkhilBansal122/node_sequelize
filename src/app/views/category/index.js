@@ -127,9 +127,10 @@ export default function ChangePassword() {
                                                     {index + 1}
                                                 </TableCell>
 
-                                                <TableCell align="left">{subscriber.name}</TableCell>
 
                                                 <TableCell align="left">{subscriber.Section.name}</TableCell>
+                                                <TableCell align="left">{subscriber.name}</TableCell>
+
                                                 <TableCell align="right">
                                                     <ActiveInactiveComponent status={subscriber.status} />
                                                 </TableCell>

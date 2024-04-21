@@ -27,6 +27,7 @@ export const ADMIN_CATEGORY_EDIT = `${BASE_URL}/categories/edit`;
 export const ADMIN_CATEGORY_LIST = `${BASE_URL}/categories/listing`;
 export const ADMIN_CATEGORY_UPDATE = `${BASE_URL}/categories/update`;
 export const ADMIN_CATEGORY_STATUS = `${BASE_URL}/categories/status`;
+export const ADMIN_ACTIVE_SECTIONS_STATUS = `${BASE_URL}/categories/activesections`;
 
 export const offset = 0;
 export const limit = 2;
