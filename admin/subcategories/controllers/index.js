@@ -1,28 +1,28 @@
 const db = require("../../../models");
 const { createSlug } = require('../../../helper');
-const CategoriesMddel = db.Category;
-const SectionsModal = db.Section;
+const SubCategoriesMddel = db.SubCategory;
+const CategorsModal = db.Category;
 require('dotenv').config();
 const { Op } = require('sequelize');
 
 
 module.exports = {
 
-  addNewcategories: async (req, res) => {
+  addNewsubcategories: async (req, res) => {
     
-    const {section_id,name,meta_title,meta_description,meta_keywords} = req.body;
+    const {category_id,name,meta_title,meta_description,meta_keywords} = req.body;
    
-   checked = await CategoriesMddel.count({
+   checked = await SubCategoriesMddel.count({
       where:{
-        section_id:section_id,
+        category_id:category_id,
         name:name
       }
     });
     if(checked){
       return res.status(400).send({status:false,message:"Already Exists"});
     }
-   const InsertRecord =  await CategoriesMddel.create({
-    section_id :section_id,
+   const InsertRecord =  await SubCategoriesMddel.create({
+    category_id :category_id,
       name:name,
       meta_title:meta_title,
       meta_description:meta_description,
@@ -37,9 +37,9 @@ module.exports = {
 
     }
   },
-  updatecategories: async (req, res) => {
-    const {section_id,name,id,meta_description,meta_keywords,meta_title} = req.body;
-    const entity  = await CategoriesMddel.findOne({
+  updatesubcategories: async (req, res) => {
+    const {category_id,name,id,meta_description,meta_keywords,meta_title} = req.body;
+    const entity  = await SubCategoriesMddel.findOne({
       where:{
         id:id
       }
@@ -50,9 +50,9 @@ module.exports = {
         message:"No Record Found"
       });
     }
-  const checked=  await CategoriesMddel.count({
+  const checked=  await SubCategoriesMddel.count({
       where: {
-        section_id :section_id,
+        category_id :category_id,
         id: {
           [Op.ne]: id
         },
@@ -67,7 +67,7 @@ module.exports = {
         message:"Name Is Already Exists"
       });
     }
-    entity.section_id= section_id;
+    entity.category_id= category_id;
     entity.name=name;
     entity.meta_title=meta_title;
     entity.meta_description=meta_description;
@@ -78,9 +78,9 @@ module.exports = {
       return res.status(400).json({ status: false, message: "Something want wrong" });
     }
   },
-  editcategories: async (req, res) => {
+  editsubcategories: async (req, res) => {
     const { id } = req.body;
-    const getRecord = await CategoriesMddel.findOne({
+    const getRecord = await SubCategoriesMddel.findOne({
       where: { id: id }
     });
     if (getRecord) {
@@ -98,39 +98,38 @@ module.exports = {
       });
     }
   },
-  listingcategories: async (req, res) => {
+  listingsubcategories: async (req, res) => {
 
     const offset = parseInt(req.body.offset);
     const limit = parseInt(req.body.limit);
 
-    const total_records = await CategoriesMddel.count({
-      include: [{ 
-        model: SectionsModal, 
+    const total_records = await SubCategoriesMddel.count({
+      include:[{
+        model: CategorsModal,
         where:{
           status:1
-        },
-        attributes: ['name'] // Specify the attributes of SectionsModal to retrieve
-      }], // Include sections model 
+        } 
+      }]
     });
 
-    const getAllRecord = await CategoriesMddel.findAll({
+    const getAllRecord = await SubCategoriesMddel.findAll({
       offset: offset,
       limit: limit,
       include: [{ 
-        model: SectionsModal, 
+        model: CategorsModal,
         where:{
           status:1
         },
-        attributes: ['name'] // Specify the attributes of SectionsModal to retrieve
-      }], // Include sections model           
+        attributes: ['name'] 
+      }], // Include Category model           
        order: [['id', 'DESC']]
     });
-    return res.status(200).send({ status: true, message: "New Sections listing Successfully", total_record: total_records, data: getAllRecord });
+    return res.status(200).send({ status: true, message: "New SubCategory listing Successfully", total_record: total_records, data: getAllRecord });
   },
-  statuscategories: async (req, res) => {
+  statussubcategories: async (req, res) => {
     try {
       const { id, status } = await req.body;
-      let checkedBrand = await CategoriesMddel.findOne({
+      let checkedBrand = await SubCategoriesMddel.findOne({
         where: {
           id: id
         }
@@ -152,7 +151,7 @@ module.exports = {
     }
   },
   getActiveSection: async (req,res)=>{
-    const data = await SectionsModal.findAll({
+    const data = await CategorsModal.findAll({
       where:{
         status:1
       }
@@ -160,14 +159,14 @@ module.exports = {
     if(data && data.length > 0){
       return res.status(200).send({
         status:true,
-        mssage:"get active Sections",     
+        mssage:"get active SubCategory",     
         data:data
       });
     }
     else{
       return res.status(400).send({
         status:false,
-        mssage:"get active Sections",     
+        mssage:"get active SubCategory",     
         data:[]
       });
     }
