@@ -37,6 +37,10 @@ const AdminCategory = Loadable(lazy(() => import("app/views/category/index")));
 const AdminCreateCategory = Loadable(lazy(() => import("app/views/category/create")));
 const AdminEditCategory = Loadable(lazy(() => import("app/views/category/edit")));
 
+const AdminSubCategory = Loadable(lazy(() => import("app/views/subcategory/index")));
+const AdminCreateSubCategory = Loadable(lazy(() => import("app/views/subcategory/create")));
+const AdminEditSubCategory = Loadable(lazy(() => import("app/views/subcategory/edit")));
+
 const routes = [
   {
     element: (
@@ -57,9 +61,13 @@ const routes = [
       { path: "/sections-create", element: <AdminCreateSections />, auth: authRoles.admin },
       { path: "/sections-edit/:id", element: <AdminEditSections />, auth: authRoles.admin },
 
-      { path: "/Category-listing", element: <AdminCategory />, auth: authRoles.admin },
-      { path: "/Category-create", element: <AdminCreateCategory />, auth: authRoles.admin },
-      { path: "/Category-edit/:id", element: <AdminEditCategory />, auth: authRoles.admin },
+      { path: "/category-listing", element: <AdminCategory />, auth: authRoles.admin },
+      { path: "/category-create", element: <AdminCreateCategory />, auth: authRoles.admin },
+      { path: "/category-edit/:id", element: <AdminEditCategory />, auth: authRoles.admin },
+
+      { path: "/sub-category-listing", element: <AdminSubCategory />, auth: authRoles.admin },
+      { path: "/sub-category-create", element: <AdminCreateSubCategory />, auth: authRoles.admin },
+      { path: "/sub-category-edit/:id", element: <AdminEditSubCategory />, auth: authRoles.admin },
 
       // e-chart route
       { path: "/charts/echarts", element: <AppEchart />, auth: authRoles.editor }

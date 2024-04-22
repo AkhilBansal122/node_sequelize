@@ -3,6 +3,7 @@ export const navigations = [
   { name: "Brand", path: "/brand-listing", icon: "dashboard" },
   { name: "Sections", path: "/sections-listing", icon: "dashboard" },
   { name: "Category", path: "/category-listing", icon: "dashboard" },
+  { name: "SubCategory", path: "/sub-category-listing", icon: "dashboard" },
 
   { label: "PAGES", type: "label" },
   {

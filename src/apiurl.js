@@ -29,5 +29,11 @@ export const ADMIN_CATEGORY_UPDATE = `${BASE_URL}/categories/update`;
 export const ADMIN_CATEGORY_STATUS = `${BASE_URL}/categories/status`;
 export const ADMIN_ACTIVE_SECTIONS_STATUS = `${BASE_URL}/categories/activesections`;
 
+export const ADMIN_SUB_CATEGORY_CREATE = `${BASE_URL}/subcategories/create`;
+export const ADMIN_SUB_CATEGORY_EDIT = `${BASE_URL}/subcategories/edit`;
+export const ADMIN_SUB_CATEGORY_LIST = `${BASE_URL}/subcategories/listing`;
+export const ADMIN_SUB_CATEGORY_UPDATE = `${BASE_URL}/subcategories/update`;
+export const ADMIN_SUB_CATEGORY_STATUS = `${BASE_URL}/subcategories/status`;
+
 export const offset = 0;
 export const limit = 2;
