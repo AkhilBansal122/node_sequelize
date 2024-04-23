@@ -18,11 +18,11 @@ export default function create() {
     return (<>
         <Container>
             <Box className="breadcrumb">
-                <Breadcrumb routeSegments={[{ name: "Add New Sections", path: "/sections-create" }, { name: "Sections" }]} />
+                <Breadcrumb routeSegments={[{ name: "Add New Category", path: "/category-create" }, { name: "Category" }]} />
             </Box>
             <Stack spacing={3}>
                 <SectionsForm id={null} stateVal={{
-                    section_id: "",
+                    section_id: "select option",
                     name: "",
                     meta_title: "",
                     meta_description: "",

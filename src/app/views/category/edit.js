@@ -62,7 +62,7 @@ export default function Edit() {
     return (<>
         <Container>
             <Box className="breadcrumb">
-                <Breadcrumb routeSegments={[{ name: "Edit Sections", path: `/sections-edit/${id}` }, { name: "Sections" }]} />
+                <Breadcrumb routeSegments={[{ name: "Edit Category", path: `/category-edit/${id}` }, { name: "Category" }]} />
             </Box>
             <Stack spacing={3}>
                 <SectionsForm id={id} stateVal={data} />

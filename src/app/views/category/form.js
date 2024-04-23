@@ -47,7 +47,7 @@ const SectionsForm = ({ stateVal, id }) => {
             meta_description: stateVal.meta_description,
             meta_keywords: stateVal.meta_keywords,
         });
-        setSelectedValue(stateVal.section_id);
+        setSelectedValue(stateVal.section_id ?? 'select option');
 
         getActiveSection();
     }, [stateVal]);
@@ -95,7 +95,6 @@ const SectionsForm = ({ stateVal, id }) => {
     };
 
     const handleSelectChange = (event) => {
-        console.log(event.target.value);
         setSelectedValue(event.target.value);
         state.selectOptions = event.target.value;
     };
@@ -125,7 +124,7 @@ const SectionsForm = ({ stateVal, id }) => {
                         <TextField
                             type="text"
                             name="name"
-                            label="Enter Sections Name"
+                            label="Enter Category Name"
                             onChange={handleChange}
                             value={state.name || ""}
                             autoComplete="off"

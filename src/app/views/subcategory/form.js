@@ -12,7 +12,7 @@ import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 import { LoadingButton } from "@mui/lab";
 
 import { headerValue } from "app/components/custom/CommonComponent";
-import { ADMIN_CATEGORY_CREATE, ADMIN_CATEGORY_EDIT, ADMIN_ACTIVE_SECTIONS_STATUS, ADMIN_CATEGORY_UPDATE } from "apiurl";
+import { ADMIN_SUB_CATEGORY_CREATE, ADMIN_ACTIVE_CATEGORY_STATUS, ADMIN_SUB_CATEGORY_UPDATE } from "apiurl";
 import { axiosRequest } from "config";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
@@ -36,33 +36,33 @@ const StyledTextarea = styled(TextValidator)`
     resize: vertical;
 `;
 
-const SectionsForm = ({ stateVal, id }) => {
+const CategorysForm = ({ stateVal, id }) => {
     const [state, setState] = useState({});
-    const [selectedValue, setSelectedValue] = useState('select option');
+    const [selectedValue, setSelectedValue] = useState('');
     useEffect(() => {
         setState({
-            selectOptions: stateVal.section_id ?? 'select option',
+            selectOptions: stateVal.category_id ?? 'select option',
             name: stateVal.name,
             meta_title: stateVal.meta_title,
             meta_description: stateVal.meta_description,
             meta_keywords: stateVal.meta_keywords,
         });
-        setSelectedValue(stateVal.section_id);
+        setSelectedValue(stateVal.category_id ?? 'select option');
 
-        getActiveSection();
+        getActiveCategory();
     }, [stateVal]);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
-    const [selectActiveSection, setselectActiveSection] = useState([]);
+    const [selectActiveCategory, setselectActiveCategory] = useState([]);
 
-    const getActiveSection = async () => {
+    const getActiveCategory = async () => {
         const headers = headerValue();
 
         const config = {
             headers: headers
         };
-        const response = await axiosRequest(ADMIN_ACTIVE_SECTIONS_STATUS, {}, config);
-        setselectActiveSection(response.data.status === true ? response.data.data : []);
+        const response = await axiosRequest(ADMIN_ACTIVE_CATEGORY_STATUS, {}, config);
+        setselectActiveCategory(response.data.status === true ? response.data.data : []);
     }
 
 
@@ -80,10 +80,10 @@ const SectionsForm = ({ stateVal, id }) => {
             const config = {
                 headers: headers
             };
-            const data = { section_id: selectedValue, id, name: state.name, meta_description: state.meta_description, meta_keywords: state.meta_keywords, meta_title: state.meta_title };
-            const response = await axiosRequest(id === null ? ADMIN_CATEGORY_CREATE : ADMIN_CATEGORY_UPDATE, data, config);
+            const data = { category_id: selectedValue, id, name: state.name, meta_description: state.meta_description, meta_keywords: state.meta_keywords, meta_title: state.meta_title };
+            const response = await axiosRequest(id === null ? ADMIN_SUB_CATEGORY_CREATE : ADMIN_SUB_CATEGORY_UPDATE, data, config);
             if (response.data.status === true) {
-                navigate("/category-listing");
+                navigate("/sub-category-listing");
                 setLoading(false);
             }
             else {
@@ -95,7 +95,6 @@ const SectionsForm = ({ stateVal, id }) => {
     };
 
     const handleSelectChange = (event) => {
-        console.log(event.target.value);
         setSelectedValue(event.target.value);
         state.selectOptions = event.target.value;
     };
@@ -110,13 +109,13 @@ const SectionsForm = ({ stateVal, id }) => {
                             <Select
                                 labelId="demo-simple-select-helper-label"
                                 id="demo-simple-select-helper"
-                                label="select Selection"
+                                label="select Category"
                                 value={selectedValue}
                                 onChange={handleSelectChange}
-                                required
-                            >
-                                <MenuItem value="select option"><em>Select Section</em></MenuItem>
-                                {selectActiveSection.map((item, index) => (
+                                required>
+
+                                <MenuItem value="select option"><em>Select Category</em></MenuItem>
+                                {selectActiveCategory.map((item, index) => (
                                     <MenuItem key={index} value={item.id}>{item.name}</MenuItem>
                                 ))}
                             </Select>
@@ -125,12 +124,12 @@ const SectionsForm = ({ stateVal, id }) => {
                         <TextField
                             type="text"
                             name="name"
-                            label="Enter Sections Name"
+                            label="Enter Sub Category Name"
                             onChange={handleChange}
                             value={state.name || ""}
                             autoComplete="off"
                             validators={["required"]}
-                            errorMessages={["Category Name field is required"]}
+                            errorMessages={["Sub Category Name field is required"]}
                         />
 
                         <TextField
@@ -176,4 +175,4 @@ const SectionsForm = ({ stateVal, id }) => {
     );
 };
 
-export default SectionsForm;
+export default CategorysForm;

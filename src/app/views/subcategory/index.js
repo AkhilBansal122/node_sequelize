@@ -20,7 +20,7 @@ import { Breadcrumb } from "app/components";
 import { SimpleCard } from "app/components";
 import { axiosRequest } from "../../../config";
 import { useEffect } from "react";
-import { ADMIN_CATEGORY_LIST, ADMIN_CATEGORY_STATUS } from "apiurl";
+import { ADMIN_SUB_CATEGORY_STATUS, ADMIN_SUB_CATEGORY_LIST } from "apiurl";
 import { ActiveInactiveComponent, EditButton, SwitchActiveInactive, headerValue } from "app/components/custom/CommonComponent";
 
 import { CuustomPagination } from "app/components/custom/CommonComponent";
@@ -67,7 +67,7 @@ export default function ChangePassword() {
             headers: headers
         };
         const data = { offset: page, limit: rowsPerPage };
-        const response = await axiosRequest(ADMIN_CATEGORY_LIST, data, config);
+        const response = await axiosRequest(ADMIN_SUB_CATEGORY_LIST, data, config);
 
 
         if (response.data.status === true) {
@@ -89,7 +89,7 @@ export default function ChangePassword() {
             headers: headers
         };
         const data = { id: id, status: status };
-        const response = await axiosRequest(ADMIN_CATEGORY_STATUS, data, config);
+        const response = await axiosRequest(ADMIN_SUB_CATEGORY_STATUS, data, config);
         if (response.data.status === true) {
             getCategoryList(page, rowsPerPage);
         }
@@ -99,10 +99,10 @@ export default function ChangePassword() {
         <Container>
 
             <Box className="breadcrumb">
-                <Breadcrumb routeSegments={[{ name: "Category", path: "/category-listing" }, { name: "Home" }]} />
+                <Breadcrumb routeSegments={[{ name: "Sub Category", path: "/sub-category-listing" }, { name: "Home" }]} />
             </Box>
-            <SimpleCard title="Category">
-                <Button variant="contained" size={"small"} style={{ float: 'right' }} color="primary" onClick={() => { navigate('/category-create') }}>
+            <SimpleCard title="Sub Category">
+                <Button variant="contained" size={"small"} style={{ float: 'right' }} color="primary" onClick={() => { navigate('/sub-category-create') }}>
                     Add New Record
                 </Button>
                 <Box width="100%" overflow="auto">
@@ -112,7 +112,7 @@ export default function ChangePassword() {
                                 <TableHead style={{ color: 'white', alignItem: 'center', fontWeight: 'bold' }}>
                                     <TableRow>
                                         <TableCell align="left">Sr No</TableCell>
-                                        <TableCell align="left">Section Name</TableCell>
+                                        <TableCell align="left">Category Name</TableCell>
                                         <TableCell align="left">Name</TableCell>
                                         <TableCell align="center">Active/InActive</TableCell>
                                         <TableCell align="center">Status</TableCell>
@@ -128,7 +128,7 @@ export default function ChangePassword() {
                                                 </TableCell>
 
 
-                                                <TableCell align="left">{subscriber.Section.name}</TableCell>
+                                                <TableCell align="left">{subscriber.Category.name}</TableCell>
                                                 <TableCell align="left">{subscriber.name}</TableCell>
 
                                                 <TableCell align="right">
@@ -142,7 +142,7 @@ export default function ChangePassword() {
                                                 <TableCell align="right" style={{ float: 'right !importent' }}>
                                                     <Grid container spacing={1} alignItems="right">
                                                         <Grid item>
-                                                            <EditButton label={'Edit'} onClick={() => { navigate(`/Category-edit/${subscriber.id}`) }} />
+                                                            <EditButton label={'Edit'} onClick={() => { navigate(`/sub-category-edit/${subscriber.id}`) }} />
                                                         </Grid>
                                                     </Grid>
                                                 </TableCell>

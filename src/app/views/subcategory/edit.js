@@ -5,9 +5,9 @@ import { useState } from "react";
 
 
 import { Breadcrumb } from "app/components";
-import SectionsForm from "./form";
+import CategorysForm from "./form";
 import { useEffect } from "react";
-import { ADMIN_CATEGORY_EDIT } from "apiurl";
+import { ADMIN_SUB_CATEGORY_EDIT } from "apiurl";
 import { headerValue } from "app/components/custom/CommonComponent";
 import { axiosRequest } from "config";
 
@@ -26,7 +26,7 @@ export default function Edit() {
     const { id } = useParams();
 
     const [data, setData] = useState({
-        section_id: '',
+        category_id: '',
         name: "",
         meta_title: "",
         meta_description: "",
@@ -40,12 +40,12 @@ export default function Edit() {
             headers: headers
         };
         const data = { id: id };
-        const response = await axiosRequest(ADMIN_CATEGORY_EDIT, data, config);
+        const response = await axiosRequest(ADMIN_SUB_CATEGORY_EDIT, data, config);
 
         if (response.data.status === true) {
             const result = response.data.data;
             setData({
-                section_id: result.section_id ?? '',
+                category_id: result.category_id ?? '',
                 name: result.name ?? '',
                 meta_title: result.meta_title ?? '',
                 meta_description: result.meta_description ?? '',
@@ -62,10 +62,10 @@ export default function Edit() {
     return (<>
         <Container>
             <Box className="breadcrumb">
-                <Breadcrumb routeSegments={[{ name: "Edit Sections", path: `/sections-edit/${id}` }, { name: "Sections" }]} />
+                <Breadcrumb routeSegments={[{ name: "Edit Sub Category", path: `/sub-category-edit/${id}` }, { name: "Sub Category" }]} />
             </Box>
             <Stack spacing={3}>
-                <SectionsForm id={id} stateVal={data} />
+                <CategorysForm id={id} stateVal={data} />
             </Stack>
         </Container>
     </>);
