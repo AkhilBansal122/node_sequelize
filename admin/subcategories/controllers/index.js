@@ -150,7 +150,7 @@ module.exports = {
       return res.status(500).json({ status: false, message: 'Internal server error' });
     }
   },
-  getActiveSection: async (req,res)=>{
+  getActiveCategory: async (req,res)=>{
     const data = await CategorsModal.findAll({
       where:{
         status:1
@@ -159,14 +159,14 @@ module.exports = {
     if(data && data.length > 0){
       return res.status(200).send({
         status:true,
-        mssage:"get active SubCategory",     
+        mssage:"get active Category",     
         data:data
       });
     }
     else{
       return res.status(400).send({
         status:false,
-        mssage:"get active SubCategory",     
+        mssage:"get active Category",     
         data:[]
       });
     }

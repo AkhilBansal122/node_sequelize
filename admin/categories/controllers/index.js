@@ -153,6 +153,7 @@ module.exports = {
   },
   getActiveSection: async (req,res)=>{
     const data = await SectionsModal.findAll({
+      attributes:['id','name'],
       where:{
         status:1
       }
