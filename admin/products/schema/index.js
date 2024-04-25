@@ -27,7 +27,7 @@ listsubProductSchema: async (req,res,next)=>{
   });
   validationRequest(req, res, next, schema)
 },
-statussubcategoriesSchema : async (req,res,next)=>{
+statusProductSchema : async (req,res,next)=>{
    schema=  joi.object().keys({
         id:joi.number().required(),
         status:joi.number().required()

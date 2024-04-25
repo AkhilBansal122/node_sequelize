@@ -1,9 +1,10 @@
 const db = require("../../../models");
 const { createSlug } = require('../../../helper');
-const SubCategoriesMddel = db.SubCategory;
+const SubCategoriesMddel = db.Products;
 const CategorsModal = db.Category;
 const ProductsModal = db.Product;
-
+const BrandModal = db.Brand;
+const SectionModal = db.Section;
 require('dotenv').config();
 const { Op } = require('sequelize');
 const formidable = require('formidable');
@@ -17,16 +18,16 @@ module.exports = {
     let errorMessage = {};
     var message = "";
     let slug = "";
-    let section_id="";
-    let brand_id="";
-    let category_id ="";
-    let subcategory_id="";
-    let productname="";
-    let main_image="";
-    let meta_description="";
-    let meta_title ="";
-    let meta_keywords ="";
-    let description="";
+    let section_id = "";
+    let brand_id = "";
+    let category_id = "";
+    let Products_id = "";
+    let productname = "";
+    let main_image = "";
+    let meta_description = "";
+    let meta_title = "";
+    let meta_keywords = "";
+    let description = "";
 
     const form = new formidable.IncomingForm();
     try {
@@ -36,7 +37,7 @@ module.exports = {
             errorMessage.email = { message: "Brand Field Is Required" };
             message = "Brand Field Is Required";
           }
-          else{
+          else {
             brand_id = value;
           }
         }
@@ -45,7 +46,7 @@ module.exports = {
             errorMessage.email = { message: "Section Field Is Required" };
             message = "Section Field Is Required";
           }
-          else{
+          else {
             section_id = value;
           }
         }
@@ -54,17 +55,17 @@ module.exports = {
             errorMessage.email = { message: "Category Field Is Required" };
             message = "Category Field Is Required";
           }
-          else{
+          else {
             category_id = value;
           }
         }
         if (name == 'sub_category_id') {
           if (!value) {
-            errorMessage.email = { message: "SubCategory Field Is Required" };
-            message = "SubCategory Field Is Required";
+            errorMessage.email = { message: "Products Field Is Required" };
+            message = "Products Field Is Required";
           }
-          else{
-            subcategory_id = value;
+          else {
+            Products_id = value;
           }
         }
         if (name == 'product_name') {
@@ -72,28 +73,28 @@ module.exports = {
             errorMessage.email = { message: "Name Field Is Required" };
             message = "Name Field Is Required";
           }
-          else{
-            slug= createSlug(value);
+          else {
+            slug = createSlug(value);
             productname = value;
           }
         }
-        if(name ==='meta_description'){
-          if(value && value.length > 0 ) {
+        if (name === 'meta_description') {
+          if (value && value.length > 0) {
             meta_description = value;
           }
         }
-        if(name ==='meta_title'){
-          if(value && value.length > 0 ) {
+        if (name === 'meta_title') {
+          if (value && value.length > 0) {
             meta_title = value;
           }
         }
-        if(name ==='meta_keywords'){
-          if(value && value.length > 0 ) {
+        if (name === 'meta_keywords') {
+          if (value && value.length > 0) {
             meta_keywords = value;
           }
         }
-        if(name==='description'){
-          if(value && value.length > 0){
+        if (name === 'description') {
+          if (value && value.length > 0) {
             description = value;
           }
         }
@@ -107,22 +108,22 @@ module.exports = {
           return next(err);
         }
         const productChecked = await ProductsModal.findOne({
-          where:{
-            name:productname
+          where: {
+            name: productname
           }
         });
-  
-        if(productChecked){
+
+        if (productChecked) {
           return res.status(400).send({
-            status:false,
-            message:"Product Name Is Already Exists"
+            status: false,
+            message: "Product Name Is Already Exists"
           })
         }
         const allFiles = files.image;
         const rootDirectory = path.join(__dirname, '../../../');
         const newFolderDir = "/uploads/frontend/product";
         const uploadPath = path.join(rootDirectory, newFolderDir);
-  
+
         if (!fs.existsSync(uploadPath)) {
           fs.mkdirSync(uploadPath, { recursive: true });
         }
@@ -136,8 +137,8 @@ module.exports = {
               const newFileName = Date.now() + "_" + req.user.userId + path.extname(allFiles[0].originalFilename);
               const sourcePath = allFiles[0].filepath; // corrected from allFiles[0].filepath
               const destinationPath = path.join(uploadPath, newFileName);
-    
-    
+
+
               // Copy file from source to destination
               fs.copyFile(sourcePath, destinationPath, (err) => {
                 if (err) {
@@ -146,25 +147,25 @@ module.exports = {
                   return res.status(500).json({ error: "Error copying file" });
                 } else {
                   main_image = newFolderDir + "/" + newFileName;
-    
+
                   // Continue with your code logic
                 }
               });
-    
+
               main_image = newFolderDir + "/" + newFileName;
             }
           }
         }
-  
+
         if (Object.keys(errorMessage).length > 0) {
           return res.status(400).json({ status: false, status_code: 400, errorMessage, message: message });
-        
+
         }
         const insertBrand = await ProductsModal.create({
-          brand_id:brand_id,
-          section_id:section_id,
-          category_id:category_id,
-          subcategory_id:subcategory_id,
+          brand_id: brand_id,
+          section_id: section_id,
+          category_id: category_id,
+          Products_id: Products_id,
           name: productname,
           slug: slug,
           meta_description: meta_description,
@@ -173,44 +174,44 @@ module.exports = {
           meta_keywords: meta_keywords,
           meta_title: meta_title,
         });
-  
-  
-          if (insertBrand) {
-            return res.status(200).send({
-              status: true,
-              message: "Product Added Successfully"
-            })
-          }
-          else{
-            return res.status(400).send({
-              status: false,
-              message: "Something want wrong"
-            })
-          }
+
+
+        if (insertBrand) {
+          return res.status(200).send({
+            status: true,
+            message: "Product Added Successfully"
+          })
+        }
+        else {
+          return res.status(400).send({
+            status: false,
+            message: "Something want wrong"
+          })
+        }
       });
-  
+
     } catch (error) {
-      return req.send({status:false,message:"Something want wrong"});
+      return req.send({ status: false, message: "Something want wrong" });
     }
 
 
   },
   updatesubcategories: async (req, res) => {
-    const {category_id,name,id,meta_description,meta_keywords,meta_title} = req.body;
-    const entity  = await SubCategoriesMddel.findOne({
-      where:{
-        id:id
+    const { category_id, name, id, meta_description, meta_keywords, meta_title } = req.body;
+    const entity = await SubCategoriesMddel.findOne({
+      where: {
+        id: id
       }
     });
-    if(!entity){
+    if (!entity) {
       return res.status(400).send({
-        status:false,
-        message:"No Record Found"
+        status: false,
+        message: "No Record Found"
       });
     }
-  const checked=  await SubCategoriesMddel.count({
+    const checked = await SubCategoriesMddel.count({
       where: {
-        category_id :category_id,
+        category_id: category_id,
         id: {
           [Op.ne]: id
         },
@@ -219,20 +220,20 @@ module.exports = {
         }
       }
     });
-    if(checked &&  checked > 0){
+    if (checked && checked > 0) {
       return res.status(400).send({
-        status:false,
-        message:"Name Is Already Exists"
+        status: false,
+        message: "Name Is Already Exists"
       });
     }
-    entity.category_id= category_id;
-    entity.name=name;
-    entity.meta_title=meta_title;
-    entity.meta_description=meta_description;
-    entity.meta_keywords=meta_keywords;
-    if(await entity.save()){
+    entity.category_id = category_id;
+    entity.name = name;
+    entity.meta_title = meta_title;
+    entity.meta_description = meta_description;
+    entity.meta_keywords = meta_keywords;
+    if (await entity.save()) {
       return res.status(200).json({ status: true, message: "Record Updated Successfully" });
-    }else{
+    } else {
       return res.status(400).json({ status: false, message: "Something want wrong" });
     }
   },
@@ -262,38 +263,73 @@ module.exports = {
     const limit = parseInt(req.body.limit);
 
     const total_records = await ProductsModal.count({
-      include:[{
+      include: [{
+        model: SectionModal,
+        where: {
+          status: 1
+        },
+      },{
         model: CategorsModal,
-        where:{
-          status:1
-        } 
+        where: {
+          status: 1
+        }
+      }, {
+        model: SubCategoriesMddel,
+        where: {
+          status: 1
+        }
+      }, {
+        model: BrandModal,
+        where: {
+          status: 1
+        }
       }]
     });
 
     const getAllRecord = await ProductsModal.findAll({
       offset: offset,
       limit: limit,
-      include: [{ 
-        model: CategorsModal,
-        where:{
-          status:1
+      include: [{
+        model: SectionModal,
+        where: {
+          status: 1
         },
-        attributes: ['name'] 
-      }], // Include Category model           
-       order: [['id', 'DESC']]
+        attributes: ['name']
+      }, {
+        model: BrandModal,
+        where: {
+          status: 1
+        },
+        attributes: ['name']
+      }, {
+        model: CategorsModal,
+        where: {
+          status: 1
+        },
+        attributes: ['name']
+      }, {
+        model: SubCategoriesMddel,
+        where: {
+          status: 1
+        },
+        attributes: ['name']
+      },
+
+      ], // Include Category model           
+      order: [['id', 'DESC']]
     });
-    return res.status(200).send({ status: true, message: "New SubCategory listing Successfully", total_record: total_records, data: getAllRecord });
+    return res.status(200).send({ status: true, message: "New Products listing Successfully", total_record: total_records, data: getAllRecord });
   },
-  statussubcategories: async (req, res) => {
+  statusproduct: async (req, res) => {
     try {
       const { id, status } = await req.body;
-      let checkedBrand = await SubCategoriesMddel.findOne({
+      let checkedBrand = await ProductsModal.findOne({
         where: {
           id: id
         }
       });
       if (!checkedBrand) {
-        return res.status(404).json({ status: false, message: 'Brand not found' });
+        return res.status(404).json({ status: false, message: 'Product not found' });
       }
       checkedBrand.status = status;
       await checkedBrand.save();
@@ -303,29 +339,27 @@ module.exports = {
       if (error.isJoi === true) {
         return res.status(200).json({ status: false, message: error.message });
       }
-      // Handle other errors
-      console.error('Error updating brand status:', error);
       return res.status(500).json({ status: false, message: 'Internal server error' });
     }
   },
-  getActiveCategory: async (req,res)=>{
+  getActiveCategory: async (req, res) => {
     const data = await CategorsModal.findAll({
-      where:{
-        status:1
+      where: {
+        status: 1
       }
     });
-    if(data && data.length > 0){
+    if (data && data.length > 0) {
       return res.status(200).send({
-        status:true,
-        mssage:"get active Category",     
-        data:data
+        status: true,
+        mssage: "get active Category",
+        data: data
       });
     }
-    else{
+    else {
       return res.status(400).send({
-        status:false,
-        mssage:"get active Category",     
-        data:[]
+        status: false,
+        mssage: "get active Category",
+        data: []
       });
     }
   }
