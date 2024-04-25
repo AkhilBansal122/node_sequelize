@@ -11,6 +11,7 @@ const AdminBrandRoute = require("./admin/brand/route/index");
 const AdminSectionsRoute = require("./admin/sections/route/index");
 const AdminCategoriesRoute = require("./admin/categories/route/index");
 const AdminSubCategoriesRoute = require("./admin/subcategories/route/index");
+const AdminProductsRoute = require("./admin/products/route/index");
 
  
 app.use(cors({origin: '*'}));
@@ -27,6 +28,7 @@ app.use("/api/admin/brand/", AdminBrandRoute);
 app.use("/api/admin/sections/", AdminSectionsRoute);
 app.use("/api/admin/categories/", AdminCategoriesRoute);
 app.use("/api/admin/subcategories/", AdminSubCategoriesRoute);
+app.use("/api/admin/products/", AdminProductsRoute);
 
 
 // Start server
