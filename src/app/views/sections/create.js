@@ -1,7 +1,7 @@
 import { Stack } from "@mui/material";
 import { Box, styled } from "@mui/material";
 
-import { Breadcrumb } from "app/components";
+import { Breadcrumb, SimpleCard } from "app/components";
 import SectionsForm from "./form";
 // STYLED COMPONENTS
 const Container = styled("div")(({ theme }) => ({
@@ -20,14 +20,16 @@ export default function create() {
             <Box className="breadcrumb">
                 <Breadcrumb routeSegments={[{ name: "Add New Sections", path: "/sections-create" }, { name: "Sections" }]} />
             </Box>
-            <Stack spacing={3}>
-                <SectionsForm id={null} stateVal={{
-                    name: "",
-                    meta_title: "",
-                    meta_description: "",
-                    meta_keywords: "",
-                }} />
-            </Stack>
+            <SimpleCard title="Add New Section">
+                <Stack spacing={3}>
+                    <SectionsForm id={null} stateVal={{
+                        name: "",
+                        meta_title: "",
+                        meta_description: "",
+                        meta_keywords: "",
+                    }} />
+                </Stack>
+            </SimpleCard>
         </Container>
     </>);
 }

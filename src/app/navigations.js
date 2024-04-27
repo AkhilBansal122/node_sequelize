@@ -4,6 +4,7 @@ export const navigations = [
   { name: "Sections", path: "/sections-listing", icon: "dashboard" },
   { name: "Category", path: "/category-listing", icon: "dashboard" },
   { name: "SubCategory", path: "/sub-category-listing", icon: "dashboard" },
+  { name: "Product", path: "/products-listing", icon: "dashboard" },
 
   { label: "PAGES", type: "label" },
   {

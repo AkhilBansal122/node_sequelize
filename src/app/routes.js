@@ -41,6 +41,10 @@ const AdminSubCategory = Loadable(lazy(() => import("app/views/subcategory/index
 const AdminCreateSubCategory = Loadable(lazy(() => import("app/views/subcategory/create")));
 const AdminEditSubCategory = Loadable(lazy(() => import("app/views/subcategory/edit")));
 
+const AdminProducts = Loadable(lazy(() => import("app/views/products/index")));
+const AdminCreatepProducts = Loadable(lazy(() => import("app/views/products/create")));
+const AdminEditProducts = Loadable(lazy(() => import("app/views/products/edit")));
+
 const routes = [
   {
     element: (
@@ -68,6 +72,10 @@ const routes = [
       { path: "/sub-category-listing", element: <AdminSubCategory />, auth: authRoles.admin },
       { path: "/sub-category-create", element: <AdminCreateSubCategory />, auth: authRoles.admin },
       { path: "/sub-category-edit/:id", element: <AdminEditSubCategory />, auth: authRoles.admin },
+
+      { path: "/products-listing", element: <AdminProducts />, auth: authRoles.admin },
+      { path: "/products-create", element: <AdminCreatepProducts />, auth: authRoles.admin },
+      { path: "/products-edit/:id", element: <AdminEditProducts />, auth: authRoles.admin },
 
       // e-chart route
       { path: "/charts/echarts", element: <AppEchart />, auth: authRoles.editor }

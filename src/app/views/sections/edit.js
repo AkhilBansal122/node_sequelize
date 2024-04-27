@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { useState } from "react";
 
 
-import { Breadcrumb } from "app/components";
+import { Breadcrumb, SimpleCard } from "app/components";
 import SectionsForm from "./form";
 import { useEffect } from "react";
 import { ADMIN_SECTIONS_EDIT } from "apiurl";
@@ -63,9 +63,11 @@ export default function Edit() {
             <Box className="breadcrumb">
                 <Breadcrumb routeSegments={[{ name: "Edit Sections", path: `/sections-edit/${id}` }, { name: "Sections" }]} />
             </Box>
-            <Stack spacing={3}>
-                <SectionsForm id={id} stateVal={data} />
-            </Stack>
+            <SimpleCard title="Edit Sections">
+                <Stack spacing={3}>
+                    <SectionsForm id={id} stateVal={data} />
+                </Stack>
+            </SimpleCard>
         </Container>
     </>);
 }

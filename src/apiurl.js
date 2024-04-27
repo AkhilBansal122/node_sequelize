@@ -36,5 +36,14 @@ export const ADMIN_SUB_CATEGORY_UPDATE = `${BASE_URL}/subcategories/update`;
 export const ADMIN_SUB_CATEGORY_STATUS = `${BASE_URL}/subcategories/status`;
 export const ADMIN_ACTIVE_CATEGORY_STATUS = `${BASE_URL}/subcategories/activecategory`;
 
+export const ADMIN_PRODUCTS_CREATE = `${BASE_URL}/products/create`;
+export const ADMIN_PRODUCTS_EDIT = `${BASE_URL}/products/edit`;
+export const ADMIN_PRODUCTS_LIST = `${BASE_URL}/products/listing`;
+export const ADMIN_PRODUCTS_UPDATE = `${BASE_URL}/products/update`;
+export const ADMIN_PRODUCTS_STATUS = `${BASE_URL}/products/status`;
+export const ADMIN_ACTIVE_BRAND_STATUS = `${BASE_URL}/products/activebrand`;
+export const ADMIN_ACTIVE_CATEGORY_BY_SECTION_ID = `${BASE_URL}/products/activecategoryBySectionId`;
+
+
 export const offset = 0;
 export const limit = 2;
