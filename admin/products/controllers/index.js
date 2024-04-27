@@ -1,6 +1,6 @@
 const db = require("../../../models");
 const { createSlug } = require('../../../helper');
-const SubCategoriesMddel = db.Products;
+const SubCategoriesMddel = db.SubCategory;
 const CategorsModal = db.Category;
 const ProductsModal = db.Product;
 const BrandModal = db.Brand;
@@ -159,7 +159,6 @@ module.exports = {
 
         if (Object.keys(errorMessage).length > 0) {
           return res.status(400).json({ status: false, status_code: 400, errorMessage, message: message });
-
         }
         const insertBrand = await ProductsModal.create({
           brand_id: brand_id,
@@ -285,6 +284,7 @@ module.exports = {
         }
       }]
     });
+
 
     const getAllRecord = await ProductsModal.findAll({
       offset: offset,
