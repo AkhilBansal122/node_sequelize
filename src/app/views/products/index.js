@@ -10,6 +10,7 @@ import {
     TableCell,
     TableHead,
     Button,
+    Avatar
 } from "@mui/material";
 
 
@@ -20,7 +21,7 @@ import { Breadcrumb } from "app/components";
 import { SimpleCard } from "app/components";
 import { axiosRequest } from "../../../config";
 import { useEffect } from "react";
-import { ADMIN_PRODUCTS_STATUS, ADMIN_PRODUCTS_LIST } from "apiurl";
+import { ADMIN_PRODUCTS_STATUS, ADMIN_PRODUCTS_LIST, BASE_IMAGE_URL } from "apiurl";
 import { ActiveInactiveComponent, EditButton, SwitchActiveInactive, headerValue } from "app/components/custom/CommonComponent";
 
 import { CuustomPagination } from "app/components/custom/CommonComponent";
@@ -112,6 +113,7 @@ export default function ProductListing() {
                                 <TableHead style={{ color: 'white', alignItem: 'center', fontWeight: 'bold' }}>
                                     <TableRow>
                                         <TableCell align="left">Sr No</TableCell>
+                                        <TableCell style={{ fontWeight: 'bold' }} align="left">Image</TableCell>
                                         <TableCell align="left">Brand Name</TableCell>
                                         <TableCell align="left">Section Name</TableCell>
                                         <TableCell align="left">Category Name</TableCell>
@@ -129,7 +131,10 @@ export default function ProductListing() {
                                                 <TableCell align="left">
                                                     {index + 1}
                                                 </TableCell>
+                                                <TableCell align="left">
 
+                                                    <Avatar src={BASE_IMAGE_URL + "" + subscriber.main_image} />
+                                                </TableCell>
                                                 <TableCell align="left">{subscriber.Brand.name}</TableCell>
                                                 <TableCell align="left">{subscriber.Section.name}</TableCell>
                                                 <TableCell align="left">{subscriber.Category.name}</TableCell>

@@ -1,5 +1,7 @@
 export const MessageAetTimeoutTime = 5000;
 export const BASE_URL = "http://localhost:5000/api/admin";
+export const BASE_IMAGE_URL = "http://localhost:5000";
+
 export const ADMIN_LOGIN_URL = `${BASE_URL}/login`;
 export const ADMIN_ForgotPassword_URL = `${BASE_URL}/forgot-password`;
 export const ADMIN_VERIFY_OTP = `${BASE_URL}/verify-otp`;
@@ -43,6 +45,7 @@ export const ADMIN_PRODUCTS_UPDATE = `${BASE_URL}/products/update`;
 export const ADMIN_PRODUCTS_STATUS = `${BASE_URL}/products/status`;
 export const ADMIN_ACTIVE_BRAND_STATUS = `${BASE_URL}/products/activebrand`;
 export const ADMIN_ACTIVE_CATEGORY_BY_SECTION_ID = `${BASE_URL}/products/activecategoryBySectionId`;
+export const ADMIN_ACTIVE_SUB_CATEGORY_BY_CATEGORY_ID = `${BASE_URL}/products/activesubcategoryByCategoryId`;
 
 
 export const offset = 0;

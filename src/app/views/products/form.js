@@ -1,9 +1,9 @@
-
 import {
     Grid,
     Icon,
     styled,
-
+    Button,
+    Avatar
 } from "@mui/material";
 
 import { Span } from "app/components/Typography";
@@ -11,16 +11,12 @@ import { useState } from "react";
 import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 import { LoadingButton } from "@mui/lab";
 
-import { headerValue } from "app/components/custom/CommonComponent";
-import { ADMIN_SUB_CATEGORY_CREATE, ADMIN_ACTIVE_CATEGORY_STATUS, ADMIN_ACTIVE_BRAND_STATUS, ADMIN_ACTIVE_SECTIONS_STATUS, ADMIN_SUB_CATEGORY_UPDATE, ADMIN_ACTIVE_CATEGORY_BY_SECTION_ID } from "apiurl";
+import { CustomSelect, headerValue, formDataheaderValue } from "app/components/custom/CommonComponent";
+import { ADMIN_ACTIVE_SUB_CATEGORY_BY_CATEGORY_ID, ADMIN_ACTIVE_BRAND_STATUS, ADMIN_ACTIVE_SECTIONS_STATUS, ADMIN_PRODUCTS_CREATE, ADMIN_PRODUCTS_UPDATE, ADMIN_ACTIVE_CATEGORY_BY_SECTION_ID } from "apiurl";
 import { axiosRequest } from "config";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { SelectOption } from "app/components/custom/CommonComponent";
-
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 const TextField = styled(TextValidator)(() => ({
     width: "100%",
@@ -35,41 +31,69 @@ const StyledTextarea = styled(TextValidator)`
     border-radius: 4px;
     resize: vertical;
 `;
+const VisuallyHiddenInput = styled('input')({
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: 1,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: 1,
+});
 
-const CategorysForm = ({ stateVal, id }) => {
+const ProductForm = ({ stateVal, id }) => {
+    const headers = headerValue();
+    const config = {
+        headers: headers
+    };
+
     const [state, setState] = useState({});
     const [selectedCategoryValue, setSelectedCategoryValue] = useState('');
     const [selectedBrandValue, setSelectedBrandValue] = useState('');
     const [selectedSectionsValue, setSelectedSectionsValue] = useState('');
+    const [selectedASubcategoryValue, setSelectedASubcategoryValue] = useState('');
 
     useEffect(() => {
         setState({
             selectBrand: stateVal.brand_id ?? 'select Brand',
             selectSection: stateVal.section_id ?? 'select Section',
             selectOptions: stateVal.category_id ?? 'select Sections',
+            selectSubCategory: stateVal.sub_category_id ?? 'select Sub Category',
             name: stateVal.name,
             meta_title: stateVal.meta_title,
             meta_description: stateVal.meta_description,
             meta_keywords: stateVal.meta_keywords,
+            previewImage: stateVal.main_image,
+            description: stateVal.description,
+
         });
         setSelectedCategoryValue(stateVal.category_id ?? 'select option');
         setSelectedBrandValue(stateVal.brand_id, "select Brand");
         setSelectedSectionsValue(stateVal.section_id, "select Section");
+        setSelectedASubcategoryValue(stateVal.sub_category_id, "select sub category");
         getActiveCategory();
     }, [stateVal]);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [selectActiveBrand, setselectActiveBrand] = useState([]);
     const [selectActiveSections, setselectActiveSections] = useState([]);
-
     const [selectActiveCategory, setselectActiveCategory] = useState([]);
+    const [selectActiveSubCategory, setselectActiveSubCategory] = useState([]);
+    const [selectedFile, setSelectedFile] = useState(null);
+
+    const [brandError, setBrandError] = useState(false);
+    const [brandHelperText, setBrandHelperText] = useState('');
+    const [sectionError, setSectionError] = useState(false);
+    const [sectionHelperText, setSectionHelperText] = useState('');
+    const [categoryError, setCategoryError] = useState(false);
+    const [categoryHelperText, setCategoryHelperText] = useState('');
+    const [subCategoryError, setSubCategoryError] = useState(false);
+    const [subCategoryHelperText, setSubCategoryHelperText] = useState('');
+
 
     const getActiveCategory = async () => {
-        const headers = headerValue();
-
-        const config = {
-            headers: headers
-        };
         try {
             const responseBrand = await axiosRequest(ADMIN_ACTIVE_BRAND_STATUS, {}, config);
             setselectActiveBrand(responseBrand.data.status === true ? responseBrand.data.data : []);
@@ -89,50 +113,165 @@ const CategorysForm = ({ stateVal, id }) => {
         setState({ ...state, [event.target.name]: event.target.value });
     };
 
+    const handleFileChange = (event) => {
+        const file = event.target.files[0]; // Get the first file if multiple files are selected
+        if (file) {
+            state.image = file;
+            setState({
+                ...state,
+                image: file
+            });
+            setSelectedFile(file);
+        }
+
+    };
     const handleSubmit = async (event) => {
         try {
-            setLoading(true);
+            //  setLoading(true);
             event.persist();
-            const headers = headerValue();
-
-            const config = {
-                headers: headers
-            };
-            const data = { category_id: selectedCategoryValue, id, name: state.name, meta_description: state.meta_description, meta_keywords: state.meta_keywords, meta_title: state.meta_title };
-            const response = await axiosRequest(id === null ? ADMIN_SUB_CATEGORY_CREATE : ADMIN_SUB_CATEGORY_UPDATE, data, config);
-            if (response.data.status === true) {
-                navigate("/sub-category-listing");
-                setLoading(false);
+            if (selectedBrandValue === 'select Brand' || selectedBrandValue === '') {
+                setBrandError(true);
+                setBrandHelperText("Please select a Brand");
             }
             else {
-                setLoading(false);
+                setBrandError(false);
+                setBrandHelperText("");
             }
+            if (selectedSectionsValue === 'select Sections' || selectedSectionsValue === '') {
+                setSectionError(true);
+                setSectionHelperText("Please select a section");
+            }
+            else {
+                setSectionError(false);
+                setSectionHelperText("");
+            }
+            if (selectedCategoryValue === '' || selectedCategoryValue === 'select option') {
+                setCategoryError(true);
+                setCategoryHelperText("Please selct a category");
+            }
+            else {
+                setCategoryError(false);
+                setCategoryHelperText("");
+            }
+            if (selectedASubcategoryValue === 'select sub category' || selectedASubcategoryValue === '') {
+                setSubCategoryError(true);
+                setSubCategoryHelperText("Please select a sub category");
+            }
+            else {
+                setSubCategoryError(false);
+                setSubCategoryHelperText("");
+            }
+
+
+            if (selectedBrandValue !== 'select Brand' && selectedSectionsValue !== 'select Sections' && selectedCategoryValue !== 'select option' && selectedASubcategoryValue !== 'select sub category') {
+
+                const data = {
+                    brand_id: selectedBrandValue,
+                    section_id: selectedSectionsValue,
+                    category_id: selectedCategoryValue,
+                    sub_category_id: selectedASubcategoryValue, id,
+                    product_name: state.name, meta_description: state.meta_description,
+                    meta_keywords: state.meta_keywords,
+                    meta_title: state.meta_title,
+                    main_image: selectedFile,
+                    description: state.description
+                };
+                const conf = {
+                    headers: formDataheaderValue()
+                }
+                try {
+                    const response = await axiosRequest(id === null ? ADMIN_PRODUCTS_CREATE : ADMIN_PRODUCTS_UPDATE, data, conf);
+                    console.log("data::", data);
+                    if (response.data.status === true) {
+                        navigate("/sub-category-listing");
+                        setLoading(false);
+                    }
+                    else {
+                        setLoading(false);
+                    }
+                } catch (error) {
+                    // Handle errors from axios request
+                    console.error("Error:", error);
+                    // You can set an error state here or handle the error in another way
+                }
+
+            }
+            else { setLoading(false); }
+
+            // const response = await axiosRequest(id === null ? ADMIN_SUB_CATEGORY_CREATE : ADMIN_SUB_CATEGORY_UPDATE, data, config);
+            // if (response.data.status === true) {
+            //     navigate("/sub-category-listing");
+            //     setLoading(false);
+            // }
+            // else {
+            //     setLoading(false);
+            // }
         } catch (error) {
             setLoading(false);
         }
     };
 
-    const handleSelectChange = (event) => {
-        setSelectedCategoryValue(event.target.value);
-        state.selectOptions = event.target.value;
+    const handleSelectCategoryChange = async (event) => {
+        if (event.target.value === '' || event.target.value === 'select option') {
+            setCategoryError(true);
+            setCategoryHelperText("Please selct category");
+        }
+        else {
+            setCategoryError(false);
+            setCategoryHelperText("");
+            try {
+                const response = await axiosRequest(ADMIN_ACTIVE_SUB_CATEGORY_BY_CATEGORY_ID, { category_id: event.target.value }, config);
+                setselectActiveSubCategory(response.data.status === true ? response.data.data : []);
+            } catch (error) {
+                setselectActiveSubCategory([]);
+            }
+            setSelectedCategoryValue(event.target.value);
+        }
+    };
+    const handleSelectSubCategoryChange = (event) => {
+        if (event.target.value === 'select sub category' || event.target.value === '') {
+            setSubCategoryError(true);
+            setSubCategoryHelperText("Please select sub category");
+        }
+        else {
+            setSubCategoryError(false);
+            setSubCategoryHelperText("");
+            setSelectedASubcategoryValue(event.target.value);
+        }
     };
     const handleSelecBrandChange = (event) => {
-        setSelectedBrandValue(event.target.value);
+        if (event.target.value === '' || event.target.value === 'select Brand') {
+            setBrandError(true);
+            setBrandHelperText('Please select a brand');
+        } else {
+            setBrandError(false);
+            setBrandHelperText('');
+            setSelectedBrandValue(event.target.value);
+        }
+
     };
     const handleSelecSectionsChange = async (event) => {
-        const headers = headerValue();
 
-        const config = {
-            headers: headers
-        };
-        try {
-            const response = await axiosRequest(ADMIN_ACTIVE_CATEGORY_BY_SECTION_ID, { section_id: event.target.value }, config);
-            setselectActiveCategory(response.data.status === true ? response.data.data : []);
-        } catch (error) {
-            setselectActiveCategory([]);
+        if (event.target.value === '' || event.target.value === 'select Sections') {
+            setSectionError(true);
+            setSectionHelperText('Please select a section');
         }
-        setSelectedSectionsValue(event.target.value);
+        else {
+            setSectionError(false);
+            setSectionHelperText('');
+
+            try {
+                const response = await axiosRequest(ADMIN_ACTIVE_CATEGORY_BY_SECTION_ID, { section_id: event.target.value }, config);
+                setselectActiveCategory(response.data.status === true ? response.data.data : []);
+            } catch (error) {
+                setselectActiveCategory([]);
+            }
+            setSelectedSectionsValue(event.target.value);
+        }
+
     };
+
+
 
     return (
         <div>
@@ -140,61 +279,54 @@ const CategorysForm = ({ stateVal, id }) => {
 
                 <Grid container spacing={6}>
                     <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
-                        <FormControl sx={{ mb: 1 }} fullWidth>
-                            <Select
-                                labelId="demo-simple-select-helper-label"
-                                id="demo-simple-select-helper"
-                                label="select Brand"
-                                value={selectedBrandValue}
-                                onChange={handleSelecBrandChange}
-                                required>
+                        <CustomSelect label="Brand"
+                            value={selectedBrandValue}
+                            onChange={handleSelecBrandChange}
+                            items={selectActiveBrand}
+                            defaultValue="select Brand"
+                            error={brandError}
+                            helperText={brandHelperText}
+                        />
+                        <CustomSelect
+                            label="Section"
+                            value={selectedSectionsValue}
+                            onChange={handleSelecSectionsChange}
+                            items={selectActiveSections}
+                            defaultValue="select Sections"
+                            error={sectionError}
+                            helperText={sectionHelperText}
 
-                                <MenuItem value="select Brand"><em>Select Brand</em></MenuItem>
-                                {selectActiveBrand.map((item, index) => (
-                                    <MenuItem key={index} value={item.id}>{item.name}</MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                        <FormControl sx={{ mb: 1 }} fullWidth>
-                            <Select
-                                labelId="demo-simple-select-helper-label"
-                                id="demo-simple-select-helper"
-                                label="select Section"
-                                value={selectedSectionsValue}
-                                onChange={handleSelecSectionsChange}
-                                required>
+                        />
+                        <CustomSelect
+                            label="Category"
+                            value={selectedCategoryValue}
+                            onChange={handleSelectCategoryChange}
+                            items={selectActiveCategory}
+                            defaultValue="select option"
+                            error={categoryError}
+                            helperText={categoryHelperText}
 
-                                <MenuItem value="select Sections"><em>Select Section</em></MenuItem>
-                                {selectActiveSections.map((item, index) => (
-                                    <MenuItem key={index} value={item.id}>{item.name}</MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                        <FormControl sx={{ mb: 1 }} fullWidth>
-                            <Select
-                                labelId="demo-simple-select-helper-label"
-                                id="demo-simple-select-helper"
-                                label="select Category"
-                                value={selectedCategoryValue}
-                                onChange={handleSelectChange}
-                                required>
+                        />
+                        <CustomSelect
+                            label="Sub Category"
+                            value={selectedASubcategoryValue}
+                            onChange={handleSelectSubCategoryChange}
+                            items={selectActiveSubCategory}
+                            defaultValue="select sub category"
+                            error={subCategoryError}
+                            helperText={subCategoryHelperText}
 
-                                <MenuItem value="select option"><em>Select Category</em></MenuItem>
-                                {selectActiveCategory.map((item, index) => (
-                                    <MenuItem key={index} value={item.id}>{item.name}</MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
+                        />
 
                         <TextField
                             type="text"
                             name="name"
-                            label="Enter Sub Category Name"
+                            label="Enter Products Name"
                             onChange={handleChange}
                             value={state.name || ""}
                             autoComplete="off"
                             validators={["required"]}
-                            errorMessages={["Sub Category Name field is required"]}
+                            errorMessages={["Product Name field is required"]}
                         />
 
                         <TextField
@@ -226,6 +358,26 @@ const CategorysForm = ({ stateVal, id }) => {
                             multiline
                             rows={4} // Adjust the number of rows as needed
                         />
+                        <StyledTextarea
+                            name="description"
+                            autoComplete="off"
+                            label="Enter Product Description"
+                            value={state.description || ""}
+                            onChange={handleChange}
+                            multiline
+                            rows={4} // Adjust the number of rows as needed
+                        />
+                        <Button
+                            component="label"
+                            role={undefined}
+                            variant="contained"
+                            tabIndex={-1}
+                            startIcon={<CloudUploadIcon />}
+                        >
+                            Upload file
+                            <VisuallyHiddenInput name="picture" type="file" accept="image/*" onChange={handleFileChange} />
+                        </Button>
+                        {state.previewImage ? <Avatar src={state.previewImage} sx={{ cursor: "pointer" }} /> : null}
                     </Grid>
                 </Grid>
                 <LoadingButton color="primary"
@@ -240,4 +392,4 @@ const CategorysForm = ({ stateVal, id }) => {
     );
 };
 
-export default CategorysForm;
+export default ProductForm;

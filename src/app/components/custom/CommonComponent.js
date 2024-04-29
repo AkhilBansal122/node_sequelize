@@ -6,7 +6,7 @@ import React from 'react';
 
 import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import { TextField } from '@mui/material';
+import { TextField, FormHelperText } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
@@ -194,4 +194,26 @@ export const SelectOption = ({ label, list, values, handleSelectChange }) => {
         </>
     );
 }
+    ;
+export const CustomSelect = ({ label, value, onChange, items, defaultValue, error, helperText }) => (
+    <FormControl sx={{ mb: 1 }} fullWidth>
+        <Select
+            labelId="demo-simple-select-helper-label"
+            id="demo-simple-select-helper"
+            label={label}
+            value={value}
+            onChange={onChange}
+            required
+        >
+            <MenuItem value={`${defaultValue}`}><em>Select {label}</em></MenuItem>
+            {items.map((item, index) => (
+                <MenuItem key={index} value={item.id}>{item.name}</MenuItem>
+            ))}
+        </Select>
+        {error && <FormHelperText>{helperText}</FormHelperText>}
+    </FormControl>
+);
+
+// In your component, you can use CustomSelect like this:
+
 
