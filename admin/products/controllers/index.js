@@ -10,9 +10,21 @@ const { Op } = require('sequelize');
 const formidable = require('formidable');
 const path = require('path');
 const fs = require('fs');
+const crypto = require('crypto');
 
+function generateProductCode(length) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let code = '';
 
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        code += characters.charAt(randomIndex);
+    }
+
+    return code.toUpperCase();
+}
 module.exports = {
+
 
   addNewproduct: async (req, res) => {
     let errorMessage = {};
@@ -21,6 +33,7 @@ module.exports = {
     let section_id = "";
     let brand_id = "";
     let category_id = "";
+    let sub_category_id = "";
     let Products_id = "";
     let productname = "";
     let main_image = "";
@@ -28,13 +41,13 @@ module.exports = {
     let meta_title = "";
     let meta_keywords = "";
     let description = "";
-
+    let pname = "";
     const form = new formidable.IncomingForm();
     try {
       form.on('field', (name, value) => {
         if (name == 'brand_id') {
           if (!value) {
-            errorMessage.email = { message: "Brand Field Is Required" };
+            errorMessage.brand_id = { message: "Brand Field Is Required" };
             message = "Brand Field Is Required";
           }
           else {
@@ -43,7 +56,7 @@ module.exports = {
         }
         if (name == 'section_id') {
           if (!value) {
-            errorMessage.email = { message: "Section Field Is Required" };
+            errorMessage.section_id = { message: "Section Field Is Required" };
             message = "Section Field Is Required";
           }
           else {
@@ -52,7 +65,7 @@ module.exports = {
         }
         if (name == 'category_id') {
           if (!value) {
-            errorMessage.email = { message: "Category Field Is Required" };
+            errorMessage.category_id = { message: "Category Field Is Required" };
             message = "Category Field Is Required";
           }
           else {
@@ -61,19 +74,20 @@ module.exports = {
         }
         if (name == 'sub_category_id') {
           if (!value) {
-            errorMessage.email = { message: "Products Field Is Required" };
+            errorMessage.sub_category_id = { message: "Products Field Is Required" };
             message = "Products Field Is Required";
           }
           else {
-            Products_id = value;
+            sub_category_id = value;
           }
         }
         if (name == 'product_name') {
           if (!value) {
-            errorMessage.email = { message: "Name Field Is Required" };
+            errorMessage.product_name = { message: "Name Field Is Required" };
             message = "Name Field Is Required";
           }
           else {
+            pname= value;
             slug = createSlug(value);
             productname = value;
           }
@@ -107,19 +121,19 @@ module.exports = {
           // Handle error
           return next(err);
         }
-        const productChecked = await ProductsModal.findOne({
+        const productChecked = await ProductsModal.count({
           where: {
             name: productname
           }
         });
-
-        if (productChecked) {
+        if (productChecked > 0) {
           return res.status(400).send({
             status: false,
             message: "Product Name Is Already Exists"
           })
         }
-        const allFiles = files.image;
+        const allFiles = files.main_image;
+
         const rootDirectory = path.join(__dirname, '../../../');
         const newFolderDir = "/uploads/frontend/product";
         const uploadPath = path.join(rootDirectory, newFolderDir);
@@ -137,7 +151,6 @@ module.exports = {
               const newFileName = Date.now() + "_" + req.user.userId + path.extname(allFiles[0].originalFilename);
               const sourcePath = allFiles[0].filepath; // corrected from allFiles[0].filepath
               const destinationPath = path.join(uploadPath, newFileName);
-
 
               // Copy file from source to destination
               fs.copyFile(sourcePath, destinationPath, (err) => {
@@ -160,19 +173,22 @@ module.exports = {
         if (Object.keys(errorMessage).length > 0) {
           return res.status(400).json({ status: false, status_code: 400, errorMessage, message: message });
         }
-        const insertBrand = await ProductsModal.create({
-          brand_id: brand_id,
-          section_id: section_id,
-          category_id: category_id,
-          Products_id: Products_id,
-          name: productname,
+        const data = {
+          brand_id  : brand_id,
+          section_id  : section_id,
+          category_id : category_id,
+          subcategory_id : sub_category_id,
+          name: pname,
           slug: slug,
           meta_description: meta_description,
           description: description,
-          image: main_image,
+          main_image: main_image,
           meta_keywords: meta_keywords,
           meta_title: meta_title,
-        });
+          product_code:generateProductCode(8),
+        };
+     
+        const insertBrand = await ProductsModal.create(data);
 
 
         if (insertBrand) {
@@ -342,11 +358,34 @@ module.exports = {
       return res.status(500).json({ status: false, message: 'Internal server error' });
     }
   },
-  getActiveCategory: async (req, res) => {
-    const data = await CategorsModal.findAll({
+  getActiveBrand: async (req, res) => {
+    const data = await BrandModal.findAll({
       where: {
         status: 1
-      }
+      },
+    });
+    if (data && data.length > 0) {
+      return res.status(200).send({
+        status: true,
+        mssage: "get active Brand",
+        data: data
+      });
+    }
+    else {
+      return res.status(400).send({
+        status: false,
+        mssage: "get active Brand",
+        data: []
+      });
+    }
+  },
+  getActivecategoryBySectionId : async (req, res)=>{
+    const data = await CategorsModal.findAll({
+      where: {
+        section_id:req.body.section_id,
+        status: 1
+      },
+      attributes:['id','name']
     });
     if (data && data.length > 0) {
       return res.status(200).send({
@@ -362,5 +401,28 @@ module.exports = {
         data: []
       });
     }
-  }
+  },
+  getActiveSubcategoryByCategoryId : async (req, res)=>{
+    const data = await SubCategoriesMddel.findAll({
+      where: {
+        category_id:req.body.category_id,
+        status: 1
+      },
+      attributes:['id','name']
+    });
+    if (data && data.length > 0) {
+      return res.status(200).send({
+        status: true,
+        mssage: "get active Category",
+        data: data
+      });
+    }
+    else {
+      return res.status(400).send({
+        status: false,
+        mssage: "get active Category",
+        data: []
+      });
+    }
+  },
 }

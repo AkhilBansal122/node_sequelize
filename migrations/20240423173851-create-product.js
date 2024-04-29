@@ -48,6 +48,15 @@ module.exports = {
         type: Sequelize.INTEGER(1),
         comment: "1 for active, 2 for inactive"
       },
+      meta_title:{
+        type: Sequelize.TEXT
+      },
+       meta_keywords:{
+        type: Sequelize.TEXT
+      },
+      meta_description:{
+        type: Sequelize.TEXT
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

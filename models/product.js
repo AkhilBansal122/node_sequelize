@@ -38,7 +38,10 @@ module.exports = (sequelize, DataTypes) => {
     slug: DataTypes.STRING,
     main_image: DataTypes.STRING,
     description: DataTypes.TEXT,
-    status: DataTypes.INTEGER
+    status: DataTypes.INTEGER,
+    meta_description:DataTypes.STRING,
+    meta_keywords:DataTypes.STRING,
+    meta_title :DataTypes.STRING
   }, {
     sequelize,
     tableName:'products',

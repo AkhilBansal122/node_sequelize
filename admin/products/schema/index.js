@@ -43,5 +43,18 @@ addsubcategoriesSchema : async (req, res, next) => {
       meta_keywords: joi.string(),
     });
     validationRequest(req, res, next, schema);
-  }  
+  },
+  section_idSchema : async (req, res, next) => {
+    const schema = joi.object().keys({
+      section_id:joi.number().required(),
+    });
+    validationRequest(req, res, next, schema);
+  },
+  category_idSchema:async (req, res, next) => {
+    const schema = joi.object().keys({
+      category_id:joi.number().required(),
+    });
+    validationRequest(req, res, next, schema);
+  },
+
 }
