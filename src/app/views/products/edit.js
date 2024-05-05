@@ -7,7 +7,7 @@ import { useState } from "react";
 import { Breadcrumb } from "app/components";
 import CategorysForm from "./form";
 import { useEffect } from "react";
-import { ADMIN_SUB_CATEGORY_EDIT } from "apiurl";
+import { ADMIN_PRODUCTS_EDIT, ADMIN_SUB_CATEGORY_EDIT, BASE_IMAGE_URL } from "apiurl";
 import { headerValue } from "app/components/custom/CommonComponent";
 import { axiosRequest } from "config";
 
@@ -26,11 +26,16 @@ export default function Edit() {
     const { id } = useParams();
 
     const [data, setData] = useState({
-        category_id: '',
+        brand_id: "select Brand",
+        section_id: "select Sections",
+        category_id: "select option",
+        sub_category_id: "select sub category",
         name: "",
         meta_title: "",
         meta_description: "",
         meta_keywords: "",
+        main_image: "",
+        description: ""
     })
 
     const getEditRecord = async (id) => {
@@ -40,18 +45,23 @@ export default function Edit() {
             headers: headers
         };
         const data = { id: id };
-        const response = await axiosRequest(ADMIN_SUB_CATEGORY_EDIT, data, config);
+        const response = await axiosRequest(ADMIN_PRODUCTS_EDIT, data, config);
 
         if (response.data.status === true) {
             const result = response.data.data;
             setData({
-                brand_id: result.category_id ?? '',
-                sections_id: result.category_id ?? '',
-                category_id: result.category_id ?? '',
-                name: result.name ?? '',
-                meta_title: result.meta_title ?? '',
-                meta_description: result.meta_description ?? '',
-                meta_keywords: result.meta_keywords ?? '',
+                type: 'edit',
+                id: result.id ?? null,
+                brand_id: result.brand_id ?? "select Brand",
+                section_id: result.section_id ?? "select Sections",
+                category_id: result.category_id ?? "select option",
+                sub_category_id: result.subcategory_id ?? "select sub category",
+                name: result.name ?? "",
+                meta_title: result.meta_title ?? "",
+                meta_description: result.meta_description ?? "",
+                meta_keywords: result.meta_keywords ?? "",
+                main_image: BASE_IMAGE_URL + result.main_image ?? "",
+                description: result.description ?? ""
             });
         }
     }
@@ -64,7 +74,7 @@ export default function Edit() {
     return (<>
         <Container>
             <Box className="breadcrumb">
-                <Breadcrumb routeSegments={[{ name: "Edit Sub Category", path: `/sub-category-edit/${id}` }, { name: "Sub Category" }]} />
+                <Breadcrumb routeSegments={[{ name: "Edit Products", path: `/products-edit/${id}` }, { name: "Products" }]} />
             </Box>
             <Stack spacing={3}>
                 <CategorysForm id={id} stateVal={data} />

@@ -56,7 +56,9 @@ const ProductForm = ({ stateVal, id }) => {
     const [selectedASubcategoryValue, setSelectedASubcategoryValue] = useState('');
 
     useEffect(() => {
+        console.log(stateVal);
         setState({
+            productId: stateVal.id ?? null,
             selectBrand: stateVal.brand_id ?? 'select Brand',
             selectSection: stateVal.section_id ?? 'select Section',
             selectOptions: stateVal.category_id ?? 'select Sections',
@@ -73,6 +75,12 @@ const ProductForm = ({ stateVal, id }) => {
         setSelectedBrandValue(stateVal.brand_id, "select Brand");
         setSelectedSectionsValue(stateVal.section_id, "select Section");
         setSelectedASubcategoryValue(stateVal.sub_category_id, "select sub category");
+
+        if (stateVal.type === 'edit' && stateVal.section_id !== "select Section") {
+            getActiveCategory(stateVal.section_id);
+            getSectionData(stateVal.section_id);
+            getCategorySelected(stateVal.sub_category_id);
+        }
         getActiveCategory();
     }, [stateVal]);
     const navigate = useNavigate();
@@ -164,26 +172,29 @@ const ProductForm = ({ stateVal, id }) => {
 
 
             if (selectedBrandValue !== 'select Brand' && selectedSectionsValue !== 'select Sections' && selectedCategoryValue !== 'select option' && selectedASubcategoryValue !== 'select sub category') {
+                let data = {};
 
-                const data = {
+
+                data = {
+                    id: id = state.productId,
                     brand_id: selectedBrandValue,
                     section_id: selectedSectionsValue,
                     category_id: selectedCategoryValue,
-                    sub_category_id: selectedASubcategoryValue, id,
+                    sub_category_id: selectedASubcategoryValue,
                     product_name: state.name, meta_description: state.meta_description,
                     meta_keywords: state.meta_keywords,
                     meta_title: state.meta_title,
                     main_image: selectedFile,
                     description: state.description
                 };
+
                 const conf = {
                     headers: formDataheaderValue()
                 }
                 try {
                     const response = await axiosRequest(id === null ? ADMIN_PRODUCTS_CREATE : ADMIN_PRODUCTS_UPDATE, data, conf);
-                    console.log("data::", data);
                     if (response.data.status === true) {
-                        navigate("/sub-category-listing");
+                        navigate("/products-listing");
                         setLoading(false);
                     }
                     else {
@@ -211,23 +222,7 @@ const ProductForm = ({ stateVal, id }) => {
         }
     };
 
-    const handleSelectCategoryChange = async (event) => {
-        if (event.target.value === '' || event.target.value === 'select option') {
-            setCategoryError(true);
-            setCategoryHelperText("Please selct category");
-        }
-        else {
-            setCategoryError(false);
-            setCategoryHelperText("");
-            try {
-                const response = await axiosRequest(ADMIN_ACTIVE_SUB_CATEGORY_BY_CATEGORY_ID, { category_id: event.target.value }, config);
-                setselectActiveSubCategory(response.data.status === true ? response.data.data : []);
-            } catch (error) {
-                setselectActiveSubCategory([]);
-            }
-            setSelectedCategoryValue(event.target.value);
-        }
-    };
+
     const handleSelectSubCategoryChange = (event) => {
         if (event.target.value === 'select sub category' || event.target.value === '') {
             setSubCategoryError(true);
@@ -252,7 +247,11 @@ const ProductForm = ({ stateVal, id }) => {
     };
     const handleSelecSectionsChange = async (event) => {
 
-        if (event.target.value === '' || event.target.value === 'select Sections') {
+        getSectionData(event.target.value);
+
+    };
+    const getSectionData = async (value) => {
+        if (value === '' || value === 'select Sections') {
             setSectionError(true);
             setSectionHelperText('Please select a section');
         }
@@ -261,17 +260,35 @@ const ProductForm = ({ stateVal, id }) => {
             setSectionHelperText('');
 
             try {
-                const response = await axiosRequest(ADMIN_ACTIVE_CATEGORY_BY_SECTION_ID, { section_id: event.target.value }, config);
+                const response = await axiosRequest(ADMIN_ACTIVE_CATEGORY_BY_SECTION_ID, { section_id: value }, config);
                 setselectActiveCategory(response.data.status === true ? response.data.data : []);
             } catch (error) {
                 setselectActiveCategory([]);
             }
-            setSelectedSectionsValue(event.target.value);
+            setSelectedSectionsValue(value);
         }
+    }
 
+    const handleSelectCategoryChange = async (event) => {
+        getCategorySelected(event.target.value);
     };
-
-
+    const getCategorySelected = async (value) => {
+        if (value === '' || value === 'select option') {
+            setCategoryError(true);
+            setCategoryHelperText("Please selct category");
+        }
+        else {
+            setCategoryError(false);
+            setCategoryHelperText("");
+            try {
+                const response = await axiosRequest(ADMIN_ACTIVE_SUB_CATEGORY_BY_CATEGORY_ID, { category_id: value }, config);
+                setselectActiveSubCategory(response.data.status === true ? response.data.data : []);
+            } catch (error) {
+                setselectActiveSubCategory([]);
+            }
+            setSelectedCategoryValue(value);
+        }
+    }
 
     return (
         <div>

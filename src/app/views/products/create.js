@@ -24,6 +24,8 @@ export default function create() {
             <SimpleCard title="Add New Product">
                 <Stack spacing={3}>
                     <SectionsForm id={null} stateVal={{
+                        type: 'add',
+                        id: null,
                         brand_id: "select Brand",
                         section_id: "select Sections",
                         category_id: "select option",
