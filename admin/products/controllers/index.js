@@ -13,15 +13,15 @@ const fs = require('fs');
 const crypto = require('crypto');
 
 function generateProductCode(length) {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let code = '';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let code = '';
 
-    for (let i = 0; i < length; i++) {
-        const randomIndex = Math.floor(Math.random() * characters.length);
-        code += characters.charAt(randomIndex);
-    }
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    code += characters.charAt(randomIndex);
+  }
 
-    return code.toUpperCase();
+  return code.toUpperCase();
 }
 module.exports = {
 
@@ -34,7 +34,6 @@ module.exports = {
     let brand_id = "";
     let category_id = "";
     let sub_category_id = "";
-    let Products_id = "";
     let productname = "";
     let main_image = "";
     let meta_description = "";
@@ -87,7 +86,7 @@ module.exports = {
             message = "Name Field Is Required";
           }
           else {
-            pname= value;
+            pname = value;
             slug = createSlug(value);
             productname = value;
           }
@@ -174,10 +173,10 @@ module.exports = {
           return res.status(400).json({ status: false, status_code: 400, errorMessage, message: message });
         }
         const data = {
-          brand_id  : brand_id,
-          section_id  : section_id,
-          category_id : category_id,
-          subcategory_id : sub_category_id,
+          brand_id: brand_id,
+          section_id: section_id,
+          category_id: category_id,
+          subcategory_id: sub_category_id,
           name: pname,
           slug: slug,
           meta_description: meta_description,
@@ -185,9 +184,9 @@ module.exports = {
           main_image: main_image,
           meta_keywords: meta_keywords,
           meta_title: meta_title,
-          product_code:generateProductCode(8),
+          product_code: generateProductCode(8),
         };
-     
+
         const insertBrand = await ProductsModal.create(data);
 
 
@@ -211,53 +210,125 @@ module.exports = {
 
 
   },
-  updatesubcategories: async (req, res) => {
-    const { category_id, name, id, meta_description, meta_keywords, meta_title } = req.body;
-    const entity = await SubCategoriesMddel.findOne({
-      where: {
-        id: id
+
+
+updateProducts: async (req, res) => {
+  let errorMessage = {};
+  let message = "";
+  let id = "";
+  let imageUplaad = false;
+  let newUploadImage = "";
+
+  const form = new formidable.IncomingForm();
+
+  form.on('field', (name, value) => {
+    if (name === 'id') {
+      if (!value) {
+        errorMessage.id = { message: "Id Field Is Required" };
+        message = "Id Field Is Required";
+      } else {
+        id = value;
       }
-    });
-    if (!entity) {
-      return res.status(400).send({
-        status: false,
-        message: "No Record Found"
-      });
     }
-    const checked = await SubCategoriesMddel.count({
-      where: {
-        category_id: category_id,
-        id: {
-          [Op.ne]: id
-        },
-        name: {
-          [Op.like]: `%${name}%`
+
+    // Similar handling for other fields...
+
+  });
+
+  form.on('file', (name, file) => {
+    if (name === 'main_image') {
+      const allowedFormats = ['image/jpeg', 'image/jpg', 'image/png'];
+      if (!allowedFormats.includes(file.mimetype)) {
+
+        errorMessage.main_image = { message: "Only jpeg, jpg, and png image formats are allowed" };
+        message = "Only jpeg, jpg, and png image formats are allowed";
+      } else {
+        const rootDirectory = path.join(__dirname, '../../../');
+        const newFolderDir = "/uploads/frontend/product";
+        const uploadPath = path.join(rootDirectory, newFolderDir);
+        if (!fs.existsSync(uploadPath)) {
+          fs.mkdirSync(uploadPath, { recursive: true });
         }
+        const newFileName = Date.now() + "_" + file.originalFilename;
+        const destinationPath = path.join(uploadPath, newFileName);
+
+        fs.copyFile(file.filepath, destinationPath, async (err) => {
+          if (err) {
+            console.error(`Error copying file: ${err}`);
+            errorMessage.main_image = { message: "Error copying image" };
+          } else {
+            try {
+            
+              imageUplaad = true;
+              // Update product's main image
+              newUploadImage = newFolderDir + "/" + newFileName;
+            } catch (error) {
+              console.error(`Error updating product image: ${error}`);
+              errorMessage.main_image = { message: "Error updating product image" };
+            }
+          }
+        });
       }
-    });
-    if (checked && checked > 0) {
-      return res.status(400).send({
-        status: false,
-        message: "Name Is Already Exists"
-      });
     }
-    entity.category_id = category_id;
-    entity.name = name;
-    entity.meta_title = meta_title;
-    entity.meta_description = meta_description;
-    entity.meta_keywords = meta_keywords;
-    if (await entity.save()) {
-      return res.status(200).json({ status: true, message: "Record Updated Successfully" });
-    } else {
-      return res.status(400).json({ status: false, message: "Something want wrong" });
+  });
+  
+  form.parse(req, async (err, fields, files) => {
+    if (err) {
+      return res.status(500).send({ status: false, message: "Internal Server Error" });
     }
-  },
-  editsubcategories: async (req, res) => {
+
+    // Retrieve product from database
+    let getproduct = await ProductsModal.findOne({ where: { id: id } });
+    if (!getproduct) {
+      return res.status(404).send({ status: false, message: "Product not found" });
+    }
+    if(imageUplaad == true){
+      const oldPath = path.join(__dirname, "../../../" + getproduct.main_image);
+            // Remove existing file
+            if (fs.existsSync(oldPath)) {
+
+              fs.unlink(oldPath, (err) => {
+                if (err) {
+                  console.error(`Error removing file: ${err}`);
+                  // Handle error
+                } else {
+                  console.log('File removed successfully');
+                  // File removed successfully
+                }
+              });
+            }
+    }
+    else{
+      newUploadImage = getproduct.main_image;
+    }
+    // Update product details
+    getproduct.name = fields.product_name[0] || getproduct.name; // Assuming getproduct_name is the field for getproduct name
+    getproduct.slug = createSlug(getproduct.name);
+    getproduct.brand_id = fields.brand_id[0] || getproduct.brand_id;
+    getproduct.section_id = fields.section_id[0] || getproduct.section_id;
+    getproduct.category_id = fields.category_id[0] || getproduct.category_id;
+    getproduct.subcategory_id = fields.sub_category_id[0] || getproduct.subcategory_id;
+    getproduct.meta_description = fields.meta_description[0] || getproduct.meta_description;
+    getproduct.description = fields.description[0] || getproduct.description;
+    getproduct.meta_keywords = fields.meta_keywords[0] || getproduct.meta_keywords;
+    getproduct.meta_title = fields.meta_title[0] || getproduct.meta_title;
+    getproduct.main_image = newUploadImage;
+    try {
+      const updatedProduct = await getproduct.save();
+      return res.status(200).send({ status: true, message: "Product Updated Successfully", data: updatedProduct });
+    } catch (error) {
+      return res.status(500).send({ status: false, message: "Failed to update product", error: error.message });
+    }
+  });
+}
+,
+  editProductcategories: async (req, res) => {
     const { id } = req.body;
-    const getRecord = await SubCategoriesMddel.findOne({
+    const getRecord = await ProductsModal.findOne({
       where: { id: id }
     });
     if (getRecord) {
+
       return res.status(200).send({
         status: true,
         message: "Record Fetch",
@@ -283,7 +354,7 @@ module.exports = {
         where: {
           status: 1
         },
-      },{
+      }, {
         model: CategorsModal,
         where: {
           status: 1
@@ -379,13 +450,13 @@ module.exports = {
       });
     }
   },
-  getActivecategoryBySectionId : async (req, res)=>{
+  getActivecategoryBySectionId: async (req, res) => {
     const data = await CategorsModal.findAll({
       where: {
-        section_id:req.body.section_id,
+        section_id: req.body.section_id,
         status: 1
       },
-      attributes:['id','name']
+      attributes: ['id', 'name']
     });
     if (data && data.length > 0) {
       return res.status(200).send({
@@ -402,13 +473,13 @@ module.exports = {
       });
     }
   },
-  getActiveSubcategoryByCategoryId : async (req, res)=>{
+  getActiveSubcategoryByCategoryId: async (req, res) => {
     const data = await SubCategoriesMddel.findAll({
       where: {
-        category_id:req.body.category_id,
+        category_id: req.body.category_id,
         status: 1
       },
-      attributes:['id','name']
+      attributes: ['id', 'name']
     });
     if (data && data.length > 0) {
       return res.status(200).send({

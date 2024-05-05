@@ -3,13 +3,13 @@ const validationRequest =   require('../../../middleware/validationRequest');
 
 // Validation schema for user login
 module.exports={
-	editsubcategoriesSchema : async (req,res,next)=>{
+	editProductsSchema : async (req,res,next)=>{
 		const schema=   joi.object({
         	id:joi.number().required()
     	});
 	    validationRequest(req, res, next, schema);
 	},
-	updatecategroiesSchema : async (req,res,next)=>{
+	updateProductsSchema : async (req,res,next)=>{
     schema =   joi.object({
       category_id:joi.number().required(),
       id:joi.number().required(),
