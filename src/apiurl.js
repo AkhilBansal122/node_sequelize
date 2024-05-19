@@ -46,6 +46,7 @@ export const ADMIN_PRODUCTS_STATUS = `${BASE_URL}/products/status`;
 export const ADMIN_ACTIVE_BRAND_STATUS = `${BASE_URL}/products/activebrand`;
 export const ADMIN_ACTIVE_CATEGORY_BY_SECTION_ID = `${BASE_URL}/products/activecategoryBySectionId`;
 export const ADMIN_ACTIVE_SUB_CATEGORY_BY_CATEGORY_ID = `${BASE_URL}/products/activesubcategoryByCategoryId`;
+export const ADMIN_PRODUCTS_VIEW = `${BASE_URL}/products/view`;
 
 
 export const offset = 0;

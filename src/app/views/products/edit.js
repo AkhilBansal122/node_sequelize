@@ -54,7 +54,7 @@ export default function Edit() {
                 id: result.id ?? null,
                 brand_id: result.brand_id ?? "select Brand",
                 section_id: result.section_id ?? "select Sections",
-                category_id: result.category_id ?? "select option",
+                category_id: result.category_id ?? "select category",
                 sub_category_id: result.subcategory_id ?? "select sub category",
                 name: result.name ?? "",
                 meta_title: result.meta_title ?? "",

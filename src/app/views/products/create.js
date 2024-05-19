@@ -28,7 +28,7 @@ export default function create() {
                         id: null,
                         brand_id: "select Brand",
                         section_id: "select Sections",
-                        category_id: "select option",
+                        category_id: "select category",
                         sub_category_id: "select sub category",
                         name: "",
                         meta_title: "",

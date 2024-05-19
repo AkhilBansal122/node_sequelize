@@ -53,6 +53,7 @@ const ProductForm = ({ stateVal, id }) => {
     const [selectedCategoryValue, setSelectedCategoryValue] = useState('');
     const [selectedBrandValue, setSelectedBrandValue] = useState('');
     const [selectedSectionsValue, setSelectedSectionsValue] = useState('');
+
     const [selectedASubcategoryValue, setSelectedASubcategoryValue] = useState('');
 
     useEffect(() => {
@@ -61,7 +62,7 @@ const ProductForm = ({ stateVal, id }) => {
             productId: stateVal.id ?? null,
             selectBrand: stateVal.brand_id ?? 'select Brand',
             selectSection: stateVal.section_id ?? 'select Section',
-            selectOptions: stateVal.category_id ?? 'select Sections',
+            selectOptions: stateVal.category_id ?? 'select Category',
             selectSubCategory: stateVal.sub_category_id ?? 'select Sub Category',
             name: stateVal.name,
             meta_title: stateVal.meta_title,
@@ -71,17 +72,21 @@ const ProductForm = ({ stateVal, id }) => {
             description: stateVal.description,
 
         });
-        setSelectedCategoryValue(stateVal.category_id ?? 'select option');
         setSelectedBrandValue(stateVal.brand_id, "select Brand");
         setSelectedSectionsValue(stateVal.section_id, "select Section");
+        setSelectedCategoryValue(stateVal.category_id ?? 'select category');
         setSelectedASubcategoryValue(stateVal.sub_category_id, "select sub category");
 
         if (stateVal.type === 'edit' && stateVal.section_id !== "select Section") {
             getActiveCategory(stateVal.section_id);
             getSectionData(stateVal.section_id);
-            getCategorySelected(stateVal.sub_category_id);
+            getCategorySelected(stateVal.category_id);
         }
-        getActiveCategory();
+        else {
+            getActiveCategory();
+        }
+
+
     }, [stateVal]);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
@@ -114,6 +119,7 @@ const ProductForm = ({ stateVal, id }) => {
         } catch (err) {
             setselectActiveSections([]);
         }
+
     }
 
     const handleChange = (event) => {
@@ -153,7 +159,7 @@ const ProductForm = ({ stateVal, id }) => {
                 setSectionError(false);
                 setSectionHelperText("");
             }
-            if (selectedCategoryValue === '' || selectedCategoryValue === 'select option') {
+            if (selectedCategoryValue === '' || selectedCategoryValue === 'select category') {
                 setCategoryError(true);
                 setCategoryHelperText("Please selct a category");
             }
@@ -171,7 +177,7 @@ const ProductForm = ({ stateVal, id }) => {
             }
 
 
-            if (selectedBrandValue !== 'select Brand' && selectedSectionsValue !== 'select Sections' && selectedCategoryValue !== 'select option' && selectedASubcategoryValue !== 'select sub category') {
+            if (selectedBrandValue !== 'select Brand' && selectedSectionsValue !== 'select Sections' && selectedCategoryValue !== 'select category' && selectedASubcategoryValue !== 'select sub category') {
                 let data = {};
 
 
@@ -243,7 +249,6 @@ const ProductForm = ({ stateVal, id }) => {
             setBrandHelperText('');
             setSelectedBrandValue(event.target.value);
         }
-
     };
     const handleSelecSectionsChange = async (event) => {
 
@@ -273,7 +278,7 @@ const ProductForm = ({ stateVal, id }) => {
         getCategorySelected(event.target.value);
     };
     const getCategorySelected = async (value) => {
-        if (value === '' || value === 'select option') {
+        if (value === '' || value === 'select category') {
             setCategoryError(true);
             setCategoryHelperText("Please selct category");
         }
@@ -319,7 +324,7 @@ const ProductForm = ({ stateVal, id }) => {
                             value={selectedCategoryValue}
                             onChange={handleSelectCategoryChange}
                             items={selectActiveCategory}
-                            defaultValue="select option"
+                            defaultValue="select category"
                             error={categoryError}
                             helperText={categoryHelperText}
 

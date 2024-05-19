@@ -1,8 +1,10 @@
 import { createContext, useEffect, useReducer } from "react";
 import axios from "axios";
+
 // CUSTOM COMPONENT
 import { MatxLoading } from "app/components";
 import { ADMIN_ChangePassword_URL, ADMIN_ForgotPassword_URL, ADMIN_LOGIN_URL, ADMIN_LOGOUT, ADMIN_ResetPassword_URL, ADMIN_VERIFY_OTP, ADMIN__GET_PROFILE } from "apiurl";
+import { useNavigate } from "react-router-dom";
 const initialState = {
   user: null,
   token: null,
@@ -13,7 +15,6 @@ const initialState = {
   failMessage: false,
   verifyotp: 0,
   newPassword: null,
-
   message: '',
   type: '',
   isOpen: false,
@@ -22,18 +23,16 @@ const initialState = {
 };
 
 const reducer = (state, action) => {
-
   switch (action.type) {
-    case "INIT": {
 
+
+    case "INIT": {
       const { isAuthenticated, user, token } = action.payload;
       return { ...state, isAuthenticated, isInitialized: true, user, token };
     }
-
     case "LOGIN": {
-      return { ...state, isAuthenticated: true, user: action.payload.user, token: action.payload.token };
+      return { ...state, isAuthenticated: action.payload.user !== null ? true : false, user: action.payload.user ?? null, token: action.payload.token ?? null };
     }
-
     case "LOGOUT": {
       return { ...state, isAuthenticated: false, user: null, token: null };
     }
@@ -72,7 +71,7 @@ const reducer = (state, action) => {
 
 const AuthContext = createContext({
   ...initialState,
-  method: "JWT",
+  // method: "JWT",
   login: () => { },
   logout: () => { },
   register: () => { },
@@ -87,7 +86,6 @@ const AuthContext = createContext({
 
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-
   const login = async (email, password) => {
     const data = {
       email: email,
@@ -99,7 +97,7 @@ export const AuthProvider = ({ children }) => {
       }
     };
     try {
-      const response = await axios.post(ADMIN_LOGIN_URL, data, config);
+      const response = await axios.post(ADMIN_LOGIN_URL, data);
       if (response.data.status === true) {
         dispatch({ type: "SET_SUCCESS", payload: response.data.message });
         dispatch({ type: "SET_FAIL", payload: false });
@@ -160,6 +158,7 @@ export const AuthProvider = ({ children }) => {
       const response = await axios.post(ADMIN_LOGOUT, {}, config);
 
       localStorage.clear();
+      localStorage.setItem("token", '');
       dispatch({ type: "SET_SUCCESS", payload: response.data.message });
       dispatch({ type: "SET_FAIL", payload: false });
 
@@ -300,25 +299,29 @@ export const AuthProvider = ({ children }) => {
   const failMessage = () => {
 
   }
+  const navigate = useNavigate();
 
   useEffect(() => {
+
     (async () => {
       try {
         var token = localStorage.getItem('token');
-        if (token && token.length > 0) {
+        if (token && token != null && token.length > 0) {
           const config = {
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded',
               'Authorization': `Bearer ${token}`
             }
           };
-
           const response = await axios.get(ADMIN__GET_PROFILE, config);
           const user = response.data.data;
-          //  const { data } = await axios.get(ADMIN__GET_PROFILE);
+          navigate("/dashboard");
+          dispatch({ type: "LOGIN", payload: { user, token } });
           dispatch({ type: "INIT", payload: { isAuthenticated: true, user: user } });
         }
         else {
+          navigate("/");
+          dispatch({ type: "LOGIN", payload: { user: null, token: null } });
           dispatch({ type: "INIT", payload: { isAuthenticated: false, user: null } });
         }
 

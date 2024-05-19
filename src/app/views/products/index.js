@@ -22,7 +22,7 @@ import { SimpleCard } from "app/components";
 import { axiosRequest } from "../../../config";
 import { useEffect } from "react";
 import { ADMIN_PRODUCTS_LIST, ADMIN_PRODUCTS_STATUS, BASE_IMAGE_URL } from "apiurl";
-import { ActiveInactiveComponent, EditButton, SwitchActiveInactive, headerValue } from "app/components/custom/CommonComponent";
+import { ActiveInactiveComponent, EditButton, SwitchActiveInactive, ViewButton, headerValue } from "app/components/custom/CommonComponent";
 
 import { CuustomPagination } from "app/components/custom/CommonComponent";
 const Container = styled("div")(({ theme }) => ({
@@ -111,7 +111,7 @@ export default function ChangePassword() {
             <Box className="breadcrumb">
                 <Breadcrumb routeSegments={[{ name: "Products", path: "/products-listing" }, { name: "Home" }]} />
             </Box>
-            <SimpleCard title="Brand">
+            <SimpleCard title="Product Details">
                 <Button variant="contained" size={"small"} style={{ float: 'right' }} color="primary" onClick={() => { navigate('/products-create') }}>
                     Add New Record
                 </Button>
@@ -126,7 +126,6 @@ export default function ChangePassword() {
                                         <TableCell align="left">Brand Name</TableCell>
                                         <TableCell align="left">Section Name</TableCell>
                                         <TableCell align="left">Category Name</TableCell>
-                                        <TableCell align="left">Sub Category Name</TableCell>
                                         <TableCell align="left">Product Name</TableCell>
                                         <TableCell align="center">Active/InActive</TableCell>
                                         <TableCell align="center">Status</TableCell>
@@ -148,7 +147,6 @@ export default function ChangePassword() {
 
                                                 <TableCell align="left">{subscriber.Section.name}</TableCell>
                                                 <TableCell align="left">{subscriber.Category.name}</TableCell>
-                                                <TableCell align="left">{subscriber.SubCategory.name}</TableCell>
 
                                                 <TableCell align="left">{subscriber.name}</TableCell>
                                                 <TableCell align="right">
@@ -164,6 +162,7 @@ export default function ChangePassword() {
                                                     <Grid container spacing={1} alignItems="right">
                                                         <Grid item>
                                                             <EditButton label={'Edit'} onClick={() => { navigate(`/products-edit/${subscriber.id}`) }} />
+                                                            <ViewButton label={'View'} onClick={() => { navigate(`/products-view/${subscriber.id}`) }} />
                                                         </Grid>
                                                     </Grid>
                                                 </TableCell>

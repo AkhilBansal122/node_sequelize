@@ -35,8 +35,8 @@ export const AddButton = ({ size, style, onClick, label }) => {
 export const EditButton = ({ label, onClick }) => {
     return (<Button variant="contained" size={"small"} color="primary" onClick={onClick}>{label}</Button>);
 }
-export const ViewButton = ({ label }) => {
-    return (<Button variant="contained" size={"small"} color="success">{label}</Button>);
+export const ViewButton = ({ label, onClick }) => {
+    return (<Button variant="contained" size={"small"} onClick={onClick} color="success">{label}</Button>);
 }
 export const SwitchActiveInactive = ({ checked, handleChange }) => {
     return (<>

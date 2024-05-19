@@ -44,6 +44,7 @@ const AdminEditSubCategory = Loadable(lazy(() => import("app/views/subcategory/e
 const AdminProducts = Loadable(lazy(() => import("app/views/products/index")));
 const AdminCreatepProducts = Loadable(lazy(() => import("app/views/products/create")));
 const AdminEditProducts = Loadable(lazy(() => import("app/views/products/edit")));
+const AdminViewProducts = Loadable(lazy(() => import("app/views/products/view")));
 
 const routes = [
   {
@@ -76,6 +77,7 @@ const routes = [
       { path: "/products-listing", element: <AdminProducts />, auth: authRoles.admin },
       { path: "/products-create", element: <AdminCreatepProducts />, auth: authRoles.admin },
       { path: "/products-edit/:id", element: <AdminEditProducts />, auth: authRoles.admin },
+      { path: "/products-view/:id", element: <AdminViewProducts />, auth: authRoles.admin },
 
       // e-chart route
       { path: "/charts/echarts", element: <AppEchart />, auth: authRoles.editor }

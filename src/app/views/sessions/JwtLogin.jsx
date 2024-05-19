@@ -9,7 +9,8 @@ import {
   styled,
   useTheme,
   IconButton,
-  InputAdornment
+  InputAdornment,
+  Button
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { Formik } from "formik";
@@ -18,7 +19,9 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 import useAuth from "app/hooks/useAuth";
 import { Paragraph } from "app/components/Typography";
-import Message from "app/components/Message";
+
+import { useDispatch } from "react-redux";
+import { testing } from "app/redux/action";
 
 // STYLED COMPONENTS
 const FlexBox = styled(Box)(() => ({
@@ -58,11 +61,11 @@ const StyledRoot = styled("div")(() => ({
 }));
 
 // initial login credentials
-const initialValues = {
-  email: "admin1@yopmail.com",
-  password: "12345678",
-  remember: false
-};
+// const initialValues = {
+//   email: "admin1@yopmail.com",
+//   password: "Admin@12345",
+//   remember: false
+// };
 
 // form field validation schema
 const validationSchema = Yup.object().shape({
@@ -73,12 +76,19 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function JwtLogin() {
+  const initialValues = {
+    email: "admin1@yopmail.com",
+    password: "Admin@12345",
+    remember: false
+  };
+
   const theme = useTheme();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
 
-  const { login, token, successMessage, failMessage } = useAuth();
+  const { login, token } = useAuth();
+  const dispatch = useDispatch();
 
   const handleFormSubmit = async (values) => {
     setLoading(true);
