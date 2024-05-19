@@ -20,6 +20,7 @@ const User = db.User;
 const Contact = db.Contact;
 const CustomerModal = db.Customer;
 const ProfileModal = db.Profile;
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
     router.post("/register",registerValidation,async( req,res)=>{
         try {
         const { first_name, last_name, username, email, password,role  } = req.body;
@@ -140,5 +141,9 @@ const ProfileModal = db.Profile;
         res.json({
             data:result
         })
+    });
+
+    router.get('/checkout',async (req,res)=>{
+        return res.send(process.env.STRIPE_SECRET_KEY);
     });
 module.exports =router;

@@ -14,6 +14,7 @@ const Helper = require("../../../helper");
 const fs = require('fs');
 
 const formidable = require('formidable');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 function copyFile(source, destination, callback) {
   const readStream = fs.createReadStream(source);
   const writeStream = fs.createWriteStream(destination);
@@ -362,5 +363,30 @@ module.exports = {
     catch (error) {
       return res.status(200).send({ status: true, message: 'Internal error' });
     }
-  }
+  },
+
+  createCustomer : async (req,res)=>{
+    const response =await stripe.customers.create({
+      name:"testing customer",
+      email:"testingCustomer@gmail.com"
+    })
+
+    return res.send(response);
+  },
+   addCard : async (req, res) => {
+    var stripe = require("stripe")("sk_test_51KdbubSAaG2Fx1sH8MxJpmlcUPTJpCynJvg251fOkYJX7ShavAYSIoJsaCE2rmF3aH6wJUPdinJTuxm9z2uKlO7H00coCnr3oI");
+
+    const token = await stripe.tokens.create({
+      card: {
+        number: '5555555555554444',
+        exp_month: 5,
+        exp_year: 2024,
+        cvc: 111,
+      },
+    });
+    const card = await stripe.customers.createSource('cus_Q5OOKzSt12lfxs',{
+      source:token.id
+    })
+    return res.send(card);
+  },
 }

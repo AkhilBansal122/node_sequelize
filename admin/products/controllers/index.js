@@ -496,4 +496,52 @@ updateProducts: async (req, res) => {
       });
     }
   },
+  viewProductproduct: async (req, res) => {
+    const { id } = req.body;
+    const getRecord = await ProductsModal.findOne({
+      where: { id: id },
+      include: [{
+        model: SectionModal,
+        where: {
+          status: 1
+        },
+        attributes: ['name']
+      }, {
+        model: BrandModal,
+        where: {
+          status: 1
+        },
+        attributes: ['name']
+      }, {
+        model: CategorsModal,
+        where: {
+          status: 1
+        },
+        attributes: ['name']
+      }, {
+        model: SubCategoriesMddel,
+        where: {
+          status: 1
+        },
+        attributes: ['name']
+      },
+
+      ], 
+    });
+    if (getRecord) {
+
+      return res.status(200).send({
+        status: true,
+        message: "Record Fetch",
+        data: getRecord
+      });
+    }
+    else {
+      return res.status(200).send({
+        status: false,
+        message: "No Record Found",
+        data: []
+      });
+    }
+  },
 }

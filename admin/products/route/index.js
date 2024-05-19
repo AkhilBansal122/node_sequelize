@@ -12,6 +12,7 @@ router.post('/status', [authenticateToken, statusProductSchema], productsControl
 router.post('/activebrand', [authenticateToken], productsController.getActiveBrand);
 router.post('/activecategoryBySectionId', [authenticateToken,section_idSchema], productsController.getActivecategoryBySectionId);
 router.post('/activesubcategoryByCategoryId', [authenticateToken,category_idSchema], productsController.getActiveSubcategoryByCategoryId);
+router.post('/view', [authenticateToken, editProductsSchema], productsController.viewProductproduct);
 
 
 module.exports = router;
