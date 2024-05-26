@@ -116,8 +116,6 @@ const ProductForm = ({ stateVal, id }) => {
                     headers: headerValue()
                 }
                 try {
-
-                    console.log(data);
                     const response = await axiosRequest(id === null ? ADMIN_PRODUCTS_COLOR_CREATE : ADMIN_PRODUCTS_COLOR_UPDATE, data, conf);
                     if (response.data.status === true) {
                         navigate("/products-color-listing");
