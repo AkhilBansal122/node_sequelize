@@ -544,4 +544,25 @@ updateProducts: async (req, res) => {
       });
     }
   },
+  getActiveProduct: async (req, res) => {
+    const data = await ProductsModal.findAll({
+      where: {
+        status: 1
+      },
+    });
+    if (data && data.length > 0) {
+      return res.status(200).send({
+        status: true,
+        mssage: "get active Product",
+        data: data
+      });
+    }
+    else {
+      return res.status(400).send({
+        status: false,
+        mssage: "get active Product",
+        data: []
+      });
+    }
+  },
 }

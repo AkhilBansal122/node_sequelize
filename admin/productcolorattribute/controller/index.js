@@ -10,6 +10,7 @@ module.exports={
    
 
   addProductAttr: async (req, res) => {
+ //   res.send(req.body);
     const {product_id,name} = req.body;
    
    checked = await ProductColorAttributeModal.count({
