@@ -31,7 +31,7 @@ const reducer = (state, action) => {
       return { ...state, isAuthenticated, isInitialized: true, user, token };
     }
     case "LOGIN": {
-      return { ...state, isAuthenticated: action.payload.user !== null ? true : false, user: action.payload.user ?? null, token: action.payload.token ?? null };
+      return { ...state, isAuthenticated: action.payload.user !== null ? true : false, user: action.payload.user ?? null, token: action.payload.token ?? null, successMessage: action.payload.status ?? '' };
     }
     case "LOGOUT": {
       return { ...state, isAuthenticated: false, user: null, token: null };
@@ -294,9 +294,10 @@ export const AuthProvider = ({ children }) => {
   }
 
   const successMessage = () => {
-
+    console.log(state.SET_SUCCESS);
   }
   const failMessage = () => {
+    console.log(state.SET_FAIL);
 
   }
   const navigate = useNavigate();

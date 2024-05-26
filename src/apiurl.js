@@ -47,7 +47,13 @@ export const ADMIN_ACTIVE_BRAND_STATUS = `${BASE_URL}/products/activebrand`;
 export const ADMIN_ACTIVE_CATEGORY_BY_SECTION_ID = `${BASE_URL}/products/activecategoryBySectionId`;
 export const ADMIN_ACTIVE_SUB_CATEGORY_BY_CATEGORY_ID = `${BASE_URL}/products/activesubcategoryByCategoryId`;
 export const ADMIN_PRODUCTS_VIEW = `${BASE_URL}/products/view`;
-
+export const ADMIN_PRODUCTS = `${BASE_URL}/products/view`;
+export const ADMIN_ACTIVE_PRODUCTS = `${BASE_URL}/products/activeproduct`;
+export const ADMIN_PRODUCTS_COLOR_CREATE = `${BASE_URL}/productsColorAttr/create`;
+export const ADMIN_PRODUCTS_COLOR_LIST = `${BASE_URL}/productsColorAttr/listing`;
+export const ADMIN_PRODUCTS_COLOR_EDIT = `${BASE_URL}/productsColorAttr/edit`;
+export const ADMIN_PRODUCTS_COLOR_UPDATE = `${BASE_URL}/productsColorAttr/update`;
+export const ADMIN_PRODUCTS_COLOR_STATUS = `${BASE_URL}/productsColorAttr/status`;
 
 export const offset = 0;
 export const limit = 2;

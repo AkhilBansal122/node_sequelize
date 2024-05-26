@@ -9,6 +9,7 @@ import MatxLayout from "./components/MatxLayout/MatxLayout";
 
 import materialRoutes from "app/views/material-kit/MaterialRoutes";
 
+import { useHistory } from 'react-router-dom';
 // SESSION PAGES
 const NotFound = Loadable(lazy(() => import("app/views/sessions/NotFound")));
 const JwtLogin = Loadable(lazy(() => import("app/views/sessions/JwtLogin")));
@@ -46,6 +47,11 @@ const AdminCreatepProducts = Loadable(lazy(() => import("app/views/products/crea
 const AdminEditProducts = Loadable(lazy(() => import("app/views/products/edit")));
 const AdminViewProducts = Loadable(lazy(() => import("app/views/products/view")));
 
+const AdminProductsColor = Loadable(lazy(() => import("app/views/productsColor/index")));
+const AdminProductsColorCreate = Loadable(lazy(() => import("app/views/productsColor/create")));
+const AdminProductsColorEdit = Loadable(lazy(() => import("app/views/productsColor/edit")));
+
+
 const routes = [
   {
     element: (
@@ -78,6 +84,10 @@ const routes = [
       { path: "/products-create", element: <AdminCreatepProducts />, auth: authRoles.admin },
       { path: "/products-edit/:id", element: <AdminEditProducts />, auth: authRoles.admin },
       { path: "/products-view/:id", element: <AdminViewProducts />, auth: authRoles.admin },
+
+      { path: "/products-color-listing", element: <AdminProductsColor />, auth: authRoles.admin },
+      { path: "/products-color-create", element: <AdminProductsColorCreate />, auth: authRoles.admin },
+      { path: "/products-color-edit/:id", element: <AdminProductsColorEdit />, auth: authRoles.admin },
 
       // e-chart route
       { path: "/charts/echarts", element: <AppEchart />, auth: authRoles.editor }

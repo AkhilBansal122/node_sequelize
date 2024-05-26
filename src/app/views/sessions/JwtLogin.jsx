@@ -22,6 +22,7 @@ import { Paragraph } from "app/components/Typography";
 
 import { useDispatch } from "react-redux";
 import { testing } from "app/redux/action";
+import Message from "app/components/Message";
 
 // STYLED COMPONENTS
 const FlexBox = styled(Box)(() => ({
@@ -87,14 +88,15 @@ export default function JwtLogin() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
 
-  const { login, token } = useAuth();
+  const { login, token, successMessage, failMessage } = useAuth();
   const dispatch = useDispatch();
 
   const handleFormSubmit = async (values) => {
     setLoading(true);
 
     try {
-      await login(values.email, values.password);
+      var res = await login(values.email, values.password);
+      console.log("res::", res);
       if (token != null && token !== false && token !== undefined) {
         navigate("/dashboard");
       } else {
@@ -119,7 +121,13 @@ export default function JwtLogin() {
                 <img src="/assets/images/illustrations/dreamer.svg" width="100%" alt="" />
               </div>
             </Grid>
-
+            <Message
+              message={"test"}
+              type={"success"}
+              isOpen={true}
+              successMessage={true}
+              failMessage={false}
+            />
             <Grid item sm={6} xs={12}>
               <ContentBox>
                 <Formik
