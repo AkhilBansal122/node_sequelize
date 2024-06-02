@@ -4,6 +4,7 @@ import { Box, styled } from "@mui/material";
 import { Breadcrumb } from "app/components";
 import SectionsForm from "./form";
 import { SimpleCard } from "app/components";
+
 // STYLED COMPONENTS
 const Container = styled("div")(({ theme }) => ({
     margin: "30px",
@@ -15,7 +16,6 @@ const Container = styled("div")(({ theme }) => ({
 }));
 
 export default function create() {
-
     return (<>
         <Container>
             <Box className="breadcrumb">

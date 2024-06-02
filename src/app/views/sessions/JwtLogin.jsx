@@ -96,7 +96,6 @@ export default function JwtLogin() {
 
     try {
       var res = await login(values.email, values.password);
-      console.log("res::", res);
       if (token != null && token !== false && token !== undefined) {
         navigate("/dashboard");
       } else {
