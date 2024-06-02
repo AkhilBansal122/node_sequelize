@@ -13,6 +13,7 @@ const AdminCategoriesRoute = require("./admin/categories/route/index");
 const AdminSubCategoriesRoute = require("./admin/subcategories/route/index");
 const AdminProductsRoute = require("./admin/products/route/index");
 const AdminproductsColorAttr = require("./admin/productcolorattribute/route");
+const AdminproductsSizeAttr = require("./admin/productsizeattribute/route");
  
 app.use(cors({origin: '*'}));
 
@@ -30,6 +31,7 @@ app.use("/api/admin/categories/", AdminCategoriesRoute);
 app.use("/api/admin/subcategories/", AdminSubCategoriesRoute);
 app.use("/api/admin/products/", AdminProductsRoute);
 app.use("/api/admin/productsColorAttr/", AdminproductsColorAttr);
+app.use("/api/admin/productsSizerAttr/", AdminproductsSizeAttr);
 
 
 // Start server
