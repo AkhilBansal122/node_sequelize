@@ -51,6 +51,9 @@ const AdminProductsColor = Loadable(lazy(() => import("app/views/productsColor/i
 const AdminProductsColorCreate = Loadable(lazy(() => import("app/views/productsColor/create")));
 const AdminProductsColorEdit = Loadable(lazy(() => import("app/views/productsColor/edit")));
 
+const AdminProductsSize = Loadable(lazy(() => import("app/views/productsSize/index")));
+const AdminProductsSizeCreate = Loadable(lazy(() => import("app/views/productsSize/create")));
+const AdminProductsSizeEdit = Loadable(lazy(() => import("app/views/productsSize/edit")));
 
 const routes = [
   {
@@ -88,6 +91,10 @@ const routes = [
       { path: "/products-color-listing", element: <AdminProductsColor />, auth: authRoles.admin },
       { path: "/products-color-create", element: <AdminProductsColorCreate />, auth: authRoles.admin },
       { path: "/products-color-edit/:id", element: <AdminProductsColorEdit />, auth: authRoles.admin },
+
+      { path: "/products-size-listing", element: <AdminProductsSize />, auth: authRoles.admin },
+      { path: "/products-size-create", element: <AdminProductsSizeCreate />, auth: authRoles.admin },
+      { path: "/products-size-edit/:id", element: <AdminProductsSizeEdit />, auth: authRoles.admin },
 
       // e-chart route
       { path: "/charts/echarts", element: <AppEchart />, auth: authRoles.editor }

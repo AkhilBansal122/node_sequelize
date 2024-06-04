@@ -10,6 +10,7 @@ export const navigations = [
     children: [
       { name: "Product Listing", path: "/products-listing", icon: "dashboard" },
       { name: "Product Color Listing", path: "/products-color-listing", icon: "dashboard" },
+      { name: "Product Size Listing", path: "/products-size-listing", icon: "dashboard" },
 
     ]
   },
