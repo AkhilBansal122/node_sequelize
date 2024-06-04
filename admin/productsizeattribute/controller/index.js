@@ -2,7 +2,7 @@ const { Op } = require('sequelize');
 
 const db = require("../../../models");
 const ProductModal = db.Product;
-const ProductColorAttributeModal = db.ProductColorAttribute;
+const ProductColorModal = db.ProductColorAttribute;
 const ProductSizeAttributeModal = db.productsizeattribute;
 
 
@@ -114,7 +114,12 @@ if(await entity.save()){
         where:{
           status:1
         },
-        attributes: ['name'] // Specify the attributes of ProductMdoal to retrieve
+        attributes: ['name'] // Specify the attributes of ProductCOLOR to retrieve
+      },{
+        model:ProductColorModal,
+        where:{
+          status:1
+        },attributes: ['name']
       }], // Include sections model 
     });
 
@@ -127,6 +132,11 @@ if(await entity.save()){
           status:1
         },
         attributes: ['name'] // Specify the attributes of SectionsModal to retrieve
+      },{
+        model:ProductColorModal,
+        where:{
+          status:1
+        },attributes: ['name']
       }], // Include sections model           
        order: [['id', 'DESC']]
     });
