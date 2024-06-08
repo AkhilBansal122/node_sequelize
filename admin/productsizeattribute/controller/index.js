@@ -172,4 +172,27 @@ if(await entity.save()){
       return res.status(500).json({ status: false, message: 'Internal server error' });
     }
   },
+  activeColorByProductId:async (req, res) => {
+    const { product_id } = req.body;
+    const getRecord = await ProductColorModal.findOne({
+      where: { product_id: product_id,status:1 },
+      attributes:[
+        "id",'name','product_id'
+      ]
+    });
+    if (getRecord) {
+      return res.status(200).send({
+        status: true,
+        message: "Record Fetch Product Color",
+        data: getRecord
+      });
+    }
+    else {
+      return res.status(200).send({
+        status: false,
+        message: "No Record Found",
+        data: []
+      });
+    }
+  },
 }

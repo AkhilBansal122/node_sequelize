@@ -46,5 +46,12 @@ addProductSizeAttrSchema : async (req, res, next) => {
       sale_price:joi.number().required()
     });
     validationRequest(req, res, next, schema);
-  }  
+  },
+  statusProductColorAttrSchema : async (req,res,next)=>{
+    schema=  joi.object().keys({
+        product_id:joi.number().required(),
+        
+    });
+    validationRequest(req, res, next, schema);
+},  
 }
