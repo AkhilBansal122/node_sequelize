@@ -101,9 +101,9 @@ export default function ChangePassword() {
         <Container>
 
             <Box className="breadcrumb">
-                <Breadcrumb routeSegments={[{ name: "Products Size", path: "/products-size-listing" }, { name: "Home" }]} />
+                <Breadcrumb routeSegments={[{ name: "Products Size", path: "/products-size-listing" }, { name: "Size" }]} />
             </Box>
-            <SimpleCard title="Product Color Details">
+            <SimpleCard title="Product Size Details">
                 <Button variant="contained" size={"small"} style={{ float: 'right' }} color="primary" onClick={() => { navigate('/products-size-create') }}>Add New Record</Button>
                 <Box width="100%" overflow="auto">
                     <Grid container spacing={0}>

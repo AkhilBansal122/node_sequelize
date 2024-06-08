@@ -2,7 +2,7 @@ import { Stack } from "@mui/material";
 import { Box, styled } from "@mui/material";
 
 import { Breadcrumb } from "app/components";
-import SectionsForm from "./form";
+import ProductSize from "./form";
 import { SimpleCard } from "app/components";
 
 // STYLED COMPONENTS
@@ -23,11 +23,13 @@ export default function create() {
             </Box>
             <SimpleCard title="Add New Product Color">
                 <Stack spacing={3}>
-                    <SectionsForm id={null} stateVal={{
+                    <ProductSize id={null} stateVal={{
                         type: 'add',
                         id: null,
                         product_id: "Select Product",
                         name: "",
+                        qty: 0,
+                        sale_price: 0
                     }} />
                 </Stack>
             </SimpleCard>

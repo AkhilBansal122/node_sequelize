@@ -60,6 +60,8 @@ export const ADMIN_PRODUCTS_SIZE_LIST = `${BASE_URL}/productsSizerAttr/listing`;
 export const ADMIN_PRODUCTS_SIZE_EDIT = `${BASE_URL}/productsSizerAttr/edit`;
 export const ADMIN_PRODUCTS_SIZE_UPDATE = `${BASE_URL}/productsSizerAttr/update`;
 export const ADMIN_PRODUCTS_SIZE_STATUS = `${BASE_URL}/productsSizerAttr/status`;
+export const ADMIN_ACTIVE_PRODUCT_COLOR_BY_PRODUCT_ID = `${BASE_URL}/productsSizerAttr/activeColorByProductId`;
+
 
 export const offset = 0;
 export const limit = 2;
