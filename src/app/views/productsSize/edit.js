@@ -29,6 +29,11 @@ export default function Edit() {
         product_id: "Select Product",
         color_id: "Select Color",
         name: "",
+        pid: 0,
+        type: 'edit',
+        id: '',
+        qty: 0,
+        sale_price: 0,
     })
 
     const getEditRecord = async (id) => {
@@ -42,16 +47,15 @@ export default function Edit() {
 
         if (response.data.status === true) {
             const result = response.data.data;
-            console.log("::", result);
             setData({
                 type: 'edit',
                 id: result.id ?? null,
-                product_id: result.product_id ?? "Select Product",
-                color_id: result.color_id ?? "Select Color",
+                pid: result.product_id,
+                product_id: result.product_id,
+                color_id: result.color_id,
                 name: result.name ?? "",
                 qty: result.qty ?? 0,
                 sale_price: result.sale_price ?? 0,
-
             });
         }
     }

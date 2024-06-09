@@ -19,17 +19,19 @@ export default function create() {
     return (<>
         <Container>
             <Box className="breadcrumb">
-                <Breadcrumb routeSegments={[{ name: "Add New Product Color", path: "/products-color-create" }, { name: "Products Color" }]} />
+                <Breadcrumb routeSegments={[{ name: "Add New Product Size", path: "/products-color-size" }, { name: "Products Size" }]} />
             </Box>
-            <SimpleCard title="Add New Product Color">
+            <SimpleCard title="Add New Product Size">
                 <Stack spacing={3}>
                     <ProductSize id={null} stateVal={{
+                        product_id: "Select Product",
+                        color_id: "Select Color",
+                        name: "",
+                        pid: 0,
                         type: 'add',
                         id: null,
-                        product_id: "Select Product",
-                        name: "",
                         qty: 0,
-                        sale_price: 0
+                        sale_price: 0,
                     }} />
                 </Stack>
             </SimpleCard>

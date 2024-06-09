@@ -115,9 +115,7 @@ export const AuthProvider = ({ children }) => {
       if (error && error.response) {
         dispatch({ type: "SET_FAIL", payload: error.response.data.message });
       }
-
     }
-
   };
 
   const register = async (email, username, password) => {
@@ -294,7 +292,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   const successMessage = () => {
-    console.log(state.SET_SUCCESS);
+    console.log("test::", state.SET_SUCCESS);
   }
   const failMessage = () => {
     console.log(state.SET_FAIL);
@@ -318,6 +316,7 @@ export const AuthProvider = ({ children }) => {
           const user = response.data.data;
           navigate("/dashboard");
           dispatch({ type: "LOGIN", payload: { user, token } });
+          dispatch({ type: "SET_SUCCESS", payload: false });
           dispatch({ type: "INIT", payload: { isAuthenticated: true, user: user } });
         }
         else {
@@ -343,7 +342,7 @@ export const AuthProvider = ({ children }) => {
   if (!state.isInitialized) return <MatxLoading />;
 
   return (
-    <AuthContext.Provider value={{ ...state, method: "JWT", login, logout, register, forgotpassword, verifyotp, resetPassword, changePassword }}>
+    <AuthContext.Provider value={{ ...state, method: "JWT", login, logout, register, forgotpassword, verifyotp, resetPassword, changePassword, successMessage, failMessage }}>
       {children}
     </AuthContext.Provider>
   );

@@ -41,7 +41,6 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 const ProductSize = ({ stateVal, id }) => {
-    console.log(":::", stateVal);
     const headers = headerValue();
     const config = {
         headers: headers
@@ -60,6 +59,7 @@ const ProductSize = ({ stateVal, id }) => {
             name: stateVal.name,
             qty: stateVal.qty,
             sale_price: stateVal.sale_price,
+            pid: stateVal.pid
 
         });
         setSelectedProductValue(stateVal.product_id, "Select Product");
@@ -97,8 +97,12 @@ const ProductSize = ({ stateVal, id }) => {
     const [qtyHelperText, setProductQtyHelperText] = useState('');
     const [productSalePriceHelperText, setProductSalePriceHelperText] = useState('');
 
-    const getActiveProduct = async () => {
+    const [product_id, setproduct_id] = useState();
+
+    const getActiveProduct = async (product_id) => {
         try {
+            setproduct_id(product_id)
+
             const responseBrand = await axiosRequest(ADMIN_ACTIVE_PRODUCTS, {}, config);
             setselectActiveProduct(responseBrand.data.status === true ? responseBrand.data.data : []);
         } catch (errs) {
@@ -106,11 +110,16 @@ const ProductSize = ({ stateVal, id }) => {
         }
 
     }
-    const getActiveProductColor = async () => {
+    const getActiveProductColor = async (product_id) => {
+        console.log(":", product_id);
         try {
-            const data = { product_id: state.product_id };
-
+            const headers = headerValue();
+            const config = {
+                headers: headers
+            };
+            const data = { product_id: product_id };
             const responseBrand = await axiosRequest(ADMIN_ACTIVE_PRODUCT_COLOR_BY_PRODUCT_ID, data, config);
+            console.log(responseBrand.data.data);
             setselectActiveProductColor(responseBrand.data.status === true ? responseBrand.data.data : []);
         } catch (errs) {
             setselectActiveProductColor([]);
@@ -173,7 +182,6 @@ const ProductSize = ({ stateVal, id }) => {
                     sale_price: state.sale_price,
 
                 };
-                console.log("::", data);
                 const conf = {
                     headers: headerValue()
                 }
@@ -207,6 +215,7 @@ const ProductSize = ({ stateVal, id }) => {
             setProductError(false);
             setProductHelperText('');
             setSelectedProductValue(event.target.value);
+            getActiveProductColor(event.target.value);
         }
     }
     const handleSeleProductColorChange = (event) => {
@@ -250,7 +259,7 @@ const ProductSize = ({ stateVal, id }) => {
                     </Grid>
                     <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
                         <TextField
-                            type="text"
+                            type="number"
                             name="qty"
                             label="Enter Products Qty"
                             onChange={handleChange}
@@ -264,14 +273,14 @@ const ProductSize = ({ stateVal, id }) => {
                     </Grid>
                     <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
                         <TextField
-                            type="text"
+                            type="number"
                             name="sale_price"
                             label="Enter Products Sale Price"
                             onChange={handleChange}
                             value={state.sale_price}
                             autoComplete="off"
                             validators={["required"]}
-                            errorMessages={productSalePriceError}
+                            errorMessages={productSalePriceHelperText}
                         />
 
                     </Grid>
