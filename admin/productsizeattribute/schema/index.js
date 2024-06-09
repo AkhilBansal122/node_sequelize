@@ -47,11 +47,10 @@ addProductSizeAttrSchema : async (req, res, next) => {
     });
     validationRequest(req, res, next, schema);
   },
-  statusProductColorAttrSchema : async (req,res,next)=>{
+  activeProductColorAttrSchema : async (req,res,next)=>{
     schema=  joi.object().keys({
-        product_id:joi.number().required(),
-        
-    });
-    validationRequest(req, res, next, schema);
+      product_id:joi.number().required(),
+  });
+  validationRequest(req, res, next, schema);
 },  
 }

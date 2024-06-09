@@ -174,11 +174,8 @@ if(await entity.save()){
   },
   activeColorByProductId:async (req, res) => {
     const { product_id } = req.body;
-    const getRecord = await ProductColorModal.findOne({
+    const getRecord = await ProductColorModal.findAll({
       where: { product_id: product_id,status:1 },
-      attributes:[
-        "id",'name','product_id'
-      ]
     });
     if (getRecord) {
       return res.status(200).send({
